@@ -11,6 +11,7 @@ export interface EnvVariables {
     dashboardUser: string;
     dashboardPass: string;
     dashboardHostnames: string[];
+    randomStringForHash: string;
 }
 
 export class EnvUtils {
