@@ -8,6 +8,7 @@ const ParseServer = require('parse-server').ParseServer;
 
 EnvUtils.appRoot = __dirname.replace('build', '');
 const { appName, databaseUri, appId, masterKey, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
+IpFilterUtil.setupHostnames(dashboardHostnames);
 
 const parseServerApp = new ParseServer({
   databaseURI: databaseUri,
@@ -64,6 +65,5 @@ httpServer.listen(port, () => {
 // enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
 
-IpFilterUtil.setupHostnames(dashboardHostnames);
 IpFilterUtil.updateAllIpAddressesForHostnames();
 CronJobConfigurator.configure();

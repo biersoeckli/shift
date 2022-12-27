@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, } from '@angular/forms';
-import { fluffyLoading, Utils } from 'ngx-fluffy-cow';
+import { Router } from '@angular/router';
+import { fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponentComponent } from '../shift-common/base-component/base-component.component';
 import { RegistrationParams } from './registration.params';
 
@@ -29,7 +30,7 @@ export class RegistrationComponent extends BaseComponentComponent<RegistrationPa
   get phone() { return this.reactiveForm.get('phone'); }
   get mail() { return this.reactiveForm.get('mail'); }
 
-  constructor() {
+  constructor(private readonly router: Router) {
     super();
   }
 
@@ -41,5 +42,7 @@ export class RegistrationComponent extends BaseComponentComponent<RegistrationPa
     }
     const values = this.reactiveForm.value;
     // todo let the async magic happen
+    // todo redirect to auth page with redirect url to confirmation page
+    this.router.navigateByUrl('/register/confirmation');
   }
 }

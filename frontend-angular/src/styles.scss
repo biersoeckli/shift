@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
 .input-label {
     @apply block mb-2 text-sm font-medium text-gray-900;
 }
