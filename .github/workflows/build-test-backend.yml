@@ -1,0 +1,30 @@
+name: build and test backend
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    name: ${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependancies and test
+        run: |
+          cd backend-parse-server
+          npm install
+          npm run build
+          npm run lint
+
+#       npm run test
