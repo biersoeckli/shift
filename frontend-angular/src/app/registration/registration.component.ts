@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponentComponent } from '../shift-common/base-component/base-component.component';
+import { CommonService } from '../shift-common/services/common.service';
 import { RegistrationParams } from './registration.params';
 
 @Component({
@@ -30,8 +31,8 @@ export class RegistrationComponent extends BaseComponentComponent<RegistrationPa
   get phone() { return this.reactiveForm.get('phone'); }
   get mail() { return this.reactiveForm.get('mail'); }
 
-  constructor(private readonly router: Router) {
-    super();
+  constructor(common: CommonService) {
+    super(common);
   }
 
   @fluffyLoading()

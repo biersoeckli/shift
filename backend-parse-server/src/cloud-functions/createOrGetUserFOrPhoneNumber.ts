@@ -3,7 +3,7 @@ import { EnvUtils } from "../common/utils/env.utils";
 import { UserUtils } from "../common/utils/user.utils";
 
 Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {
-    if (!request.user || !await UserUtils.isUserInRole(request.user, 'myteam_trainer') && !request.master) {
+    if (!request.user || !await UserUtils.isUserInRole(request.user, ROLE_EVENT_ORGANIZER) && !request.master) {
         throw 'unauthorized';
     }
     if (!request.params.phone) {
@@ -27,7 +27,7 @@ Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {
         throw 'too many users found for this phone number. '
     }
 }, {
-    fields: ['phone', 'firstName', 'lastName', 'mail']
+    fields: ['phone']
 });
 
 /**

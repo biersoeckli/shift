@@ -4,6 +4,8 @@ import { BaseComponentComponent } from './base-component/base-component.componen
 import { FluffyCowModule } from 'ngx-fluffy-cow';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderLogoComponent } from './header-logo/header-logo.component';
+import { NavigationService } from './services/navigation.service';
+import { CommonService } from './services/common.service';
 
 
 @NgModule({
@@ -19,7 +21,11 @@ import { HeaderLogoComponent } from './header-logo/header-logo.component';
     FluffyCowModule,
     FormsModule,
     ReactiveFormsModule,
-    HeaderLogoComponent
+    HeaderLogoComponent,
+  ],
+  providers: [
+    NavigationService,
+    CommonService
   ]
 })
 export class ShiftCommonModule { }

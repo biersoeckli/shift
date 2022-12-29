@@ -1,3 +1,3 @@
-import * as d from './createOrGetUserFOrPhoneNumber';
+import * as d from './createOrGetUserForPhoneNumber';
 
 // todo needs initialization of cloud func?
