@@ -50,6 +50,7 @@ export class AuthComponent extends BaseComponentComponent<AuthParams> {
     try {
       this.errorString = undefined;
       const { username, sessionKey } = await Parse.Cloud.run('verifyAuthChallengeCode', { authCode: this.authChallengeVerificationCode, challengeId: this.authChallengeId });
+      await Parse.User.logOut();
       await Parse.User.logIn(username, sessionKey);
       this.navigation.router.navigateByUrl(this.params.returnUrl ?? '/');
     } catch (e) {

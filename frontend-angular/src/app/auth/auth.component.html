@@ -3,7 +3,7 @@
         <shift-header-logo></shift-header-logo>
     </div>
     <div *ngIf="!authChallengeId; else authChallengeCreated">
-        <div class="shift-card mb-4">
+        <div class="shift-card mb-6">
             Um fortfahren zu können, müssen wir deine Telefonnummer verifizieren. Es werden nur schweizer Telefonnummern in folgendem Format akzeptiert 0791234567.
         </div>
         <form [formGroup]="phoneReactiveForm" (ngSubmit)="onCreateAuthChallenge()">
@@ -27,6 +27,9 @@
         </form>
     </div>
     <ng-template #authChallengeCreated>
+        <div class="shift-card mb-6">
+            Du hast einen Code auf deine Nummer <span class="font-medium text-orange-500">{{phoneReactiveForm.value.phone}}</span> erhalten. Bitte gib diesen hier ein.
+        </div>
         <label for="input-group-1" class="input-label">Verifizierungscode</label>
         <div class="icon-input">
             <div>
@@ -36,7 +39,7 @@
                         d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zm40-176c-22.1 0-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40s-17.9 40-40 40z" />
                 </svg>
             </div>
-            <input type="tel" placeholder="z.B. 1234" (keyup.enter)="onValidateAuthChallenge()"
+            <input type="number" placeholder="z.B. 1234" (keyup.enter)="onValidateAuthChallenge()"
                 [(ngModel)]="authChallengeVerificationCode">
             <p *ngIf="errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}</p>
         </div>
