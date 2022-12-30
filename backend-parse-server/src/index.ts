@@ -4,6 +4,7 @@ import http from "http"
 import { CronJobConfigurator } from "./cron-job.config";
 import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
+import { DiContainer } from "./di-container";
 const ParseServer = require('parse-server').ParseServer;
 
 EnvUtils.appRoot = __dirname.replace('build', '');
@@ -67,3 +68,4 @@ ParseServer.createLiveQueryServer(httpServer);
 
 IpFilterUtil.updateAllIpAddressesForHostnames();
 CronJobConfigurator.configure();
+DiContainer.init();

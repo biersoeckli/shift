@@ -2,27 +2,32 @@
     <div class="py-12">
         <shift-header-logo></shift-header-logo>
     </div>
-    <form *ngIf="!authChallengeId; else authChallengeCreated" [formGroup]="phoneReactiveForm"
-        (ngSubmit)="onCreateAuthChallenge()">
-        <label for="input-group-1" class="input-label">Deine Telefonnummer</label>
-        <div class="icon-input">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                    viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                    <path
-                        d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                </svg>
-            </div>
-            <input type="tel" placeholder="079 123 45 67" formControlName="phone">
-            <p *ngIf="validated && phone?.invalid" class="pl-2 text-sm text-red-600 dark:text-red-500">Eine Schweizer
-                Telefonnummer im Format 0791234567 wird benötigt.</p>
-            <input type="tel" placeholder="079 123 45 67" formControlName="phone">
-            <p *ngIf="validated && errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}</p>
+    <div *ngIf="!authChallengeId; else authChallengeCreated">
+        <div class="shift-card mb-4">
+            Um fortfahren zu können, müssen wir deine Telefonnummer verifizieren. Es werden nur schweizer Telefonnummern in folgendem Format akzeptiert 0791234567.
         </div>
-        <button class="btn w-full" type="submit" [disabled]="!phoneReactiveForm.value.phone">Weiter</button>
-    </form>
+        <form [formGroup]="phoneReactiveForm" (ngSubmit)="onCreateAuthChallenge()">
+            <label for="input-group-1" class="input-label">Deine Telefonnummer</label>
+            <div class="icon-input">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                        <path
+                            d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
+                    </svg>
+                </div>
+                <input type="tel" placeholder="079 123 45 67" formControlName="phone">
+                <p *ngIf="validated && phone?.invalid" class="pl-2 text-sm text-red-600 dark:text-red-500">Eine
+                    Schweizer
+                    Telefonnummer im Format 0791234567 wird benötigt.</p>
+                <p *ngIf="validated && errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}
+                </p>
+            </div>
+            <button class="btn w-full" type="submit" [disabled]="!phoneReactiveForm.value.phone">Weiter</button>
+        </form>
+    </div>
     <ng-template #authChallengeCreated>
-        <label for="input-group-1" class="input-label">Deine Telefonnummer</label>
+        <label for="input-group-1" class="input-label">Verifizierungscode</label>
         <div class="icon-input">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -31,10 +36,12 @@
                         d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zm40-176c-22.1 0-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40s-17.9 40-40 40z" />
                 </svg>
             </div>
-            <input type="tel" placeholder="079 123 45 67" formControlName="phone">
+            <input type="tel" placeholder="z.B. 1234" (keyup.enter)="onValidateAuthChallenge()"
+                [(ngModel)]="authChallengeVerificationCode">
             <p *ngIf="errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}</p>
         </div>
-        <button class="btn w-full" type="submit" [disabled]="!authChallengeVerificationCode">Verifizieren</button>
+        <button class="btn w-full" [disabled]="!authChallengeVerificationCode"
+            (click)="onValidateAuthChallenge()">Verifizieren</button>
 
     </ng-template>
 </div>

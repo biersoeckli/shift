@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as Parse from 'parse';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'shift';
+  constructor() {
+    Parse.initialize('appid');
+    (Parse as any).serverURL = 'http://localhost:1337/parse';
+  }
 }

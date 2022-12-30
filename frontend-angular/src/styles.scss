@@ -39,3 +39,7 @@ input {
     @apply text-orange-500 border-2 border-orange-500 hover:bg-orange-500 hover:text-white focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 focus:outline-none transition-all;
 
 }
+
+.shift-card {
+    @apply text-sm border-2 rounded-xl bg-slate-50 p-4;
+}
