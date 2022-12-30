@@ -1,9 +1,10 @@
 import { SWISS_PHONE_NUMBER_REGEX } from "../common/constants/phone-regex.constants";
 
 import { Autowire } from "node-dependency-injection";
+import { Service } from "typedi";
 /* eslint-disable */
 //const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
+@Service()
 export class SmsService {
     
    async sendSms(phoneNumber: string, text: string) {

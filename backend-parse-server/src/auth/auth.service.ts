@@ -1,6 +1,8 @@
+import { Service } from "typedi";
 import { ROLE_EVENT_ORGANIZER } from "../common/constants/roles.constants";
 import { EnvUtils } from "../common/utils/env.utils";
 
+@Service()
 export class AuthService {
 
     async createOrGetUserForPhoneNumber(phone: string): Promise<Parse.Object<Parse.Attributes>> {
@@ -57,7 +59,7 @@ export class AuthService {
         return { generatedUsername, generatedPassword };
     }
 
-    hashMyTeamSmsCode(code: string) {
+    hashSmsCode(code: string) {
         const crypto = require('crypto');
         return crypto.createHash('sha256', 'sasdfuh2o8ewzqghbvlsdazhfgvozdmlAaa8sOFj5FEeiQlYD66jHEJRS1NLLsqMCeN9pqibot*9sdtgh4sdfg1h99g*sg/0GC0dO3hfpiwuiu@sadfu29/o8z*ljdhbf')
             .update('' + code)
