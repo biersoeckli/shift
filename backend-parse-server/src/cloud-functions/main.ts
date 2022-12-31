@@ -1,12 +1,23 @@
 
 import { Container } from "typedi";
-import { BaseCloudFunction } from "./cloud-function.interface";
-import { CLOUD_FUNCTION_CLASSES } from "./cloud-functions.conf";
+import { AuthenticateWithPhoneNumberFunction } from "./auth/auth-with-phonenumber.function";
+import { GetOrCreateUserForPhoneNumberFunction } from "./auth/createOrGetUserForPhoneNumber.function";
+import { VerifyAuthChallengeCodeFunction } from "./auth/verify-auth-challenge-code.function";
 
+Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
+    return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
+}, {
+    fields: ['phone']
+});
 
-// initializing cloud functions 
-for (const cloudFunc of CLOUD_FUNCTION_CLASSES) {
-    const funcInstance = Container.get(cloudFunc as any);
-    (funcInstance as any).init();
-}
+Parse.Cloud.define("verifyAuthChallengeCode", async (request) => {
+    return await Container.get(VerifyAuthChallengeCodeFunction).run(request);
+}, {
+    fields: ['challengeId', 'authCode']
+});
 
+Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {
+    return await Container.get(GetOrCreateUserForPhoneNumberFunction).run(request);
+}, {
+    fields: ['phone']
+});

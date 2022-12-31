@@ -6,22 +6,18 @@ import { Service } from "typedi";
 import { BaseCloudFunction } from "../cloud-function.interface";
 
 @Service()
-export class GetOrCreateUserForPhoneNumberFunction extends BaseCloudFunction {
+export class GetOrCreateUserForPhoneNumberFunction extends BaseCloudFunction<string> {
 
     constructor(private readonly authService: AuthService) {
         super();
     }
 
-    init() {
-        Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {
-            if (!request.user || !await UserUtils.isUserInRole(request.user, ROLE_EVENT_ORGANIZER) && !request.master) {
-                throw 'unauthorized';
-            }
-            const phone = request.params.phone;
-            const user = await this.authService.createOrGetUserForPhoneNumber(phone);
-            return user.id;
-        }, {
-            fields: ['phone']
-        });
+    async run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>) {
+        if (!request.user || !await UserUtils.isUserInRole(request.user, ROLE_EVENT_ORGANIZER) && !request.master) {
+            throw 'unauthorized';
+        }
+        const phone = request.params.phone;
+        const user = await this.authService.createOrGetUserForPhoneNumber(phone);
+        return user.id;
     }
 }
