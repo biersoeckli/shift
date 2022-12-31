@@ -1,4 +1,4 @@
-export class UserUtils {
+export class RoleUtils {
 
     static async getOrCreateRole(roleName: string) {
         const query = new Parse.Query('_Role');

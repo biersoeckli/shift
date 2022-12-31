@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.component';
-
+import { CanActivateAuthenticated } from '../shift-common/guards/authenticated.guard';
 
 const routes: Routes = [
   {
@@ -15,10 +15,12 @@ const routes: Routes = [
   {
     path: 'user',
     component: RegistrationComponent,
+    canActivate: [CanActivateAuthenticated]
   },
   {
     path: 'confirmation',
     component: ConfirmationComponent,
+    canActivate: [CanActivateAuthenticated]
   }
 ];
 

@@ -4,7 +4,6 @@ import { AuthComponent } from './auth.component';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { RouterModule, Routes } from '@angular/router';
 
-
 const routes: Routes = [
   {
     path: '',

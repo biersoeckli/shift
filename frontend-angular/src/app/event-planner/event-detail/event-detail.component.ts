@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
+import { fluffyLoading } from 'ngx-fluffy-cow';
+import * as Parse from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
-import { RegistrationParams } from '../registration.params';
-import * as Parse from 'parse';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { EventDetailParam } from './event-detail.param';
 
 @Component({
-  selector: 'app-welcome-screen',
-  templateUrl: './welcome-screen.component.html'
+  selector: 'app-event-detail',
+  templateUrl: './event-detail.component.html'
 })
-export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
+export class EventDetailComponent extends BaseComponent<EventDetailParam> {
+
   event?: Parse.Object<Parse.Attributes>;
 
   constructor(common: CommonService) {
@@ -20,10 +21,6 @@ export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
   @fluffyLoading()
   async init() {
     const query = new Parse.Query(Parse.Object.extend("Event"));
-    this.event = await query.get(this.params.eventId);
-  }
-
-  nextStep() {
-    this.navigation.registrationUserDetails();
+    this.event = await query.get(this.params.eventId ?? '');
   }
 }

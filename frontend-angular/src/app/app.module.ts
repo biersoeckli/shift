@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GlobalLoaderComponent } from './global-loader/global-loader.component';
+import { ShiftCommonModule } from './shift-common/shift-common.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { GlobalLoaderComponent } from './global-loader/global-loader.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ShiftCommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

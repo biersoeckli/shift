@@ -1,0 +1,9 @@
+<div class="m-8">
+    <div class="shift-header">Events</div>
+    <div *ngFor="let event of events" (click)="navigation.eventDetail(event.id)"
+        class="shift-list-item">
+        {{event.get('name')}}<br>
+        <span>{{event.get('start') | fluffyDateTime}} - {{event.get('end') | fluffyDateTime}}</span>
+    </div>
+    <button class="btn mt-2" (click)="navigation.eventDetailEdit()">Event erstellen</button>
+</div>

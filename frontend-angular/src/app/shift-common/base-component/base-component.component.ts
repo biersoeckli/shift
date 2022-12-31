@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
 import { UrlUtils } from 'ngx-fluffy-cow';
 import { CommonService } from '../services/common.service';
 import { NavigationService } from '../services/navigation.service';
 
-@Component({
-  templateUrl: './base-component.component.html',
-})
 export abstract class BaseComponent<TParamType> {
 
   public params: TParamType;

@@ -1,3 +1,3 @@
 export abstract class BaseCloudFunction<TFuncReturnType> {
-    abstract run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>): Promise<TFuncReturnType>;
+    abstract run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params> | Parse.Cloud.BeforeSaveRequest<Parse.Object<Parse.Attributes>> | Parse.Cloud.AfterSaveRequest<Parse.Object<Parse.Attributes>>): Promise<TFuncReturnType>;
 }
