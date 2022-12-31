@@ -4,11 +4,16 @@ import { RegistrationComponent } from './registration.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.component';
 
 
 const routes: Routes = [
   {
     path: '',
+    component: WelcomeScreenComponent,
+  },
+  {
+    path: 'user',
     component: RegistrationComponent,
   },
   {
@@ -20,7 +25,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     RegistrationComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    WelcomeScreenComponent
   ],
   imports: [
     CommonModule,

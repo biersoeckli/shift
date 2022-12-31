@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as Parse from 'parse';
 
 @Component({
   selector: 'app-confirmation',

@@ -6,7 +6,7 @@ import { NavigationService } from '../services/navigation.service';
 @Component({
   templateUrl: './base-component.component.html',
 })
-export abstract class BaseComponentComponent<TParamType> {
+export abstract class BaseComponent<TParamType> {
 
   public params: TParamType;
 

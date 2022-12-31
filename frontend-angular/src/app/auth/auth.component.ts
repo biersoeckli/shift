@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { fluffyLoading } from 'ngx-fluffy-cow';
-import { BaseComponentComponent } from '../shift-common/base-component/base-component.component';
+import { BaseComponent } from '../shift-common/base-component/base-component.component';
 import { CommonService } from '../shift-common/services/common.service';
 import { AuthParams } from './auth.params';
 import * as Parse from 'parse';
@@ -11,7 +11,7 @@ import * as Parse from 'parse';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent extends BaseComponentComponent<AuthParams> {
+export class AuthComponent extends BaseComponent<AuthParams> {
   phoneReactiveForm = new FormGroup({
     phone: new FormControl('', [
       Validators.pattern(/^([0][1-9][0-9](\s|)[0-9][0-9][0-9](\s|)[0-9][0-9](\s|)[0-9][0-9])$|^(([0][0]|\+)[1-9][0-9](\s|)[0-9][0-9](\s|)[0-9][0-9][0-9](\s|)[0-9][0-9](\s|)[0-9][0-9])$/),
@@ -50,12 +50,26 @@ export class AuthComponent extends BaseComponentComponent<AuthParams> {
     try {
       this.errorString = undefined;
       const { username, sessionKey } = await Parse.Cloud.run('verifyAuthChallengeCode', { authCode: this.authChallengeVerificationCode, challengeId: this.authChallengeId });
-      await Parse.User.logOut();
+      await this.forceLogout();
       await Parse.User.logIn(username, sessionKey);
       this.navigation.router.navigateByUrl(this.params.returnUrl ?? '/');
     } catch (e) {
       const ex = e as Parse.Error;
       this.errorString = ex?.message ? ex.message : 'Es ist ein Fehler aufgetreten.';
+    }
+  }
+
+  async forceLogout() {
+    try {
+      await Parse.User.current()?.fetch();
+    } catch (e) {
+      // do nothing
+    }
+
+    try {
+      await Parse.User.logOut();
+    } catch (e) {
+      // do nothing
     }
   }
 }
