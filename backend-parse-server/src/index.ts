@@ -70,5 +70,3 @@ ParseServer.createLiveQueryServer(httpServer);
 
 IpFilterUtil.updateAllIpAddressesForHostnames();
 CronJobConfigurator.configure();
-
-Container.get(ApplicationUpdateJob).run();

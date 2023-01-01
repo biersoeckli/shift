@@ -3,7 +3,7 @@ import { Service } from "typedi";
 
 @Service()
 export class ApplicationUpdateJob {
-    
+
     private git: SimpleGit;
 
     constructor() {
@@ -12,13 +12,17 @@ export class ApplicationUpdateJob {
             binary: 'git',
             maxConcurrentProcesses: 6,
             trimmed: false,
-         };
-         
-         // when setting all options in a single object
-         this.git = simpleGit(options);
+        };
+
+        // when setting all options in a single object
+        this.git = simpleGit(options);
     }
     async run() {
-       const gitStatus = await this.git.status();
-       console.log(gitStatus);
+        await this.git.fetch();
+        const gitStatus = await this.git.status();
+        console.log(gitStatus);
+        if (gitStatus.ahead !== 0 || gitStatus.behind !== 0) {
+            // update the software
+        }
     }
 }
