@@ -2,9 +2,11 @@ import 'reflect-metadata';
 import express from "express";
 import path from "path";
 import http from "http"
-import { CronJobConfigurator } from "./cron-job.config";
+import { CronJobConfigurator } from "./jobs/cron-job.config";
 import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
+import Container from 'typedi';
+import { ApplicationUpdateJob } from './jobs/application-update.job';
 const ParseServer = require('parse-server').ParseServer;
 
 EnvUtils.appRoot = __dirname.replace('build', '');
@@ -68,3 +70,5 @@ ParseServer.createLiveQueryServer(httpServer);
 
 IpFilterUtil.updateAllIpAddressesForHostnames();
 CronJobConfigurator.configure();
+
+Container.get(ApplicationUpdateJob).run();

@@ -1,5 +1,5 @@
 import cron from "node-cron"
-import { IpFilterUtil } from "./common/utils/ip-filter.utils"
+import { IpFilterUtil } from "../common/utils/ip-filter.utils"
 
 export class CronJobConfigurator {
 
