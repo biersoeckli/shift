@@ -18,11 +18,16 @@ export class ApplicationUpdateJob {
         this.git = simpleGit(options);
     }
     async run() {
+        console.log(`[ApplicationUpdateJob] Checking for available updates...`);
         await this.git.fetch();
         const gitStatus = await this.git.status();
-        console.log(gitStatus);
-        if (gitStatus.ahead !== 0 || gitStatus.behind !== 0) {
+        console.log(`[ApplicationUpdateJob] local application is ${gitStatus.behind} behind.`);
+        if (gitStatus.behind > 0) {
             // update the software
+            console.log(`[ApplicationUpdateJob] Running update...`);
+            await this.git.pull();
+            console.log(`[ApplicationUpdateJob] Fetched latest sources, restarting application.`);
+            process.exit();
         }
     }
 }
