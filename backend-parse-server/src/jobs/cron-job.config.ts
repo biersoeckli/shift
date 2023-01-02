@@ -14,8 +14,8 @@ export class CronJobConfigurator {
     // every 5th minute
     cron.schedule('*/5 * * * *', async () => {
       await IpFilterUtil.updateAllIpAddressesForHostnames();
-      Container.get(ApplicationUpdateJob).run();
       // await wait(20);
+      await Container.get(ApplicationUpdateJob).run();
     })
     this.hasBeenConfigured = true
   }

@@ -1,5 +1,6 @@
 import simpleGit, { SimpleGitOptions, SimpleGit } from "simple-git";
 import { Service } from "typedi";
+import { EnvUtils } from "../common/utils/env.utils";
 
 @Service()
 export class ApplicationUpdateJob {
@@ -18,6 +19,9 @@ export class ApplicationUpdateJob {
         this.git = simpleGit(options);
     }
     async run() {
+        if (!EnvUtils.get().production) {
+            console.log('[ApplicationUpdateJob] skipping application update, because application is not in production mode.');
+        }
         console.log(`[ApplicationUpdateJob] Checking for available updates...`);
         await this.git.fetch();
         const gitStatus = await this.git.status();
