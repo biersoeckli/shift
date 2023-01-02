@@ -2,6 +2,7 @@ import { SWISS_PHONE_NUMBER_REGEX } from "../common/constants/phone-regex.consta
 import { Service } from "typedi";
 import { EnvUtils } from "../common/utils/env.utils";
 import { StringUtils } from "../common/utils/string.utils";
+import needle from 'needle';
 /* eslint-disable */
 
 @Service()
@@ -27,15 +28,14 @@ export class SmsService {
                 "recipient": phoneNumber
             }
         };
-        const fetch = require('make-fetch-happen');
-        const response = await fetch(EnvUtils.get().smsServiceUrl, {
-            method: 'POST',
-            //mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-        return await response.json();
+        return new Promise((resolve, reject) => {
+            needle.post(EnvUtils.get().smsServiceUrl, body, (error, response) => {
+                if (!error && response.statusCode == 200) {
+                    resolve(response.body);
+                    return;
+                }
+                reject(error ?? 'Unknown error while sending sms.');
+            });
+        })
     }
 }
