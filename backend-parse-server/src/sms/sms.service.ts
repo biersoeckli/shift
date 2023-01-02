@@ -30,11 +30,11 @@ export class SmsService {
         };
         return new Promise((resolve, reject) => {
             needle.post(EnvUtils.get().smsServiceUrl, body, (error, response) => {
-                if (!error && response.statusCode == 200) {
+                if (!error) {
                     resolve(response.body);
                     return;
                 }
-                reject(error ?? 'Unknown error while sending sms.');
+                reject(error);
             });
         })
     }
