@@ -5,6 +5,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { EventDetailEditComponent } from './event-detail-edit/event-detail-edit.component';
+import { ShiftsModule } from '../shifts/shifts.module';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ShiftCommonModule,
+    ShiftsModule,
     RouterModule.forChild(routes)
   ]
 })

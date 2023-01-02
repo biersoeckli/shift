@@ -10,13 +10,14 @@ import * as Parse from 'parse';
   templateUrl: './shift-detail-edit.component.html'
 })
 export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParams> {
+  event?: Parse.Object<Parse.Attributes>;
 
   constructor(common: CommonService) {
     super(common, 'Shift', 'shiftId');
 
     this.beforeSaveAction = async unsavedItem => {
       const query = new Parse.Query(Parse.Object.extend('Event'));
-      const event = await query.get(this.params.eventId);
+      this.event = await query.get(this.params.eventId);
       unsavedItem.set('event', event);
       return unsavedItem;
     }

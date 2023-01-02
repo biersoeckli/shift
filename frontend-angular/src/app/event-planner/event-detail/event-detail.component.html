@@ -1,6 +1,6 @@
 <div class="m-8" *ngIf="event">
     <div class="shift-header">{{event.get('name') ?? 'unbenannter Event'}}</div>
-    
+    <shifts-overview [eventId]="event.id"></shifts-overview>
     
     <button class="btn mt-2" (click)="navigation.eventDetailEdit(event.id)">Event bearbeiten</button>
     <button class="btn-secondary mt-2" (click)="navigation.shiftDetailEdit(event.id)">Schicht hinzufügen</button>

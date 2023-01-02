@@ -26,7 +26,7 @@ export class AuthenticateWithPhoneNumberFunction extends BaseCloudFunction<Authe
 
         const user = await this.authService.createOrGetUserForPhoneNumber(request.params.phone);
 
-        const code = crypto.randomInt(10000, 99999);
+        const code = EnvUtils.get().production ? crypto.randomInt(10000, 99999) : 11111;
 
         var GameScore = Parse.Object.extend("AuthChallenge");
         var gameScore = new GameScore();
@@ -35,9 +35,9 @@ export class AuthenticateWithPhoneNumberFunction extends BaseCloudFunction<Authe
         gameScore.set("code", this.authService.hashSmsCode(code + ''));
         const authChallenge = await gameScore.save(null, { useMasterKey: true });
 
-        await this.smsService.sendSms(user.get('phone'), `Dein Code für Shift lautet: ${code}`);
-
-        if (!EnvUtils.get().production) {
+        if (EnvUtils.get().production) {
+            await this.smsService.sendSms(user.get('phone'), `Dein Code für Shift lautet: ${code}`);
+        } else {
             console.log('Code for authentication: ' + code);
         }
         return { challengeId: authChallenge.id } as AuthenticateWithPhoneNumberResult;
