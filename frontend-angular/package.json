@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-prod": "npm run config && ng build --configuration production",
+    "config": "ts-node set-env.ts"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +28,8 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.4",
+    "fs": "^0.0.1-security",
+    "ts-node": "^10.9.1",
     "@angular/cli": "~15.0.4",
     "@angular/compiler-cli": "^15.0.4",
     "@types/jasmine": "~4.3.1",

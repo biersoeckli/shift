@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import * as Parse from 'parse';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import * as Parse from 'parse';
 export class AppComponent {
   title = 'shift';
   constructor() {
-    Parse.initialize('appid');
-    (Parse as any).serverURL = 'http://localhost:1337/parse';
+    Parse.initialize(environment.parseAppId);
+    (Parse as any).serverURL = environment.parseServerUrl;
   }
 }
