@@ -28,8 +28,8 @@ export class SmsService {
                 "recipient": phoneNumber
             }
         };
-
-        const response = await fetchWrapper(EnvUtils.get().smsServiceUrl, {
+        const fetch = require('make-fetch-happen');
+        const response = await fetch(EnvUtils.get().smsServiceUrl, {
             method: 'POST',
             //mode: 'cors',
             headers: {
