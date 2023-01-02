@@ -46,7 +46,7 @@ const parseDashboardApp = new ParseDashboard({
 const app = express();
 app.use('/parse', parseServerApp);
 app.use('/dashboard', async (req, res, next) => {
-  const forwardedForIp = req.headers['X-Forwarded-For'] as string;
+  const forwardedForIp = req.headers['x-forwarded-for'] as string;
   if (!await IpFilterUtil.ipIsValid(forwardedForIp || req.ip)) {
     res.status(403).send({ "error": "unauthorized" });
   } else {
