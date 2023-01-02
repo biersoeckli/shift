@@ -1,7 +1,6 @@
 import { SWISS_PHONE_NUMBER_REGEX } from "../common/constants/phone-regex.constants";
 import { Service } from "typedi";
 import { EnvUtils } from "../common/utils/env.utils";
-import { fetchWrapper } from "../common/utils/fetchwrapper.utils";
 import { StringUtils } from "../common/utils/string.utils";
 /* eslint-disable */
 
