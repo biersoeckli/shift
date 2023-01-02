@@ -13,6 +13,8 @@ export interface EnvVariables {
     dashboardHostnames: string[];
     randomStringForHash: string;
     production: boolean;
+    smsServiceToken: string;
+    smsServiceUrl: string;
 }
 
 export class EnvUtils {
