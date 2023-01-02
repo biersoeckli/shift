@@ -5,7 +5,7 @@ if (process.env["IS_PRODUCTION"] !== undefined) {
 
   // `environment.prod.ts` file structure
   const envConfigFile = `export const environment = {
-    production: process.env["IS_PRODUCTION"],
+    production: ${process.env["IS_PRODUCTION"]},
     parseAppId: "${process.env["PARSE_APP_ID"]}",
     parseServerUrl: "${process.env["PARSE_SERVER_URL"]}"
   };
