@@ -56,7 +56,8 @@ Parse.Cloud.beforeSave("Event", async (request) => {
 Parse.Cloud.afterSave("Event", async (request) => {
     return await Container.get(EventAfterSave).run(request);
 });
-
+// todo enable again
+/*
 Parse.Cloud.beforeSave("Shift", request => {
     if (!DateUtils.gt(request.object.get('start'), request.object.get('end'))) {
         throw 'Das Startdatum muss vor dem Enddatum liegen';
@@ -77,7 +78,7 @@ Parse.Cloud.beforeSave("Shift", request => {
     },
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
     requireUser: true
-});
+});*/
 
 Parse.Cloud.afterSave("Shift", async (request) => {
     return await Container.get(ShiftAfterSave).run(request);
