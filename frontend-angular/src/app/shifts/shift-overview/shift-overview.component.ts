@@ -12,7 +12,6 @@ import { ShiftService, ShiftWithBookings } from '../services/shift.service';
 export class ShiftOverviewComponent extends BaseComponent<void> implements OnInit {
 
   @Input() eventId?: string;
-  event?: Parse.Object<Parse.Attributes>;
   shiftWithBookings?: ShiftWithBookings[];
 
   constructor(common: CommonService,
@@ -22,9 +21,9 @@ export class ShiftOverviewComponent extends BaseComponent<void> implements OnIni
 
   @fluffyLoading()
   async ngOnInit() {
-    if (!this.event) {
+    if (!this.eventId) {
       return;
     }
-    this.shiftWithBookings = await this.shiftService.getShiftsWithBookings(this.event.id);
+    this.shiftWithBookings = await this.shiftService.getShiftsWithBookings(this.eventId);
   }
 }
