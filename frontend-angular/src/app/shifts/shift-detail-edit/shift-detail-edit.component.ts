@@ -18,7 +18,7 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
     this.beforeSaveAction = async unsavedItem => {
       const query = new Parse.Query(Parse.Object.extend('Event'));
       this.event = await query.get(this.params.eventId);
-      unsavedItem.set('event', event);
+      unsavedItem.set('event', this.event);
       return unsavedItem;
     }
 
