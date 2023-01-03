@@ -2,6 +2,7 @@ import { fluffyLoading, UrlUtils } from 'ngx-fluffy-cow';
 import { BaseComponent } from '../base-component/base-component.component';
 import { CommonService } from '../services/common.service';
 import * as Parse from 'parse';
+import { DEFAULT_ERROR_MESSAGE } from '../contants';
 
 export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParamType> {
 
@@ -33,11 +34,12 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         this.item = new (Parse.Object.extend(this.className));
       }
     } catch (ex) {
+      console.error(ex);
       if (ex instanceof Parse.Error) {
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
-        this.errorString = ex.message;
+        this.errorString = DEFAULT_ERROR_MESSAGE;
       }
     }
   }
@@ -60,11 +62,12 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         await this.afterSaveAction(savedItem);
       }
     } catch (ex) {
+      console.error(ex);
       if (ex instanceof Parse.Error) {
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
-        this.errorString = ex.message;
+        this.errorString = DEFAULT_ERROR_MESSAGE;
       }
     }
   }
