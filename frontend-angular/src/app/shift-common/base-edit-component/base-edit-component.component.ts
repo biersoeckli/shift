@@ -39,7 +39,7 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
-        this.errorString = DEFAULT_ERROR_MESSAGE;
+        this.errorString = ex.message;
       }
     }
   }
@@ -67,7 +67,7 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
-        this.errorString = DEFAULT_ERROR_MESSAGE;
+        this.errorString = ex.message;
       }
     }
   }

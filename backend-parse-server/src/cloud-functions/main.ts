@@ -56,14 +56,28 @@ Parse.Cloud.beforeSave("Event", async (request) => {
 Parse.Cloud.afterSave("Event", async (request) => {
     return await Container.get(EventAfterSave).run(request);
 });
-// todo enable again
-/*
-Parse.Cloud.beforeSave("Shift", request => {
+
+Parse.Cloud.beforeSave("Shift", async request => {
     if (!DateUtils.gt(request.object.get('start'), request.object.get('end'))) {
-        throw 'Das Startdatum muss vor dem Enddatum liegen';
+        throw 'Das Startdatum muss vor dem Enddatum liegen.';
+    }
+
+    const query = new Parse.Query(Parse.Object.extend('Event'));
+    const event =  await query.get(request.object.get('event').id, {useMasterKey: true});
+   
+    if (DateUtils.gt(event.get('start'), request.object.get('start'))) {
+        throw 'Das Startdatum muss innerhalb der Dauer des Events liegen.';
+    }
+
+    if (DateUtils.gt(request.object.get('end'), event.get('end'))) {
+        throw 'Das Enddatum muss innerhalb der Dauer des Events liegen.';
     }
 }, {
     fields: {
+        name: {
+            required: true,
+            error: 'Der Name der Schicht ist ein Pflichtfeld.'
+        },
         start: {
             required: true,
             error: 'Das Startdatum ist ein Pflichtfeld.'
@@ -78,7 +92,7 @@ Parse.Cloud.beforeSave("Shift", request => {
     },
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
     requireUser: true
-});*/
+});
 
 Parse.Cloud.afterSave("Shift", async (request) => {
     return await Container.get(ShiftAfterSave).run(request);

@@ -4,6 +4,7 @@ import { ShiftDetailEditComponent } from './shift-detail-edit/shift-detail-edit.
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftOverviewComponent } from './shift-overview/shift-overview.component';
+import { ShiftService } from './services/shift.service';
 
 
 const routes: Routes = [
@@ -29,6 +30,9 @@ const routes: Routes = [
     ShiftCommonModule,
     RouterModule.forChild(routes)
   ], 
-  exports: [ShiftOverviewComponent]
+  exports: [ShiftOverviewComponent],
+  providers: [
+    ShiftService
+  ]
 })
 export class ShiftsModule { }
