@@ -9,7 +9,7 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
   item?: Parse.Object<Parse.Attributes>;
   errorString?: string;
 
-  beforeSaveAction?: (unsavedItem: Parse.Object<Parse.Attributes>) => Promise<Parse.Object<Parse.Attributes>>;
+  beforeSaveAction?: (unsavedItem: Parse.Object<Parse.Attributes>) => Promise<Parse.Object<Parse.Attributes>> | Parse.Object<Parse.Attributes>;
   afterSaveAction?: (savedItem: Parse.Object<Parse.Attributes>) => Promise<void> | void;
 
   constructor(common: CommonService,

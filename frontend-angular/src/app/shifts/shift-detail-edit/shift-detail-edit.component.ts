@@ -4,6 +4,7 @@ import { BaseEditComponent } from 'src/app/shift-common/base-edit-component/base
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftDetailParams } from './shift-detail.params';
 import * as Parse from 'parse';
+import { fluffyLoading } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'app-shift-detail-edit',
@@ -15,13 +16,17 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
   constructor(common: CommonService) {
     super(common, 'Shift', 'shiftId');
 
-    this.beforeSaveAction = async unsavedItem => {
-      const query = new Parse.Query(Parse.Object.extend('Event'));
-      this.event = await query.get(this.params.eventId);
+    this.loadEvent();
+    this.beforeSaveAction = unsavedItem => {
       unsavedItem.set('event', this.event);
       return unsavedItem;
     }
-
     this.afterSaveAction = savedItem => this.navigation.eventDetail(savedItem.get('event').id);
+  }
+
+  @fluffyLoading()
+  async loadEvent() {
+    const query = new Parse.Query(Parse.Object.extend('Event'));
+    this.event = await query.get(this.params.eventId);
   }
 }
