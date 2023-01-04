@@ -5,6 +5,7 @@ import { ShiftService, ShiftWithWishBooking } from 'src/app/shifts/services/shif
 import { RegistrationParams } from '../registration.params';
 import * as Parse from 'parse';
 import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
+import { KeyValue } from '@angular/common';
 
 export interface GroupedShiftsWithBooking {
   shiftWithBookings: ShiftWithWishBooking[];
@@ -17,9 +18,13 @@ export interface GroupedShiftsWithBooking {
 })
 export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
 
+  originalOrder = (a: KeyValue<Date, ShiftWithWishBooking[]>, b: KeyValue<Date, ShiftWithWishBooking[]>): number => {
+    return 0;
+  }
+  
   event?: Parse.Object<Parse.Attributes>;
   bookings?: ShiftWithWishBooking[];
-  groupedBookings?: Map<Date, ShiftWithWishBooking[]>;
+  groupedBookings: Map<Date, ShiftWithWishBooking[]> = new Map<Date, ShiftWithWishBooking[]>();
 
   deleteList: Parse.Object<Parse.Attributes>[] = [];
   selectedBookingsCount = 0;
@@ -48,6 +53,7 @@ export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
       }
     });
     this.groupedBookings = groupedBookings;
+    this.selectedBookingsCount = (this.bookings?.filter(booking => booking.booking) ?? []).length;
   }
 
   async onSchichtClick(booking: ShiftWithWishBooking) {
