@@ -59,6 +59,7 @@ export class ShiftService {
         const query = new Parse.Query(Parse.Object.extend('Shift'));
         query.equalTo('event', event);
         query.include('event');
+        query.ascending('start');
         return await query.find();
     }
 

@@ -1,9 +1,30 @@
-<div class="m-8">
+<div class="m-8" *ngIf="groupedBookings">
     <div class="shift-header">Schichten</div>
-    <div *ngFor="let item of bookings ?? []"
-        (click)="onSchichtClick(item)" class="shift-list-item">
-        <input type="checkbox">
-        {{item.shift.get('start') | fluffyDateTime}} - {{item.shift.get('end') | fluffyDateTime}}<br>
-        <span>{{item.booking ? 'gebucht' : 'nicht gebucht'}}</span>
+    <div class="shift-card">
+        Bitte wähle <span class="text-orange-500 font-semibold">alle</span> Schichten aus, an welchen du verfügbar bist.
+    </div>
+    <div *ngFor="let group of groupedBookings | keyvalue">
+        <div class="font-semibold mt-4">{{group.key | fluffyDate}}</div>
+        <div *ngFor="let item of group.value ?? []" (click)="onSchichtClick(item)"
+            [class]="item.booking ? 'shift-list-item-active': 'shift-list-item'">
+            <div class="flex gap-3">
+                <div class="grid place-items-center text-orange-500">
+                    <input type="checkbox" [checked]="item.booking">
+                </div>
+                <div>
+                    {{item.shift.get('start') | fluffyDateTime}} - {{item.shift.get('end') | fluffyDateTime}}<br>
+                    <span>{{item.booking ? 'gebucht' : 'nicht gebucht'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height: 90px;">
+        <div></div>
+    </div>
+    <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
+        <div *ngIf="selectedBookingsCount > 0" class="font-semibold text-center">Du bist an <span
+                class="text-orange-500">{{selectedBookingsCount}}</span> Schicht<span
+                *ngIf="selectedBookingsCount !== 1">en</span> verfügbar.</div>
+        <button class="btn mt-2 w-full" (click)="save()" [disabled]="selectedBookingsCount === 0">Weiter</button>
     </div>
 </div>

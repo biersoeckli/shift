@@ -55,6 +55,13 @@ input {
     }
 }
 
+.shift-list-item-active {
+    @apply rounded-xl border-2 border-solid border-orange-400 accent-orange-400 p-4 mt-2 cursor-pointer font-medium hover:bg-slate-300 active:bg-slate-200 transition-all;
+    span {
+        @apply text-orange-400 text-sm;
+    }
+}
+
 .shift-sm-layout {
     
 }
