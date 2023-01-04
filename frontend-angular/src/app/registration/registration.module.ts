@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegistrationComponent } from './registration.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.component';
 import { CanActivateAuthenticated } from '../shift-common/guards/authenticated.guard';
+import { ShiftChooserComponent } from './shift-chooser/shift-chooser.component';
+import { ShiftsModule } from '../shifts/shifts.module';
 
 const routes: Routes = [
   {
@@ -13,8 +14,8 @@ const routes: Routes = [
     component: WelcomeScreenComponent,
   },
   {
-    path: 'user',
-    component: RegistrationComponent,
+    path: 'shift-chooser',
+    component: ShiftChooserComponent,
     canActivate: [CanActivateAuthenticated]
   },
   {
@@ -26,13 +27,14 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    RegistrationComponent,
     ConfirmationComponent,
-    WelcomeScreenComponent
+    WelcomeScreenComponent,
+    ShiftChooserComponent
   ],
   imports: [
     CommonModule,
     ShiftCommonModule,
+    ShiftsModule,
     RouterModule.forChild(routes),
   ]
 })

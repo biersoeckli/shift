@@ -65,11 +65,11 @@ Parse.Cloud.beforeSave("Shift", async request => {
     const query = new Parse.Query(Parse.Object.extend('Event'));
     const event =  await query.get(request.object.get('event').id, {useMasterKey: true});
    
-    if (DateUtils.gt(event.get('start'), request.object.get('start'))) {
+    if (DateUtils.gt(request.object.get('start'), event.get('start'))) {
         throw 'Das Startdatum muss innerhalb der Dauer des Events liegen.';
     }
 
-    if (DateUtils.gt(request.object.get('end'), event.get('end'))) {
+    if (DateUtils.gt(event.get('end'), request.object.get('end'))) {
         throw 'Das Enddatum muss innerhalb der Dauer des Events liegen.';
     }
 }, {

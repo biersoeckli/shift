@@ -1,0 +1,9 @@
+<div class="m-8">
+    <div class="shift-header">Schichten</div>
+    <div *ngFor="let item of bookings ?? []"
+        (click)="onSchichtClick(item)" class="shift-list-item">
+        <input type="checkbox">
+        {{item.shift.get('start') | fluffyDateTime}} - {{item.shift.get('end') | fluffyDateTime}}<br>
+        <span>{{item.booking ? 'gebucht' : 'nicht gebucht'}}</span>
+    </div>
+</div>

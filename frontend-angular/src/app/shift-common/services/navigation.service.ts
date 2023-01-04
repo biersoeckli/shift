@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthParams } from 'src/app/auth/auth.params';
 import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detail.param';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
+import { UserProfileParams } from 'src/app/user/user-profile/user-profile.params';
 
 @Injectable()
 export class NavigationService {
@@ -15,8 +16,10 @@ export class NavigationService {
     });
   }
 
-  registrationUserDetails() {
-    this.router.navigate(['register', 'user']);
+  registrationUserDetails(eventId: string) {
+    this.router.navigate(['user', 'profile'], {
+      queryParams: new UserProfileParams('/register/shift-chooser?eventId=' + eventId)
+    });
   }
 
   eventOverview() {

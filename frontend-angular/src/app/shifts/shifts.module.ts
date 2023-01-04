@@ -11,10 +11,10 @@ const routes: Routes = [
   {
     path: 'shifts',
     component: ShiftDetailEditComponent,
-  },{
+  }, {
     path: 'shifts/detail',
     component: ShiftDetailEditComponent,
-  },{
+  }, {
     path: 'shifts/detail/edit',
     component: ShiftDetailEditComponent,
   }
@@ -29,8 +29,10 @@ const routes: Routes = [
     CommonModule,
     ShiftCommonModule,
     RouterModule.forChild(routes)
-  ], 
-  exports: [ShiftOverviewComponent],
+  ],
+  exports: [
+    ShiftOverviewComponent
+  ],
   providers: [
     ShiftService
   ]

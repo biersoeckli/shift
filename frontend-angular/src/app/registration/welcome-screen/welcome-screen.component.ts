@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { RegistrationParams } from '../registration.params';
-import * as Parse from 'parse';
 import { fluffyLoading } from 'ngx-fluffy-cow';
+import * as Parse from 'parse';
 
 @Component({
   selector: 'app-welcome-screen',
@@ -24,6 +24,6 @@ export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
   }
 
   nextStep() {
-    this.navigation.registrationUserDetails();
+    this.navigation.registrationUserDetails(this.params.eventId);
   }
 }

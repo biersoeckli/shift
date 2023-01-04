@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { fluffyLoading } from 'ngx-fluffy-cow';
-import { BaseComponent } from '../shift-common/base-component/base-component.component';
-import { CommonService } from '../shift-common/services/common.service';
-import { RegistrationParams } from './registration.params';
+import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
+import { CommonService } from 'src/app/shift-common/services/common.service';
+import { UserProfileParams } from './user-profile.params';
 import * as Parse from 'parse';
 
 @Component({
-  selector: 'app-registration',
-  templateUrl: './registration.component.html'
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html'
 })
-export class RegistrationComponent extends BaseComponent<RegistrationParams> {
+export class UserProfileComponent extends BaseComponent<UserProfileParams> {
 
   reactiveForm: FormGroup;
   validated = false;
@@ -46,6 +45,6 @@ export class RegistrationComponent extends BaseComponent<RegistrationParams> {
     this.currentUser.set('email',  this.reactiveForm.value.mail);
     await this.currentUser.save();
 
-    this.router.navigateByUrl('/register/confirmation');
+    this.router.navigateByUrl(this.params.returnUrl || '/');
   }
 }

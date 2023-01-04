@@ -13,6 +13,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./event-planner/event-planner.module').then(m => m.EventPlannerModule),
     canActivate: [CanActivateAuthenticated]
+  },{
+    path: '',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+    canActivate: [CanActivateAuthenticated]
   }, {
     path: '',
     loadChildren: () => import('./shifts/shifts.module').then(m => m.ShiftsModule),
