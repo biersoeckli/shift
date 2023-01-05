@@ -9,13 +9,17 @@ import { CommonService } from './services/common.service';
 import { CanActivateAuthenticated } from './guards/authenticated.guard';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { DatetimeInputComponent } from './components/datetime-input/datetime-input.component';
+import { BackArrowComponent } from './components/back-arrow/back-arrow.component';
+import { DateFromToPipe } from './pipes/date-from-to.pipe';
 
 
 @NgModule({
   declarations: [
     HeaderLogoComponent,
     DateInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    BackArrowComponent,
+    DateFromToPipe
   ],
   imports: [
     CommonModule,
@@ -28,7 +32,8 @@ import { DatetimeInputComponent } from './components/datetime-input/datetime-inp
     ReactiveFormsModule,
     HeaderLogoComponent,
     DateInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    BackArrowComponent
   ],
   providers: [
     NavigationService,

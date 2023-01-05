@@ -8,6 +8,7 @@ import { GetOrCreateUserForPhoneNumberFunction } from "./auth/createOrGetUserFor
 import { VerifyAuthChallengeCodeFunction } from "./auth/verify-auth-challenge-code.function";
 import { EventAfterSave } from "./event/event.after-save";
 import { ShiftAfterSave } from "./event/shift.after-save";
+import { UserShiftWishAfterSave } from "./event/user-shift-wish.after-save";
 import { UserShiftAfterSave } from "./event/userShift.after-save";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
@@ -116,4 +117,25 @@ Parse.Cloud.beforeSave("UserShift", () => { }, {
 
 Parse.Cloud.afterSave("UserShift", async (request) => {
     return await Container.get(UserShiftAfterSave).run(request);
+});
+
+
+Parse.Cloud.beforeSave("UserShiftWish", () => { }, {
+    fields: {
+        user: {
+            required: true
+        },
+        shift: {
+            required: true
+        },
+        event: {
+            required: true
+        }
+    },
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
+    requireUser: true
+});
+
+Parse.Cloud.afterSave("UserShiftWish", async (request) => {
+    return await Container.get(UserShiftWishAfterSave).run(request);
 });

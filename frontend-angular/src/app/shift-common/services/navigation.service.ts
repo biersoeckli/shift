@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthParams } from 'src/app/auth/auth.params';
+import { EventCategoryParam } from 'src/app/event-categories/event-category.param';
 import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detail.param';
 import { RegistrationParams } from 'src/app/registration/registration.params';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
@@ -58,6 +59,18 @@ export class NavigationService {
   async shiftDetailEdit(eventId: string, shiftId?: string) {
     await this.router.navigate(['shifts', 'detail', 'edit'], {
       queryParams: new ShiftDetailParams(eventId, shiftId)
+    });
+  }
+
+  async eventCategoryOverview(eventId: string) {
+    await this.router.navigate(['events', 'categories'], {
+      queryParams: new EventCategoryParam(eventId)
+    });
+  }
+
+  async eventCategoryEdit(eventId: string, categoryId?: string) {
+    await this.router.navigate(['events', 'categories', 'edit'], {
+      queryParams: new EventCategoryParam(eventId, categoryId)
     });
   }
 }

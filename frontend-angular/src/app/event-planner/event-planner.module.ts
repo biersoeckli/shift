@@ -11,13 +11,16 @@ const routes: Routes = [
   {
     path: 'events',
     component: EventsComponent,
-  },{
+  }, {
     path: 'events/detail',
     component: EventDetailComponent,
-  },{
+  }, {
     path: 'events/detail/edit',
     component: EventDetailEditComponent,
-  }
+  }, {
+    path: 'events',
+    loadChildren: () => import('../event-categories/event-categories.module').then(m => m.EventCategoriesModule),
+  },
 ];
 
 @NgModule({
