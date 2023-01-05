@@ -11,12 +11,14 @@ import { fluffyLoading } from 'ngx-fluffy-cow';
   templateUrl: './shift-detail-edit.component.html'
 })
 export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParams> {
+
   event?: Parse.Object<Parse.Attributes>;
+  categories?: Parse.Object<Parse.Attributes>[];
 
   constructor(common: CommonService) {
     super(common, 'Shift', 'shiftId');
 
-    this.loadEvent();
+    this.loadAdditionalData();
     this.beforeSaveAction = unsavedItem => {
       unsavedItem.set('event', this.event);
       return unsavedItem;
@@ -25,8 +27,17 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
   }
 
   @fluffyLoading()
-  async loadEvent() {
+  async loadAdditionalData() {
     const query = new Parse.Query(Parse.Object.extend('Event'));
     this.event = await query.get(this.params.eventId);
+
+    const query2 = new Parse.Query(Parse.Object.extend('EventCategory'));
+    this.categories = await query2.find();
+  }
+
+
+  categoryCompareFn = this._categoryCompareFn.bind(this);
+  _categoryCompareFn(catA: Parse.Object<Parse.Attributes>, catB: Parse.Object<Parse.Attributes>) {
+    return catA?.id === catB?.id;
   }
 }

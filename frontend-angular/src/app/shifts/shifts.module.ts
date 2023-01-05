@@ -5,6 +5,7 @@ import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftOverviewComponent } from './shift-overview/shift-overview.component';
 import { ShiftService } from './services/shift.service';
+import { ShiftTableComponent } from './shift-table/shift-table.component';
 
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ShiftDetailEditComponent,
-    ShiftOverviewComponent
+    ShiftOverviewComponent,
+    ShiftTableComponent
   ],
   imports: [
     CommonModule,

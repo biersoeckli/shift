@@ -25,7 +25,7 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
     this.errorString = undefined;
     try {
       if (this.params[this.idParamName]) {
-        const query = new Parse.Query(Parse.Object.extend(this.className));
+        let query = new Parse.Query(Parse.Object.extend(this.className));
         this.item = await query.get(this.params[this.idParamName] + '');
       } else {
         if (!this.canCreateNewItems) {
@@ -34,13 +34,13 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         this.item = new (Parse.Object.extend(this.className));
       }
     } catch (ex) {
-      console.error(ex);
       if (ex instanceof Parse.Error) {
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
         this.errorString = ex.message;
       }
+      throw ex;
     }
   }
 
@@ -62,13 +62,13 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
         await this.afterSaveAction(savedItem);
       }
     } catch (ex) {
-      console.error(ex);
       if (ex instanceof Parse.Error) {
         this.errorString = ex.message;
       }
       if (ex instanceof Error) {
         this.errorString = ex.message;
       }
+      throw ex;
     }
   }
 

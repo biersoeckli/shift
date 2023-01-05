@@ -1,0 +1,19 @@
+<table>
+    <ng-template *ngFor="let shift of shiftTable ?? []">
+        <tr>
+            <td>{{shift.shift.get('category').get('name')}}</td>
+        </tr>
+        <ng-template *ngFor="let user of shift.users">
+            <tr>
+                <td>
+                    {{user.user.get('firstName')}} {{user.user.get('lastName')}}
+                </td>
+                <ng-template *ngFor="let booking of user.bookings">
+                    <td>
+                        todo
+                    </td>
+                </ng-template>
+            </tr>
+        </ng-template>
+    </ng-template>
+</table>

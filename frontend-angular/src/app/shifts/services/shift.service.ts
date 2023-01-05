@@ -14,6 +14,14 @@ export interface ShiftWithWishBooking {
 
 @Injectable()
 export class ShiftService {
+    
+    event?: Parse.Object<Parse.Attributes>;
+    shifts?: Parse.Object<Parse.Attributes>[];
+
+    public async initByEventId(eventId: string) {
+        this.event = await this.getEvent(eventId);
+        this.shifts = await this.getShiftsForEvent(this.event);
+    }
 
     public async getShiftsWithBookings(eventId: string) {
         if (!eventId) {

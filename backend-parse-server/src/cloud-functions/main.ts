@@ -89,6 +89,9 @@ Parse.Cloud.beforeSave("Shift", async request => {
         },
         event: {
             required: true
+        },
+        category: {
+            required: true
         }
     },
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
