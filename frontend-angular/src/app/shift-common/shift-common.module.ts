@@ -33,7 +33,8 @@ import { DateFromToPipe } from './pipes/date-from-to.pipe';
     HeaderLogoComponent,
     DateInputComponent,
     DatetimeInputComponent,
-    BackArrowComponent
+    BackArrowComponent,
+    DateFromToPipe
   ],
   providers: [
     NavigationService,

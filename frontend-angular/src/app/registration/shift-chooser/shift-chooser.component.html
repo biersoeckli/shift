@@ -12,7 +12,7 @@
                     <input type="checkbox" [checked]="item.booking">
                 </div>
                 <div>
-                    {{item.shift.get('start') | fluffyDateTime}} - {{item.shift.get('end') | fluffyDateTime}}<br>
+                    {{item.shift.get('start') | fromTo: item.shift.get('end')}}<br>
                     <span>{{item.booking ? 'gebucht' : 'nicht gebucht'}}</span>
                 </div>
             </div>
