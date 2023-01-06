@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ShiftOverviewComponent } from './shift-overview/shift-overview.component';
 import { ShiftService } from './services/shift.service';
 import { ShiftTableComponent } from './shift-table/shift-table.component';
+import { ShiftTableService } from './services/shift-table.service';
 
 
 const routes: Routes = [
@@ -36,7 +37,8 @@ const routes: Routes = [
     ShiftOverviewComponent
   ],
   providers: [
-    ShiftService
+    ShiftService,
+    ShiftTableService
   ]
 })
 export class ShiftsModule { }

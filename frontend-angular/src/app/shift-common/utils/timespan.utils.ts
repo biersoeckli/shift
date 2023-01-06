@@ -16,6 +16,6 @@ export class TimeSpanUtils {
     }
 
     static isOverlapping(timeSpan1: TimeSpan, timeSpan2: TimeSpan): boolean {
-        return timeSpan1.start < timeSpan2.end && timeSpan2.start < timeSpan1.end;
+        return timeSpan1?.start < timeSpan2?.end && timeSpan2?.start < timeSpan1?.end;
     }
 }

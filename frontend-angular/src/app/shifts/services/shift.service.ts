@@ -14,16 +14,6 @@ export interface ShiftWithWishBooking {
 
 @Injectable()
 export class ShiftService {
-    
-    event?: Parse.Object<Parse.Attributes>;
-    shifts?: Parse.Object<Parse.Attributes>[];
-    userShifts?: Parse.Object<Parse.Attributes>[];
-
-    public async initByEventId(eventId: string) {
-        this.event = await this.getEvent(eventId);
-        this.shifts = await this.getShiftsForEvent(this.event);
-        this.userShifts = await this.getShiftsBookingsForEvent(this.event);
-    }
 
     public async getShiftsWithBookings(eventId: string) {
         if (!eventId) {
@@ -41,7 +31,6 @@ export class ShiftService {
             } as ShiftWithBookings;
         })
     }
-
 
     public async getShiftsWithWishBookingsForUser(eventId: string) {
         if (!eventId) {
@@ -65,7 +54,7 @@ export class ShiftService {
         return await query.get(eventId);
     }
 
-    private async getShiftsForEvent(event?: Parse.Object<Parse.Attributes>) {
+    public async getShiftsForEvent(event?: Parse.Object<Parse.Attributes>) {
         const query = new Parse.Query(Parse.Object.extend('Shift'));
         query.equalTo('event', event);
         query.include('event');
@@ -84,7 +73,7 @@ export class ShiftService {
         return await query.find();
     }
 
-    private async getShiftsBookingsForEvent(event: Parse.Object<Parse.Attributes>) {
+    public async getShiftsBookingsForEvent(event: Parse.Object<Parse.Attributes>) {
         const query = new Parse.Query(Parse.Object.extend('UserShift'));
         query.equalTo('event', event);
         query.include('event');

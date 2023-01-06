@@ -1,12 +1,22 @@
-<table>
-    <ng-container *ngFor="let shiftTableItem of shiftTable ?? []">
+<table (click)="onTableClick($event)">
+    <tr>
+        <td>Kategorien</td>
+        <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []">
+
+            <td>
+                {{timeSlot.start | fromTo: timeSlot.end}}
+            </td>
+        </ng-container>
+    </tr>
+    <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []">
         <tr>
             <td>{{shiftTableItem.category.get('name')}}</td>
         </tr>
         <tr>
+            <td></td>
             <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots">
                 <td>
-                    {{timeSlot.timeSpan.start | fromTo: timeSlot.timeSpan.end}}
+                    .
                     <ng-container *ngFor="let userShift of timeSlot.userShifts">
                         {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
                     </ng-container>
