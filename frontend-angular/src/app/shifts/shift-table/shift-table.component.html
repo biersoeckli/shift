@@ -1,19 +1,17 @@
 <table>
-    <ng-template *ngFor="let shift of shiftTable ?? []">
+    <ng-container *ngFor="let shiftTableItem of shiftTable ?? []">
         <tr>
-            <td>{{shift.shift.get('category').get('name')}}</td>
+            <td>{{shiftTableItem.category.get('name')}}</td>
         </tr>
-        <ng-template *ngFor="let user of shift.users">
-            <tr>
+        <tr>
+            <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots">
                 <td>
-                    {{user.user.get('firstName')}} {{user.user.get('lastName')}}
+                    {{timeSlot}}
+                    <ng-container *ngFor="let userShift of timeSlot.userShifts">
+                        {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
+                    </ng-container>
                 </td>
-                <ng-template *ngFor="let booking of user.bookings">
-                    <td>
-                        todo
-                    </td>
-                </ng-template>
-            </tr>
-        </ng-template>
-    </ng-template>
+            </ng-container>
+        </tr>
+    </ng-container>
 </table>
