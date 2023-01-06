@@ -1,14 +1,38 @@
-<div class="m-8" *ngIf="event && userEventCategories && userShift">
+<div class="m-8" *ngIf="event && userEventCategories && userShift && userEvent">
     <div class="shift-header">Überprüfen</div>
     <div class="shift-card">
-        Bitte Überprüfe deine Angaben für den Event <span class="text-orange-500 font-semibold">{{event.get('name')}}</span> und bestätige anschliessend mit "Ferrtigstellen".
+        Bitte Überprüfe deine Angaben für den Event <span
+            class="text-orange-500 font-semibold">{{event.get('name')}}</span> und bestätige anschliessend mit
+        "Fertigstellen".
     </div>
-   
-    
+
+    <div class="rounded-xl border-2 border-dotted p-4 mt-4">
+        <div class="text-xl font-semibold">Eventinfos</div>
+        <div>{{event.get('name')}}</div>
+        <div class="text-slate-500">Dauer des Events: <br>{{event.get('start') | fromTo: event.get('end'): true}}</div>
+    </div>
+
+    <div class="rounded-xl border-2 border-dotted p-4 mt-4">
+        <div class="text-xl font-semibold">Kategorien</div>
+        <div *ngFor="let cat of userEventCategories">- {{cat.get('category').get('name')}}</div>
+        <button class="btn-secondary" (click)="editCategories()">Bearbeiten</button>
+    </div>
+
+    <div class="rounded-xl border-2 border-dotted p-4 mt-4">
+        <div class="text-xl font-semibold">Schichten</div>
+        <div *ngFor="let userShiftItem of userShift">- {{userShiftItem.get('shift').get('start') | fromTo:
+            userShiftItem.get('shift').get('start')}}</div>
+        <button class="btn-secondary" (click)="navigation.registrationShiftChooser(params.eventId)">Bearbeiten</button>
+    </div>
+
+    <label class="input-label mt-4">Bemerkungen (optional)</label>
+    <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6"
+        (ngModelChange)="userEvent.set('comment', $event)"></textarea>
+
     <div style="height: 90px;">
         <div></div>
     </div>
     <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
-        <button class="btn w-full" (click)="save()">Fertigstellen</button>
+        <button class="btn w-full" style="margin-top: 0;" (click)="save()">Fertigstellen</button>
     </div>
 </div>

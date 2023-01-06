@@ -13,7 +13,7 @@
                 </div>
                 <div>
                     {{item.shift.get('start') | fromTo: item.shift.get('end')}}<br>
-                    <span>{{item.booking ? 'gebucht' : 'nicht gebucht'}}</span>
+                    <span>{{item.booking ? 'gewählt' : 'nicht gewählt'}}</span>
                 </div>
             </div>
         </div>
@@ -25,6 +25,6 @@
         <div *ngIf="selectedBookingsCount > 0" class="font-semibold text-center pb-4">Du hast <span
                 class="text-orange-500">{{selectedBookingsCount}}</span> Schicht<span
                 *ngIf="selectedBookingsCount !== 1">en</span> ausgewählt.</div>
-        <button class="btn w-full" (click)="save()" [disabled]="selectedBookingsCount === 0">Weiter</button>
+        <button class="btn w-full" style="margin-top: 0;" (click)="save()" [disabled]="selectedBookingsCount === 0">Weiter</button>
     </div>
 </div>

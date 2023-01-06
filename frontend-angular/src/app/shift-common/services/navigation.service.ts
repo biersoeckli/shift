@@ -24,9 +24,15 @@ export class NavigationService {
     });
   }
 
-  async registrationShiftChooser(eventId: string) {
+  async registrationShiftChooser(eventId: string, returnUrl?: string) {
     await this.router.navigate(['register', 'shift-chooser'], {
-      queryParams: new RegistrationParams(eventId)
+      queryParams: new RegistrationParams(eventId, returnUrl)
+    });
+  }
+
+  async registrationCategoryChooser(eventId: string, returnUrl?: string) {
+    await this.router.navigate(['register', 'category-chooser'], {
+      queryParams: new RegistrationParams(eventId, returnUrl)
     });
   }
 

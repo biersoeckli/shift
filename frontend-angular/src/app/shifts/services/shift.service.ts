@@ -49,7 +49,7 @@ export class ShiftService {
         if (!event) {
             return;
         }
-        const [userShifts, allShifts] = await Promise.all([this.getWishBookingsForEvent(event), this.getShiftsForEvent(event)]);
+        const [userShifts, allShifts] = await Promise.all([this.getWishBookingsForEventAndUser(event), this.getShiftsForEvent(event)]);
         return allShifts.map(shift => {
             return {
                 shift,
@@ -72,7 +72,7 @@ export class ShiftService {
     }
 
 
-    public async getWishBookingsForEvent(event: Parse.Object<Parse.Attributes>) {
+    public async getWishBookingsForEventAndUser(event: Parse.Object<Parse.Attributes>) {
         const query = new Parse.Query(Parse.Object.extend('UserShiftWish'));
         query.equalTo('event', event);
         query.equalTo('user', Parse.User.current());
