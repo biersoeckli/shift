@@ -6,7 +6,7 @@
         <tr>
             <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots">
                 <td>
-                    {{timeSlot}}
+                    {{timeSlot.timeSpan.start | fromTo: timeSlot.timeSpan.end}}
                     <ng-container *ngFor="let userShift of timeSlot.userShifts">
                         {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
                     </ng-container>
