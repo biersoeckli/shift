@@ -1,7 +1,5 @@
-<div class="m-4">
-    <div class="py-12">
-        <shift-header-logo></shift-header-logo>
-    </div>
+<div class="m-8">
+    <div class="shift-header">Deine Angaben</div>
     <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
 
         <label for="input-group-1" class="input-label">Vorname</label>
@@ -44,6 +42,12 @@
             <p *ngIf="validated && mail?.invalid" class="pl-2 text-sm text-red-600 dark:text-red-500">Bitte überprüfe
                 die Email Adresse</p>
         </div>
-        <button class="btn w-full" type="submit">Weiter</button>
+
+        <div style="height: 90px;">
+            <div></div>
+        </div>
+        <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
+            <button class="btn w-full" style="margin-top: 0;" type="submit">Weiter</button>
+        </div>
     </form>
 </div>

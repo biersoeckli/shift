@@ -24,6 +24,12 @@ export class NavigationService {
     });
   }
 
+  async userProfile(returnUrl: string) {
+    await this.router.navigate(['user', 'profile'], {
+      queryParams: new UserProfileParams(returnUrl)
+    });
+  }
+
   async registrationShiftChooser(eventId: string, returnUrl?: string) {
     await this.router.navigate(['register', 'shift-chooser'], {
       queryParams: new RegistrationParams(eventId, returnUrl)

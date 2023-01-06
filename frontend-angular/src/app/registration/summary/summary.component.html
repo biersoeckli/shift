@@ -3,23 +3,30 @@
     <div class="shift-card">
         Bitte Überprüfe deine Angaben für den Event <span
             class="text-orange-500 font-semibold">{{event.get('name')}}</span> und bestätige anschliessend mit
-        "Fertigstellen".
+        "Helfereinsatz bestätigen".
     </div>
 
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
-        <div class="text-xl font-semibold">Eventinfos</div>
+        <div class="text-xl font-semibold pb-1">Eventinfos</div>
         <div>{{event.get('name')}}</div>
-        <div class="text-slate-500">Dauer des Events: <br>{{event.get('start') | fromTo: event.get('end'): true}}</div>
+        <div class="text-slate-500">Dauer des gesamten Events: <br>{{event.get('start') | fromTo: event.get('end'): true}}</div>
+    </div>
+    <div class="rounded-xl border-2 border-dotted p-4 mt-4" *ngIf="currentUser">
+        <div class="text-xl font-semibold pb-1">Deine Infos</div>
+        <div><span class="font-semibold">Name:</span> {{currentUser.get('firstName')}} {{currentUser.get('lastName')}}</div>
+        <div><span class="font-semibold">Mail:</span> {{currentUser.get('email')}}</div>
+        <div><span class="font-semibold">Tel.:</span> {{currentUser.get('phone')}}</div>
+        <button class="btn-secondary" (click)="editUserInfo()">Bearbeiten</button>
     </div>
 
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
-        <div class="text-xl font-semibold">Kategorien</div>
+        <div class="text-xl font-semibold pb-1">Kategorien</div>
         <div *ngFor="let cat of userEventCategories">- {{cat.get('category').get('name')}}</div>
         <button class="btn-secondary" (click)="editCategories()">Bearbeiten</button>
     </div>
 
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
-        <div class="text-xl font-semibold">Schichten</div>
+        <div class="text-xl font-semibold pb-1">Schichten</div>
         <div *ngFor="let userShiftItem of userShift">- {{userShiftItem.get('shift').get('start') | fromTo:
             userShiftItem.get('shift').get('start')}}</div>
         <button class="btn-secondary" (click)="navigation.registrationShiftChooser(params.eventId)">Bearbeiten</button>
@@ -33,6 +40,6 @@
         <div></div>
     </div>
     <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
-        <button class="btn w-full" style="margin-top: 0;" (click)="save()">Fertigstellen</button>
+        <button class="btn w-full" style="margin-top: 0;" (click)="save()">Helfereinsatz bestätigen</button>
     </div>
 </div>

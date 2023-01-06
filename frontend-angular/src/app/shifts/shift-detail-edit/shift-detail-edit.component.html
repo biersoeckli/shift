@@ -1,7 +1,12 @@
 <div class="m-8" *ngIf="item">
     <div class="shift-header">Schicht {{item.id ? 'bearbeiten' : 'erstellen'}}</div>
 
-    <label for="input-group-1" class="input-label">Schicht Name</label>
+    <shift-datetime-input [label]="'Start der Schicht'" [date]="item.get('start')"
+        (dateChange)="item.set('start', $event)"></shift-datetime-input>
+    <shift-datetime-input [label]="'Ende der Schicht'" [date]="item.get('end')"
+        (dateChange)="item.set('end', $event)"></shift-datetime-input>
+
+    <label for="input-group-1" class="input-label">Schicht Name (optional)</label>
     <div class="icon-input">
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -12,12 +17,8 @@
         </div>
         <input type="text" placeholder="" [ngModel]="item.get('name')" (ngModelChange)="item.set('name', $event)">
     </div>
-    <shift-datetime-input [label]="'Start der Schicht'" [date]="item.get('start')"
-        (dateChange)="item.set('start', $event)"></shift-datetime-input>
-    <shift-datetime-input [label]="'Ende der Schicht'" [date]="item.get('end')"
-        (dateChange)="item.set('end', $event)"></shift-datetime-input>
 
-    <label class="input-label">Kategorie</label>
+    <label class="input-label">Kategorie (optional)</label>
     <div class="icon-input">
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="mt-1"
@@ -26,23 +27,15 @@
                     d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
             </svg>
         </div>
-        <select [compareWith]="categoryCompareFn" [ngModel]="item.get('category')" (ngModelChange)="item.set('category', $event)">
+        <select [compareWith]="categoryCompareFn" [ngModel]="item.get('category')"
+            (ngModelChange)="item.set('category', $event)">
+            <option [ngValue]="undefined">Keine Kategorie</option>
             <option *ngFor="let category of categories ?? []" [ngValue]="category">{{category.get('name')}}</option>
         </select>
     </div>
 
-    <label class="input-label">Kapazität (max Anzahl Personen)</label>
-    <div class="icon-input">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="mt-1"
-                viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                <path
-                    d="M344 0H488c13.3 0 24 10.7 24 24V168c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39-87 87c-9.4 9.4-24.6 9.4-33.9 0l-32-32c-9.4-9.4-9.4-24.6 0-33.9l87-87L327 41c-6.9-6.9-8.9-17.2-5.2-26.2S334.3 0 344 0zM184 496H40c-13.3 0-24-10.7-24-24V328c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39 87-87c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8z" />
-            </svg>
-        </div>
-        <input type="number" placeholder="z.B. 5" [ngModel]="item.get('capacity')"
-            (ngModelChange)="item.set('capacity', $event)">
-    </div>
+    <label for="input-group-1" class="input-label">Zusätzliche Informationen (optional)</label>
+    <textarea rows="6" [ngModel]="item.get('description')" (ngModelChange)="item.set('description', $event)"></textarea>
 
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()">Speichern</button>

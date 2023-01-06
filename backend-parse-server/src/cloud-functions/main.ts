@@ -75,10 +75,6 @@ Parse.Cloud.beforeSave("Shift", async request => {
     }
 }, {
     fields: {
-        name: {
-            required: true,
-            error: 'Der Name der Schicht ist ein Pflichtfeld.'
-        },
         start: {
             required: true,
             error: 'Das Startdatum ist ein Pflichtfeld.'
@@ -88,9 +84,6 @@ Parse.Cloud.beforeSave("Shift", async request => {
             error: 'Das Enddatum ist ein Pflichtfeld.'
         },
         event: {
-            required: true
-        },
-        category: {
             required: true
         }
     },
@@ -107,10 +100,6 @@ Parse.Cloud.beforeSave("UserShift", () => { }, {
         user: {
             required: true
         },
-        /*
-        shift: {
-            required: true
-        },*/
         event: {
             required: true
         }

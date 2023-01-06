@@ -16,6 +16,7 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
   userEventCategories?: Parse.Object<Parse.Attributes>[];
   userShift?: Parse.Object<Parse.Attributes>[];
   userEvent?: Parse.Object<Parse.Attributes>;
+  currentUser = Parse.User.current();
 
 
   constructor(common: CommonService,
@@ -57,6 +58,10 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
 
   editCategories() {
     this.navigation.registrationCategoryChooser(this.params.eventId, window.location.pathname + '?eventId=' + this.params.eventId)
+  }
+
+  editUserInfo() {
+    this.navigation.userProfile(window.location.pathname + '?eventId=' + this.params.eventId)
   }
 
   @fluffyLoading()
