@@ -45,6 +45,6 @@ export class UserProfileComponent extends BaseComponent<UserProfileParams> {
     this.currentUser.set('email',  this.reactiveForm.value.mail);
     await this.currentUser.save();
 
-    this.router.navigateByUrl(this.params.returnUrl || '/');
+    await this.router.navigateByUrl(this.params.returnUrl || '/');
   }
 }

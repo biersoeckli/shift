@@ -107,9 +107,10 @@ Parse.Cloud.beforeSave("UserShift", () => { }, {
         user: {
             required: true
         },
+        /*
         shift: {
             required: true
-        },
+        },*/
         event: {
             required: true
         }

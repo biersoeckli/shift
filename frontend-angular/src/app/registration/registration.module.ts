@@ -7,6 +7,8 @@ import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.componen
 import { CanActivateAuthenticated } from '../shift-common/guards/authenticated.guard';
 import { ShiftChooserComponent } from './shift-chooser/shift-chooser.component';
 import { ShiftsModule } from '../shifts/shifts.module';
+import { CategoryChooserComponent } from './category-chooser/category-chooser.component';
+import { SummaryComponent } from './summary/summary.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,16 @@ const routes: Routes = [
   {
     path: 'shift-chooser',
     component: ShiftChooserComponent,
+    canActivate: [CanActivateAuthenticated]
+  },
+  {
+    path: 'category-chooser',
+    component: CategoryChooserComponent,
+    canActivate: [CanActivateAuthenticated]
+  },
+  {
+    path: 'summary',
+    component: SummaryComponent,
     canActivate: [CanActivateAuthenticated]
   },
   {
@@ -29,7 +41,9 @@ const routes: Routes = [
   declarations: [
     ConfirmationComponent,
     WelcomeScreenComponent,
-    ShiftChooserComponent
+    ShiftChooserComponent,
+    CategoryChooserComponent,
+    SummaryComponent
   ],
   imports: [
     CommonModule,

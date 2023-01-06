@@ -41,7 +41,7 @@ export class ShiftService {
     }
 
 
-    public async getShiftsWithWishBookings(eventId: string) {
+    public async getShiftsWithWishBookingsForUser(eventId: string) {
         if (!eventId) {
             return;
         }
@@ -72,9 +72,10 @@ export class ShiftService {
     }
 
 
-    private async getWishBookingsForEvent(event: Parse.Object<Parse.Attributes>) {
+    public async getWishBookingsForEvent(event: Parse.Object<Parse.Attributes>) {
         const query = new Parse.Query(Parse.Object.extend('UserShiftWish'));
         query.equalTo('event', event);
+        query.equalTo('user', Parse.User.current());
         query.include('event');
         query.include('user');
         query.include('shift');

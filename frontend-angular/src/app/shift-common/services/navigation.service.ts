@@ -20,7 +20,19 @@ export class NavigationService {
 
   async registrationUserDetails(eventId: string) {
     await this.router.navigate(['user', 'profile'], {
-      queryParams: new UserProfileParams('/register/shift-chooser?eventId=' + eventId)
+      queryParams: new UserProfileParams('/register/category-chooser?eventId=' + eventId)
+    });
+  }
+
+  async registrationShiftChooser(eventId: string) {
+    await this.router.navigate(['register', 'shift-chooser'], {
+      queryParams: new RegistrationParams(eventId)
+    });
+  }
+
+  async registrationSummary(eventId: string) {
+    await this.router.navigate(['register', 'summary'], {
+      queryParams: new RegistrationParams(eventId)
     });
   }
 

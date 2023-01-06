@@ -1,0 +1,14 @@
+<div class="m-8" *ngIf="event && userEventCategories && userShift">
+    <div class="shift-header">Überprüfen</div>
+    <div class="shift-card">
+        Bitte Überprüfe deine Angaben für den Event <span class="text-orange-500 font-semibold">{{event.get('name')}}</span> und bestätige anschliessend mit "Ferrtigstellen".
+    </div>
+   
+    
+    <div style="height: 90px;">
+        <div></div>
+    </div>
+    <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
+        <button class="btn w-full" (click)="save()">Fertigstellen</button>
+    </div>
+</div>

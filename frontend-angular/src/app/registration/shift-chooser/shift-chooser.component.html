@@ -22,9 +22,9 @@
         <div></div>
     </div>
     <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
-        <div *ngIf="selectedBookingsCount > 0" class="font-semibold text-center">Du hast <span
+        <div *ngIf="selectedBookingsCount > 0" class="font-semibold text-center pb-4">Du hast <span
                 class="text-orange-500">{{selectedBookingsCount}}</span> Schicht<span
                 *ngIf="selectedBookingsCount !== 1">en</span> ausgewählt.</div>
-        <button class="btn mt-4 w-full" (click)="save()" [disabled]="selectedBookingsCount === 0">Weiter</button>
+        <button class="btn w-full" (click)="save()" [disabled]="selectedBookingsCount === 0">Weiter</button>
     </div>
 </div>

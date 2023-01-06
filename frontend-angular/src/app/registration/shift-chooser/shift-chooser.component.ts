@@ -38,7 +38,7 @@ export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
   @fluffyLoading()
   async init() {
     this.event = await this.shiftService.getEvent(this.params.eventId);
-    this.bookings = await this.shiftService.getShiftsWithWishBookings(this.params.eventId);
+    this.bookings = await this.shiftService.getShiftsWithWishBookingsForUser(this.params.eventId);
 
     //groupBookings
     const groupedBookings = new Map<Date, ShiftWithWishBooking[]>();
@@ -89,6 +89,6 @@ export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
 
     await Parse.Object.destroyAll(this.deleteList ?? []);
     await Parse.Object.saveAll(userShiftWishesToSave);
-    await this.navigation.registrationConfirmation(this.params.eventId);
+    await this.navigation.registrationSummary(this.params.eventId);
   }
 }

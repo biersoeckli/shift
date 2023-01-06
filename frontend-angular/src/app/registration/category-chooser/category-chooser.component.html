@@ -1,0 +1,25 @@
+<div class="m-8" *ngIf="selectionUserCategories">
+    <div class="shift-header">Kategorien</div>
+    <div class="shift-card">
+        Bitte wähle <span class="text-orange-500 font-semibold">alle</span> Kategorien aus, bei welchen du mithelfen
+        möchtest.
+    </div>
+    <div *ngFor="let item of selectionUserCategories ?? []" (click)="onCategoryClick(item)"
+        [class]="item.userEventCategory ? 'shift-list-item-active': 'shift-list-item'">
+        <div class="flex gap-3">
+            <div class="grid place-items-center text-orange-500">
+                <input type="checkbox" [checked]="item.userEventCategory">
+            </div>
+            <div>
+                {{item.category.get('name')}}<br>
+                <span>{{item.userEventCategory ? 'gewählt' : 'nicht gewählt'}}</span>
+            </div>
+        </div>
+    </div>
+    <div style="height: 90px;">
+        <div></div>
+    </div>
+    <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
+        <button class="btn mt-4 w-full" (click)="save()" [disabled]="selectionCount === 0">Weiter</button>
+    </div>
+</div>
