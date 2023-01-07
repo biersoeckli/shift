@@ -99,13 +99,14 @@ export class ShiftTableService {
         return timeSpans.map(timeSpan => {
             return {
                 timeSpan,
-                userShifts: this.evaluateUserShiftForTimeSpan(timeSpan) // todo use ccategories to load user shifts
+                userShifts: this.evaluateUserShiftForTimeSpan(category, timeSpan) // todo use ccategories to load user shifts
             } as TableTimeSlot;
         })
     }
 
-    evaluateUserShiftForTimeSpan(timeSpan: TimeSpan): Parse.Object<Parse.Attributes>[] {
+    evaluateUserShiftForTimeSpan(category: Parse.Object<Parse.Attributes>,timeSpan: TimeSpan): Parse.Object<Parse.Attributes>[] {
         return this.userShifts?.filter(userShift =>
+            userShift.get('category')?.id === category.id &&
             TimeSpanUtils.isOverlapping(timeSpan, {
                 start: userShift.get('start'),
                 end: userShift.get('end')

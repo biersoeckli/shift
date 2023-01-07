@@ -8,17 +8,20 @@
             </td>
         </ng-container>
     </tr>
-    <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []">
+    <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []; let iCat = index">
         <tr>
             <td>{{shiftTableItem.category.get('name')}}</td>
         </tr>
         <tr>
             <td></td>
-            <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots">
-                <td>
-                    .
+            <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots; let iSlot = index">
+                <td [id]="timeSlotIdPrefix + iCat + ':' + iSlot">
+                    <div>.</div>
                     <ng-container *ngFor="let userShift of timeSlot.userShifts">
-                        {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
+                        <div >
+                            
+                            {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
+                        </div>
                     </ng-container>
                 </td>
             </ng-container>
