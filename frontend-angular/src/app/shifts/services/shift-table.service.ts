@@ -11,17 +11,20 @@ export interface ShiftTable {
 
 export interface ShiftTableCategory {
     category: Parse.Object<Parse.Attributes>;
-    timeSlots: TableTimeSlot[];
+    shifts: TableShift[];
 }
 
-export interface TableTimeSlot {
-    timeSpan: TimeSpan;
-    userShifts: Parse.Object<Parse.Attributes>[];
-    availableUsers?: Parse.Object<Parse.Attributes>[];
+export interface TableShift {
+    marginLeftPx: number;
+    widthPx: number;
+    shift: Parse.Object<Parse.Attributes>;
 }
 
 @Injectable()
 export class ShiftTableService {
+
+    minuteInterval = 60; // todo make this as event param
+    widthInterval = 100; // width in px
 
     event?: Parse.Object<Parse.Attributes>;
     shifts?: Parse.Object<Parse.Attributes>[];
@@ -56,7 +59,7 @@ export class ShiftTableService {
             categories.map(category => {
                 return {
                     category,
-                    timeSlots: this.buildCategoryTimeSlots(category, eventTimeSlots)
+                    shifts: this.buildCategoryTimeSlots(category)
                 } as ShiftTableCategory;
             })
         ));
@@ -72,14 +75,13 @@ export class ShiftTableService {
         }
         const result: TimeSpan[] = [];
 
-        const minuteInterval = 60; // todo make this as event param
         const startDate = this.event.get('start') as Date;
         const endDate = this.event.get('end') as Date;
         let counterDate = new Date(startDate);
 
         while (counterDate.getTime() < endDate.getTime()) {
             // evaluating end of current timespan range
-            const nextDate = DateUtils.addMinutes(counterDate, minuteInterval) as Date;
+            const nextDate = DateUtils.addMinutes(counterDate, this.minuteInterval) as Date;
             const timeSpan = {
                 start: counterDate,
                 end: nextDate
@@ -92,25 +94,27 @@ export class ShiftTableService {
         return result;
     }
 
-    buildCategoryTimeSlots(category: Parse.Object<Parse.Attributes>, timeSpans: TimeSpan[]): TableTimeSlot[] {
+    buildCategoryTimeSlots(category: Parse.Object<Parse.Attributes>): TableShift[] {
         if (!this.event) {
             return [];
         }
-        return timeSpans.map(timeSpan => {
-            return {
-                timeSpan,
-                userShifts: this.evaluateUserShiftForTimeSpan(category, timeSpan) // todo use ccategories to load user shifts
-            } as TableTimeSlot;
-        })
-    }
 
-    evaluateUserShiftForTimeSpan(category: Parse.Object<Parse.Attributes>,timeSpan: TimeSpan): Parse.Object<Parse.Attributes>[] {
-        return this.userShifts?.filter(userShift =>
-            userShift.get('category')?.id === category.id &&
-            TimeSpanUtils.isOverlapping(timeSpan, {
-                start: userShift.get('start'),
-                end: userShift.get('end')
-            })) ?? [];
+        const userShifts = this.userShifts?.filter(userShift =>
+            userShift.get('category')?.id === category.id) ?? [];
+
+        return userShifts.map(userShift => {
+            const diferenceToStartOfEventInMin = TimeSpanUtils.getMinutesBetweenDates(this.event?.get('start'), userShift.get('start'));
+            const timeSlotsBeforeShiftCount = Math.floor(diferenceToStartOfEventInMin / this.minuteInterval);
+
+            const userShiftDurationInMinutes = TimeSpanUtils.getMinutesBetweenDates(userShift.get('start'), userShift.get('end'));
+            const timeSlotsForUserShiftCount = Math.floor(userShiftDurationInMinutes / this.minuteInterval);
+
+            return {
+                marginLeftPx: timeSlotsBeforeShiftCount * this.widthInterval + 2 * timeSlotsBeforeShiftCount,
+                widthPx: timeSlotsForUserShiftCount * this.widthInterval + 2 * timeSlotsForUserShiftCount,
+                shift: userShift
+            } as TableShift;
+        })
     }
 
     async fetchAllCategories() {

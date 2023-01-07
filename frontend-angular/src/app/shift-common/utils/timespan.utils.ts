@@ -18,4 +18,9 @@ export class TimeSpanUtils {
     static isOverlapping(timeSpan1: TimeSpan, timeSpan2: TimeSpan): boolean {
         return timeSpan1?.start < timeSpan2?.end && timeSpan2?.start < timeSpan1?.end;
     }
+
+    static getMinutesBetweenDates(startDate: Date, endDate: Date): number {
+        const diffInMilliseconds = Math.abs(endDate.getTime() - startDate.getTime());
+        return diffInMilliseconds / (1000 * 60);
+    }
 }

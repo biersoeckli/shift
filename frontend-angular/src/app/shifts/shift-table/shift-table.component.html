@@ -4,7 +4,9 @@
         <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []">
 
             <td>
-                {{timeSlot.start | fromTo: timeSlot.end}}
+                <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
+                    {{timeSlot.start | fromTo: timeSlot.end}}
+                </div>
             </td>
         </ng-container>
     </tr>
@@ -14,17 +16,14 @@
         </tr>
         <tr>
             <td></td>
-            <ng-container *ngFor="let timeSlot of shiftTableItem.timeSlots; let iSlot = index">
-                <td [id]="timeSlotIdPrefix + iCat + ':' + iSlot">
-                    <div>.</div>
-                    <ng-container *ngFor="let userShift of timeSlot.userShifts">
-                        <div >
-                            
-                            {{userShift.get('user').get('firstName')}} {{userShift.get('user').get('lastName')}}
-                        </div>
-                    </ng-container>
-                </td>
-            </ng-container>
+            <td colspan="100%">
+                <ng-container *ngFor="let timeSlot of shiftTableItem.shifts; let iSlot = index">
+                    <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
+                        class="bg-orange-300 rounded">
+                        {{timeSlot.shift.get('user').get('firstName')}} {{timeSlot.shift.get('user').get('lastName')}}
+                    </div>
+                </ng-container>
+            </td>
         </tr>
     </ng-container>
 </table>

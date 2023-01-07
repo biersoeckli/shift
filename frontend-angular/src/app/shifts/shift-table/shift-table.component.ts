@@ -3,7 +3,7 @@ import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
 import { TimeSpan, TimeSpanUtils } from 'src/app/shift-common/utils/timespan.utils';
 import { ShiftService } from '../services/shift.service';
 import * as Parse from 'parse';
-import { ShiftTable, ShiftTableCategory, ShiftTableService, TableTimeSlot } from '../services/shift-table.service';
+import { ShiftTable, ShiftTableCategory, ShiftTableService, TableShift } from '../services/shift-table.service';
 
 @Component({
   selector: 'shift-table',
@@ -33,6 +33,7 @@ export class ShiftTableComponent implements OnInit {
   }
 
   async onTableClick(event: MouseEvent) {
+    /*
     let tableCellElement = this.getTableCellElement(event);
     if (!this.currentEditUser || !this.shiftTable || !tableCellElement?.id.startsWith(this.timeSlotIdPrefix)) {
       return;
@@ -41,7 +42,7 @@ export class ShiftTableComponent implements OnInit {
     console.log('coordinates: ' + clickCoordinates.join(', '));
 
     const tableCategory: ShiftTableCategory = this.shiftTable.categories[+clickCoordinates[0]];
-    const tableTimeSlot: TableTimeSlot = tableCategory.timeSlots[+clickCoordinates[1]];
+    const tableTimeSlot: TableShift = tableCategory.timeSlots[+clickCoordinates[1]];
 
    const userShiftFromTimeSlot = tableTimeSlot.userShifts.find(shift => shift.get('user').id === this.currentEditUser?.id);
     if (userShiftFromTimeSlot) {
@@ -66,7 +67,7 @@ export class ShiftTableComponent implements OnInit {
     return tableCellElement;
   }
 
-  async addUserToTimeSlot(currentEditUser: Parse.User<Parse.Attributes>, tableTimeSlot: TableTimeSlot, category: Parse.Object<Parse.Attributes>) {
+  async addUserToTimeSlot(currentEditUser: Parse.User<Parse.Attributes>, tableTimeSlot: TableShift, category: Parse.Object<Parse.Attributes>) {
     const userShifts = this.shiftTableService.userShifts?.filter(userShift =>
       userShift.get('user').id === currentEditUser.id && userShift.get('category')?.id === userShift) ?? [];
 
@@ -100,6 +101,6 @@ export class ShiftTableComponent implements OnInit {
     userShift.set('start', tableTimeSlot.timeSpan.start);
     userShift.set('end', tableTimeSlot.timeSpan.end);
     userShift.set('category', category);
-    return await userShift.save();
+    return await userShift.save();*/
   }
 }
