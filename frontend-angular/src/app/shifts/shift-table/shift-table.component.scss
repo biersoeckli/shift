@@ -1,11 +1,14 @@
-th,
-td {
-    border: 1px solid black;
+.table-container {
+    overflow-x: auto;
 }
 
+th,
+td {
+    @apply border-t border-b;
+    padding: 0;
+}
 
-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+tr>td:first-child {
+    position: sticky;
+    left: 0;
 }

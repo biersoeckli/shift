@@ -1,29 +1,41 @@
-<table (click)="onTableClick($event)">
-    <tr>
-        <td>Kategorien</td>
-        <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []">
+<div class="table-container">
+    <table (click)="onTableClick($event)" class="relative">
+        <thead>
+            <tr>
+                <th>Kategorien</th>
+                <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []; let i = index">
 
-            <td>
-                <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
-                    {{timeSlot.start | fromTo: timeSlot.end}}
-                </div>
-            </td>
-        </ng-container>
-    </tr>
-    <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []; let iCat = index">
-        <tr>
-            <td>{{shiftTableItem.category.get('name')}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td colspan="100%">
-                <ng-container *ngFor="let timeSlot of shiftTableItem.shifts; let iSlot = index">
-                    <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
-                        class="bg-orange-300 rounded">
-                        {{timeSlot.shift.get('user').get('firstName')}} {{timeSlot.shift.get('user').get('lastName')}}
-                    </div>
+                    <th>
+                        <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
+                            {{timeSlot.start | fromTo: timeSlot.end}}
+                        </div>
+                        <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'"
+                        class="absolute top-0 h-full border-l border-dotted text-white">
+                           .
+                        </div>
+                    </th>
                 </ng-container>
-            </td>
-        </tr>
-    </ng-container>
-</table>
+            </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []; let iCat = index">
+            <tr>
+                <td class="bg-white z-20">{{shiftTableItem.category.get('name')}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="100%">
+                    <ng-container *ngFor="let timeSlot of shiftTableItem.shifts; let iSlot = index">
+                        <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
+                            class="bg-orange-300 rounded">
+                            {{timeSlot.shift.get('user').get('firstName')}}
+                            {{timeSlot.shift.get('user').get('lastName')}}
+                        </div>
+                    </ng-container>
+                    <span *ngIf="shiftTableItem.shifts?.length === 0" class="text-white">.</span>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+    </table>
+</div>

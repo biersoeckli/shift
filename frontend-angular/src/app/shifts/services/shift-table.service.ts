@@ -110,8 +110,8 @@ export class ShiftTableService {
             const timeSlotsForUserShiftCount = Math.floor(userShiftDurationInMinutes / this.minuteInterval);
 
             return {
-                marginLeftPx: timeSlotsBeforeShiftCount * this.widthInterval + 2 * timeSlotsBeforeShiftCount,
-                widthPx: timeSlotsForUserShiftCount * this.widthInterval + 2 * timeSlotsForUserShiftCount,
+                marginLeftPx: timeSlotsBeforeShiftCount * this.widthInterval + 0 * timeSlotsBeforeShiftCount,
+                widthPx: timeSlotsForUserShiftCount * this.widthInterval + 0 * timeSlotsForUserShiftCount,
                 shift: userShift
             } as TableShift;
         })
