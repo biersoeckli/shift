@@ -4,6 +4,8 @@ import { TimeSpan, TimeSpanUtils } from 'src/app/shift-common/utils/timespan.uti
 import { ShiftService } from '../services/shift.service';
 import * as Parse from 'parse';
 import { ShiftTable, ShiftTableCategory, ShiftTableService, TableShift } from '../services/shift-table.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPickerDialogComponent } from '../user-picker-dialog/user-picker-dialog.component';
 
 @Component({
   selector: 'shift-table',
@@ -17,10 +19,10 @@ export class ShiftTableComponent implements OnInit {
   timeSlotIdPrefix = 'timeslot_';
 
   currentEditUser?: Parse.User<Parse.Attributes>;
+  selectedShift?: TableShift;
 
-  constructor(public readonly shiftTableService: ShiftTableService) {
-    this.currentEditUser = Parse.User.current(); // todo remove
-  }
+  constructor(public readonly shiftTableService: ShiftTableService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.init();
@@ -30,6 +32,32 @@ export class ShiftTableComponent implements OnInit {
   async init() {
     await this.shiftTableService.initByEventId(this.eventId ?? '');
     this.shiftTable = await this.shiftTableService.calculateShiftTable();
+  }
+
+  pickEditUser(): void {
+    this.currentEditUser = undefined;
+    const dialog = this.dialog.open(UserPickerDialogComponent, {
+      minWidth: '400px',
+      data: this.shiftTableService.event
+    });
+
+    dialog.afterClosed().subscribe(selectedUser => {
+      if (!selectedUser) {
+        return;
+      }
+      this.currentEditUser = selectedUser;
+    })
+  }
+
+  async selectShift(tableShift: TableShift) {
+    this.shiftTable?.categories?.forEach(category => {
+      category.shifts.forEach(shift => {
+        shift.selected = false;
+      });
+    });
+    tableShift.selected = true;
+    this.selectedShift = tableShift;
+    this.currentEditUser = tableShift.shift.get('user');
   }
 
   @fluffyLoading()
@@ -58,13 +86,19 @@ export class ShiftTableComponent implements OnInit {
     }
     console.log(timeSpanOfSlot);
 
-    const shiftsInCurrentTimeSPanForUser = this.shiftTableService.userShifts?.filter(userShift => 
+    const shiftsInCurrentTimeSPanForUser = this.shiftTableService.userShifts?.filter(userShift =>
       userShift.get('user').id === this.currentEditUser?.id &&
       userShift.get('category')?.id === category.id &&
       TimeSpanUtils.isOverlapping(timeSpanOfSlot, {
         start: userShift.get('start'),
         end: userShift.get('end')
       })) ?? [];
+
+    if (this.selectedShift) {
+      // current shift will be edited
+      // todo
+      return;
+    }
 
     if (shiftsInCurrentTimeSPanForUser.length > 0) {
       // in the timeslot a shift for the this.currentEditUser already exists
@@ -77,6 +111,10 @@ export class ShiftTableComponent implements OnInit {
     }
 
     // create the shift, because it doesnt exists
+    return await this.processCreateShiftClick(timeSpanOfSlot, category);
+  }
+
+  private async processCreateShiftClick(timeSpanOfSlot: TimeSpan, category: Parse.Object<Parse.Attributes>) {
     const userShift = new (Parse.Object.extend("UserShift"));
     userShift.set('event', this.shiftTableService.event);
     userShift.set('user', this.currentEditUser);

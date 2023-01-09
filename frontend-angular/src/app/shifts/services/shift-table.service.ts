@@ -15,6 +15,7 @@ export interface ShiftTableCategory {
 }
 
 export interface TableShift {
+    selected: boolean;
     marginLeftPx: number;
     widthPx: number;
     isOverlapping: boolean;

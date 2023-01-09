@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GlobalLoaderComponent } from './global-loader/global-loader.component';
 import { ShiftCommonModule } from './shift-common/shift-common.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ShiftCommonModule } from './shift-common/shift-common.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ShiftCommonModule
+    ShiftCommonModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

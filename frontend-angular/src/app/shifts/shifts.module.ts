@@ -7,6 +7,7 @@ import { ShiftOverviewComponent } from './shift-overview/shift-overview.componen
 import { ShiftService } from './services/shift.service';
 import { ShiftTableComponent } from './shift-table/shift-table.component';
 import { ShiftTableService } from './services/shift-table.service';
+import { UserPickerDialogComponent } from './user-picker-dialog/user-picker-dialog.component';
 
 
 const routes: Routes = [
@@ -26,7 +27,8 @@ const routes: Routes = [
   declarations: [
     ShiftDetailEditComponent,
     ShiftOverviewComponent,
-    ShiftTableComponent
+    ShiftTableComponent,
+    UserPickerDialogComponent
   ],
   imports: [
     CommonModule,
