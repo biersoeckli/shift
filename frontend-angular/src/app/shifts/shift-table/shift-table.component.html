@@ -1,5 +1,5 @@
 <div class="table-container">
-    <table (click)="onTableClick($event)" class="relative">
+    <table class="relative">
         <thead>
             <tr>
                 <th>Kategorien</th>
@@ -9,7 +9,7 @@
                         <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
                             {{timeSlot.start | fromTo: timeSlot.end}}
                         </div>
-                        <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'"
+                        <div
                         class="absolute top-0 h-full border-l border-dotted text-white">
                            .
                         </div>
@@ -24,8 +24,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="100%">
+                <td colspan="100%" (click)="onTableClick(shiftTableItem.category, $event)">
                     <ng-container *ngFor="let timeSlot of shiftTableItem.shifts; let iSlot = index">
+                        <!--div class="absolute top-0 h-full" [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'">
+                            .
+                        </div-->
                         <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
                             class="bg-orange-300 rounded">
                             {{timeSlot.shift.get('user').get('firstName')}}

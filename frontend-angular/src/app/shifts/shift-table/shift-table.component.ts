@@ -32,75 +32,59 @@ export class ShiftTableComponent implements OnInit {
     this.shiftTable = await this.shiftTableService.calculateShiftTable();
   }
 
-  async onTableClick(event: MouseEvent) {
-    /*
-    let tableCellElement = this.getTableCellElement(event);
-    if (!this.currentEditUser || !this.shiftTable || !tableCellElement?.id.startsWith(this.timeSlotIdPrefix)) {
+  @fluffyLoading()
+  async onTableClick(category: Parse.Object<Parse.Attributes>, event: MouseEvent) {
+    if (!this.currentEditUser || !category) {
       return;
     }
-    const clickCoordinates = tableCellElement.id.replace(this.timeSlotIdPrefix, '').split(':');
-    console.log('coordinates: ' + clickCoordinates.join(', '));
-
-    const tableCategory: ShiftTableCategory = this.shiftTable.categories[+clickCoordinates[0]];
-    const tableTimeSlot: TableShift = tableCategory.timeSlots[+clickCoordinates[1]];
-
-   const userShiftFromTimeSlot = tableTimeSlot.userShifts.find(shift => shift.get('user').id === this.currentEditUser?.id);
-    if (userShiftFromTimeSlot) {
-      // remove shift from current timerange
-      console.log('todo remove shift');
-      await userShiftFromTimeSlot.destroy(); // todo remove
-    } else {
-      // add shift to time slot
-      const shiftForTimeslot = await this.addUserToTimeSlot(this.currentEditUser, tableTimeSlot, tableCategory.category);
-      tableTimeSlot.userShifts.push(shiftForTimeslot);
+    let bounds = (event.target as HTMLElement)?.parentElement?.getBoundingClientRect();
+    if (!bounds) {
+      return;
     }
-  }
+    let relativeXCoord = event.clientX - bounds.left;
+    const intervalCount = Math.floor(relativeXCoord / this.shiftTableService.widthInterval);
 
-  private getTableCellElement(event: MouseEvent) {
-    let tableCellElement = undefined;
-    if (event.target instanceof HTMLTableCellElement) {
-      tableCellElement = event.target;
-    }
-    if ((event.target as HTMLElement).parentElement instanceof HTMLTableCellElement) {
-      tableCellElement = (event.target as HTMLElement).parentElement;
-    }
-    return tableCellElement;
-  }
-
-  async addUserToTimeSlot(currentEditUser: Parse.User<Parse.Attributes>, tableTimeSlot: TableShift, category: Parse.Object<Parse.Attributes>) {
-    const userShifts = this.shiftTableService.userShifts?.filter(userShift =>
-      userShift.get('user').id === currentEditUser.id && userShift.get('category')?.id === userShift) ?? [];
-
-
-    const shiftNearStart = userShifts.find(userShift => tableTimeSlot.timeSpan.start.getTime() <= userShift.get('end').getTime());
-    if (shiftNearStart) {
-      // the new shift is nearby another shift
-      shiftNearStart.set('end', tableTimeSlot.timeSpan.end);
-      const shiftNearEnd = userShifts.find(userShift => userShift.get('start').getTime() <= tableTimeSlot.timeSpan.end.getTime());
-      if (shiftNearEnd) {
-        // shift will be added inbetween of two existing shifts -> expanding the shift near end with date from shift near start
-        shiftNearEnd.set('start', shiftNearStart.get('start'));
-        await shiftNearStart.destroy();
-        return await shiftNearEnd.save();
-      } else {
-        return await shiftNearStart.save();
-      }
+    /// start = minutes where the timespan starts after the event starts
+    // end = minutes when the timespan ends after the event starts
+    const minutesRange = {
+      start: (intervalCount - 1) * this.shiftTableService.minuteInterval,
+      end: (intervalCount) * this.shiftTableService.minuteInterval
     }
 
-    const shiftNearEnd = userShifts.find(userShift => userShift.get('start').getTime() <= tableTimeSlot.timeSpan.end.getTime());
-    if (shiftNearEnd) {
-      // shift will be added inbetween of two existing shifts
-      shiftNearEnd.set('start', tableTimeSlot.timeSpan.start);
-      return await shiftNearEnd.save();
+    const eventStart = this.shiftTableService.event?.get('start');
+    const timeSpanOfSlot: TimeSpan = {
+      start: DateUtils.addMinutes(eventStart, minutesRange.start) as Date,
+      end: DateUtils.addMinutes(eventStart, minutesRange.end) as Date
+    }
+    console.log(timeSpanOfSlot);
+
+    const shiftsInCurrentTimeSPanForUser = this.shiftTableService.userShifts?.filter(userShift => 
+      userShift.get('user').id === this.currentEditUser?.id &&
+      userShift.get('category')?.id === category.id &&
+      TimeSpanUtils.isOverlapping(timeSpanOfSlot, {
+        start: userShift.get('start'),
+        end: userShift.get('end')
+      })) ?? [];
+
+    if (shiftsInCurrentTimeSPanForUser.length > 0) {
+      // in the timeslot a shift for the this.currentEditUser already exists
+
+      // todo remove, only for testing
+      await shiftsInCurrentTimeSPanForUser[0].destroy();
+      this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== shiftsInCurrentTimeSPanForUser[0]);
+      this.shiftTable = await this.shiftTableService.calculateShiftTable();
+      return;
     }
 
-    // create completely new
+    // create the shift, because it doesnt exists
     const userShift = new (Parse.Object.extend("UserShift"));
     userShift.set('event', this.shiftTableService.event);
     userShift.set('user', this.currentEditUser);
-    userShift.set('start', tableTimeSlot.timeSpan.start);
-    userShift.set('end', tableTimeSlot.timeSpan.end);
+    userShift.set('start', timeSpanOfSlot.start);
+    userShift.set('end', timeSpanOfSlot.end);
     userShift.set('category', category);
-    return await userShift.save();*/
+    this.shiftTableService.userShifts?.push(userShift);
+    this.shiftTable = await this.shiftTableService.calculateShiftTable();
+    return await userShift.save();
   }
 }

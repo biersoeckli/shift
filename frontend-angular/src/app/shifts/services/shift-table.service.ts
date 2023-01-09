@@ -17,6 +17,7 @@ export interface ShiftTableCategory {
 export interface TableShift {
     marginLeftPx: number;
     widthPx: number;
+    isOverlapping: boolean;
     shift: Parse.Object<Parse.Attributes>;
 }
 
