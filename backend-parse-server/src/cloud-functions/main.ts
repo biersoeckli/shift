@@ -3,11 +3,13 @@ import { Container } from "typedi";
 import { ROLE_EVENT_ORGANIZER } from "../common/constants/roles.constants";
 import { DateUtils } from "../common/utils/date.utils";
 import { StringUtils } from "../common/utils/string.utils";
+import { AddUserByIdToEvent } from "./auth/add-user-to-event";
 import { AuthenticateWithPhoneNumberFunction } from "./auth/auth-with-phonenumber.function";
 import { GetOrCreateUserForPhoneNumberFunction } from "./auth/createOrGetUserForPhoneNumber.function";
 import { VerifyAuthChallengeCodeFunction } from "./auth/verify-auth-challenge-code.function";
 import { EventAfterSave } from "./event/event.after-save";
 import { ShiftAfterSave } from "./event/shift.after-save";
+import { UserEventAfterSave } from "./event/user-event.after-save";
 import { UserShiftWishAfterSave } from "./event/user-shift-wish.after-save";
 import { UserShiftAfterSave } from "./event/userShift.after-save";
 
@@ -27,6 +29,14 @@ Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {
     return await Container.get(GetOrCreateUserForPhoneNumberFunction).run(request);
 }, {
     fields: ['phone'],
+    requireUser: true,
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER]
+});
+
+Parse.Cloud.define("addUserByIdToEvent", async (request) => {
+    return await Container.get(AddUserByIdToEvent).run(request);
+}, {
+    fields: ['userId', 'eventId'],
     requireUser: true,
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER]
 });
@@ -131,4 +141,20 @@ Parse.Cloud.beforeSave("UserShiftWish", () => { }, {
 
 Parse.Cloud.afterSave("UserShiftWish", async (request) => {
     return await Container.get(UserShiftWishAfterSave).run(request);
+});
+
+Parse.Cloud.beforeSave("UserEvent", () => { }, {
+    fields: {
+        user: {
+            required: true
+        },
+        event: {
+            required: true
+        }
+    },
+    requireUser: true
+});
+
+Parse.Cloud.afterSave("UserEvent", async (request) => {
+    return await Container.get(UserEventAfterSave).run(request);
 });

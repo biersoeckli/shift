@@ -6,7 +6,7 @@ import * as Parse from 'parse';
 interface NewUser {
   firstName: string;
   lastName: string;
-  mail: string;
+  email: string;
   phone: string;
 }
 
@@ -55,7 +55,21 @@ export class UserPickerDialogComponent {
     this.dialogRef.close(user);
   }
 
-  createAndSaveUser() {
+  @fluffyLoading()
+  async createAndSaveUser() {
+    try {
+      const userId = await Parse.Cloud.run('getOrCreateUserForPhoneNumber', this.newUser);
+      const userEventId = await Parse.Cloud.run('addUserByIdToEvent', { userId, eventId: this.event.id });
 
+      const query = new Parse.Query(Parse.Object.extend('UserEvent'));
+      query.include('user');
+      const createdUserEvent = await query.get(userEventId);
+      this.selectUser(createdUserEvent.get('user'));
+    } catch (ex) {
+      if (ex instanceof Error) {
+        this.errorString = ex.message;
+      }
+      throw ex;
+    }
   }
 }

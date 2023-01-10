@@ -9,18 +9,26 @@ export class AuthService {
         if (!phone) {
             throw 'Phone number not provided.';
         }
+        const user = await this.getUserByPhone(phone);
+        return user ?? await this.createNewUser(phone)
+    }
+
+    async getUserByPhone(phone: string) {
         const User = Parse.Object.extend('_User');
-        const innerQuery = new Parse.Query(User);
-        innerQuery.equalTo('phone', phone);
-        const results = await innerQuery.find({ useMasterKey: true });
-        if (results.length === 0) {
-            // user does not exists yet
-            return await this.createNewUser(phone);
-        } else if (results.length === 1) {
-            return results[0];
+        const query = new Parse.Query(User);
+        query.equalTo('phone', phone);
+        const results = await query.find({ useMasterKey: true });
+        if (results.length > 1) {
+            console.error(`Too many users for phone number ${phone}.`);
+            throw 'Error: Cannot handle user with this phone number. ';
         }
-        console.error(`Too many users for phone number ${phone}.`);
-        throw 'Error: Cannot authenticate user with this phone number. '
+        return results.length === 0 ? undefined : results[0];
+    }
+
+    async getUserById(userId: string) {
+        const User = Parse.Object.extend('_User');
+        const query = new Parse.Query(User);
+        return await query.get(userId, { useMasterKey: true });
     }
 
     /**
