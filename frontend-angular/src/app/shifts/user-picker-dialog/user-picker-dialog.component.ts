@@ -47,7 +47,7 @@ export class UserPickerDialogComponent {
       this.filteredUserEvents = this.userEvents;
     }
     this.filteredUserEvents = this.userEvents?.filter(userEvent =>
-      `${userEvent.get('user').get('firstName')}_${userEvent.get('user').get('lastName')}`.toLocaleLowerCase()
+      `${userEvent.get('user').get('firstName')} ${userEvent.get('user').get('lastName')}`.toLocaleLowerCase()
         .includes(this.searchTerm.toLocaleLowerCase())) ?? [];
   }
 

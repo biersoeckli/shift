@@ -1,12 +1,18 @@
+<div #contextMenu class="context-menu">
+    <div class="item" (click)="editContextMenuSelection()">Bearbeiten</div>
+    <div class="item" (click)="deleteContextMenuSelection()">Löschen</div>
+</div>
 <div class="pb-4">
     <div class="shift-card">
-        <button class="btn" style="margin-top: 0px;" (click)="changeEditMode()" >{{editMode ? 'Ansichts Modus' : 'Bearbeiten'}}</button>
-        <button class="btn-secondary" style="margin-top: 0px;" (click)="pickEditUser()" *ngIf="editMode">{{currentEditUser ?
-            currentEditUser.get('firstName') + ' ' + currentEditUser.get('lastName') : 'HelferIn wählen'}}</button>
+        <button class="btn" style="margin-top: 0px;" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
+            'Bearbeiten'}}</button>
+        <button class="btn-secondary" style="margin-top: 0px;" (click)="pickAddUser()"
+            *ngIf="editMode">{{currentAddUser ?
+                currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') : 'Schicht hinzufügen'}}</button>
     </div>
 </div>
 <div class="table-container">
-    <table class="relative">
+    <table class="relative" (contextmenu)="onContextMenu($event)">
         <thead>
             <tr>
                 <th>Kategorien</th>
@@ -24,26 +30,26 @@
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let shiftTableItem of shiftTable?.categories ?? []; let iCat = index">
+            <ng-container *ngFor="let tableCategory of shiftTable?.categories ?? []; let iCategory = index">
                 <tr>
-                    <td class="bg-white z-20">{{shiftTableItem.category.get('name')}}</td>
+                    <td class="bg-white z-20">{{tableCategory.category.get('name')}}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td colspan="100%" (click)="onTableClick(shiftTableItem.category, $event)">
-                        <ng-container *ngFor="let timeSlot of shiftTableItem.shifts; let iSlot = index">
+                    <td colspan="100%" (click)="onTableClick(tableCategory.category, $event)">
+                        <ng-container *ngFor="let tableShift of tableCategory.shifts; let iTableShift = index">
                             <!--div class="absolute top-0 h-full" [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'">
                             .
                         </div-->
-                            <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
-                                [class]="(timeSlot.selected ? 'bg-green-300' : 'bg-orange-300') + ' rounded px-2'"
-                                (click)="selectShift(timeSlot)" 
-                                (mousedown)="onShiftMouseDown($event, timeSlot)">
-                                {{timeSlot.shift.get('user').get('firstName')}}
-                                {{timeSlot.shift.get('user').get('lastName')}}
+                            <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
+                                [class]="(tableShift.selected ? 'bg-green-300' : 'bg-orange-300') + ' rounded px-2'"
+                                (mousedown)="onShiftMouseDown($event, tableShift)"
+                                [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift">
+                                {{tableShift.shift.get('user').get('firstName')}}
+                                {{tableShift.shift.get('user').get('lastName')}}
                             </div>
                         </ng-container>
-                        <span *ngIf="shiftTableItem.shifts?.length === 0" class="text-white">.</span>
+                        <span *ngIf="tableCategory.shifts?.length === 0" class="text-white">.</span>
                     </td>
                 </tr>
             </ng-container>

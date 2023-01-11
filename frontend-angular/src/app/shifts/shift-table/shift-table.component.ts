@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
 import { TimeSpan, TimeSpanUtils } from 'src/app/shift-common/utils/timespan.utils';
 import { ShiftService } from '../services/shift.service';
@@ -15,10 +15,11 @@ import { UserPickerDialogComponent } from '../user-picker-dialog/user-picker-dia
 export class ShiftTableComponent implements OnInit {
 
   @Input() eventId?: string;
+  @ViewChild('contextMenu') contextMenuElement?: ElementRef;
   shiftTable?: ShiftTable;
-  timeSlotIdPrefix = 'timeslot_';
+  tableShiftIdPrefix = 'timeslot_';
 
-  currentEditUser?: Parse.User<Parse.Attributes>;
+  currentAddUser?: Parse.User<Parse.Attributes>;
   selectedShift?: TableShift;
   editMode = false;
 
@@ -26,6 +27,7 @@ export class ShiftTableComponent implements OnInit {
   userShiftDivElement?: HTMLDivElement;
   dragDropStartEdit = false;
   dragDropInitialRect?: DOMRect;
+  contextMenuSelectedTableShift?: TableShift;
 
   constructor(public readonly shiftTableService: ShiftTableService,
     public dialog: MatDialog) {
@@ -42,9 +44,11 @@ export class ShiftTableComponent implements OnInit {
     this.shiftTable = await this.shiftTableService.calculateShiftTable();
   }
 
-  pickEditUser(): void {
-    this.currentEditUser = undefined;
-    this.selectShift(undefined);
+  pickAddUser(): void {
+    if (this.currentAddUser) {
+      this.currentAddUser = undefined;
+      return;
+    }
     const dialog = this.dialog.open(UserPickerDialogComponent, {
       minWidth: '400px',
       data: this.shiftTableService.event
@@ -54,34 +58,12 @@ export class ShiftTableComponent implements OnInit {
       if (!selectedUser) {
         return;
       }
-      this.currentEditUser = selectedUser;
+      this.currentAddUser = selectedUser;
     })
   }
 
   changeEditMode() {
     this.editMode = !this.editMode;
-    this.selectShift(undefined);
-  }
-
-  async selectShift(tableShift?: TableShift) {
-    this.shiftTable?.categories?.forEach(category => {
-      category.shifts.forEach(shift => {
-        shift.selected = false;
-      });
-    });
-    if (!this.editMode) {
-      this.selectedShift = undefined;
-      return;
-    }
-    if (!tableShift) {
-      return;
-    }
-    if (tableShift === this.selectedShift) {
-      tableShift.selected = false;
-    }
-    this.selectedShift = tableShift;
-    tableShift.selected = true;
-    this.currentEditUser = tableShift.shift.get('user');
   }
 
   getTarget(event: MouseEvent) {
@@ -93,8 +75,11 @@ export class ShiftTableComponent implements OnInit {
 
   @fluffyLoading()
   async onTableClick(category: Parse.Object<Parse.Attributes>, event: MouseEvent) {
+    if (!this.editMode || !this.currentAddUser || !category) {
+      return;
+    }
     const target = this.getTarget(event);
-    if (!this.editMode || !this.currentEditUser || !category || !target) {
+    if (!target) {
       return;
     }
 
@@ -118,8 +103,8 @@ export class ShiftTableComponent implements OnInit {
       end: DateUtils.addMinutes(eventStart, minutesRange.end) as Date
     }
 
-    const shiftsInCurrentTimeSPanForUser = this.shiftTableService.userShifts?.filter(userShift =>
-      userShift.get('user').id === this.currentEditUser?.id &&
+    const shiftsInCurrentTimeSpanForUser = this.shiftTableService.userShifts?.filter(userShift =>
+      userShift.get('user').id === this.currentAddUser?.id &&
       userShift.get('category')?.id === category.id &&
       TimeSpanUtils.isOverlapping(timeSpanOfSlot, {
         start: userShift.get('start'),
@@ -131,24 +116,26 @@ export class ShiftTableComponent implements OnInit {
       return;
     }
 
-    if (shiftsInCurrentTimeSPanForUser.length > 0) {
+    if (shiftsInCurrentTimeSpanForUser.length > 0) {
       // in the timeslot a shift for the this.currentEditUser already exists
 
       // todo remove, only for testing
-      await shiftsInCurrentTimeSPanForUser[0].destroy();
-      this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== shiftsInCurrentTimeSPanForUser[0]);
+      await shiftsInCurrentTimeSpanForUser[0].destroy();
+      this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== shiftsInCurrentTimeSpanForUser[0]);
       this.shiftTable = await this.shiftTableService.calculateShiftTable();
       return;
     }
 
     // create the shift, because it doesnt exists
-    return await this.processCreateShiftClick(timeSpanOfSlot, category);
+    const createdUserShift = await this.processCreateShiftClick(timeSpanOfSlot, category);
+    this.currentAddUser = undefined;
+    return createdUserShift;
   }
 
   private async processCreateShiftClick(timeSpanOfSlot: TimeSpan, category: Parse.Object<Parse.Attributes>) {
     const userShift = new (Parse.Object.extend("UserShift"));
     userShift.set('event', this.shiftTableService.event);
-    userShift.set('user', this.currentEditUser);
+    userShift.set('user', this.currentAddUser);
     userShift.set('start', timeSpanOfSlot.start);
     userShift.set('end', timeSpanOfSlot.end);
     userShift.set('category', category);
@@ -158,12 +145,10 @@ export class ShiftTableComponent implements OnInit {
   }
 
   onShiftMouseDown(e: MouseEvent, timeslot: TableShift) {
-    if (!this.editMode) {
+    if (!this.editMode || this.currentAddUser) {
       return;
     }
     this.selectedTimeSlot = timeslot;
-    this.selectedTimeSlot.selected = true;
-    this.currentEditUser = timeslot.shift.get('user');
     this.dragDropInitialRect = (e.target as HTMLDivElement).getBoundingClientRect();
     if (e.offsetX < 20) {
       this.dragDropStartEdit = true;
@@ -203,6 +188,7 @@ export class ShiftTableComponent implements OnInit {
 
   @HostListener('window:mouseup', ['$event'])
   async onMouseUp(e: MouseEvent) {
+    // resize shifts
     if (this.selectedTimeSlot && this.userShiftDivElement) {
       // todo change start and end of shift
       const intervalShiftStartCount = Math.floor(this.selectedTimeSlot.marginLeftPx / this.shiftTableService.widthInterval);
@@ -225,10 +211,58 @@ export class ShiftTableComponent implements OnInit {
       this.selectedTimeSlot.shift.set('start', timeSpanOfSlot.start);
       this.selectedTimeSlot.shift.set('end', timeSpanOfSlot.end);
       await this.selectedTimeSlot.shift.save();
+      this.selectedTimeSlot.selected = false;
       this.shiftTableService.calculatePxForUserShift(this.selectedTimeSlot);
     }
     this.userShiftDivElement = undefined;
     this.dragDropInitialRect = undefined;
     this.selectedTimeSlot = undefined;
+  }
+
+  /* context menu */
+  @HostListener('window:mousedown', ['$event'])
+  async onMouseDown(e: MouseEvent) {
+    // reset context menu
+    if (this.contextMenuSelectedTableShift && this.contextMenuElement) {
+      this.contextMenuSelectedTableShift = undefined;
+      this.contextMenuElement.nativeElement.classList.remove("visible");
+    }
+  }
+
+  deleteContextMenuSelection() {
+    if (!this.contextMenuElement || ! this.contextMenuSelectedTableShift) {
+      return;
+    }
+    
+    this.contextMenuElement.nativeElement.classList.remove("visible");
+  }
+  editContextMenuSelection() {
+    if (!this.contextMenuElement || ! this.contextMenuSelectedTableShift) {
+      return;
+    }
+    
+    this.contextMenuElement.nativeElement.classList.remove("visible");
+  }
+
+  onContextMenu(e: MouseEvent) {
+    const target = e.target instanceof HTMLDivElement ? e.target as HTMLDivElement : undefined;
+    if (!this.editMode || !this.contextMenuElement || !this.shiftTable || !target || !target.id.startsWith(this.tableShiftIdPrefix)) {
+      return;
+    }
+    const indexIds = target.id.replace(this.tableShiftIdPrefix, '').split(':');
+    if (indexIds.length !== 2) {
+      return;
+    }
+    e.preventDefault();
+    const tableCategoryIndex = +indexIds[0];
+    const tableShiftIndex = +indexIds[1];
+    this.contextMenuSelectedTableShift = this.shiftTable.categories[tableCategoryIndex].shifts[tableShiftIndex];
+
+    const { clientX: mouseX, clientY: mouseY } = e;
+
+    this.contextMenuElement.nativeElement.style.top = `${mouseY}px`;
+    this.contextMenuElement.nativeElement.style.left = `${mouseX}px`;
+
+    this.contextMenuElement.nativeElement.classList.add("visible");
   }
 }
