@@ -117,12 +117,7 @@ export class ShiftTableComponent implements OnInit {
     }
 
     if (shiftsInCurrentTimeSpanForUser.length > 0) {
-      // in the timeslot a shift for the this.currentEditUser already exists
-
-      // todo remove, only for testing
-      await shiftsInCurrentTimeSpanForUser[0].destroy();
-      this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== shiftsInCurrentTimeSpanForUser[0]);
-      this.shiftTable = await this.shiftTableService.calculateShiftTable();
+      // in the timeslot a shift for the this.currentEditUser already exists --> don't add a new one
       return;
     }
 
@@ -223,28 +218,35 @@ export class ShiftTableComponent implements OnInit {
   @HostListener('window:mousedown', ['$event'])
   async onMouseDown(e: MouseEvent) {
     // reset context menu
-    if (this.contextMenuSelectedTableShift && this.contextMenuElement) {
+    const divElementClick = e.target instanceof HTMLDivElement ? e.target as HTMLDivElement : undefined;
+    if (this.contextMenuSelectedTableShift && this.contextMenuElement && !divElementClick?.classList?.contains('context-item')) {
       this.contextMenuSelectedTableShift = undefined;
       this.contextMenuElement.nativeElement.classList.remove("visible");
     }
   }
 
-  deleteContextMenuSelection() {
-    if (!this.contextMenuElement || ! this.contextMenuSelectedTableShift) {
+  async editContextMenuSelection() {
+    if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
       return;
     }
-    
+
     this.contextMenuElement.nativeElement.classList.remove("visible");
   }
-  editContextMenuSelection() {
-    if (!this.contextMenuElement || ! this.contextMenuSelectedTableShift) {
+
+  async deleteContextMenuSelection() {
+    console.log(this.contextMenuSelectedTableShift);
+    
+    if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
       return;
     }
-    
+    await this.contextMenuSelectedTableShift.shift.destroy();
+    this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== this.contextMenuSelectedTableShift?.shift);
+    this.shiftTable = await this.shiftTableService.calculateShiftTable();
     this.contextMenuElement.nativeElement.classList.remove("visible");
   }
 
   onContextMenu(e: MouseEvent) {
+    e.preventDefault();
     const target = e.target instanceof HTMLDivElement ? e.target as HTMLDivElement : undefined;
     if (!this.editMode || !this.contextMenuElement || !this.shiftTable || !target || !target.id.startsWith(this.tableShiftIdPrefix)) {
       return;
@@ -253,7 +255,6 @@ export class ShiftTableComponent implements OnInit {
     if (indexIds.length !== 2) {
       return;
     }
-    e.preventDefault();
     const tableCategoryIndex = +indexIds[0];
     const tableShiftIndex = +indexIds[1];
     this.contextMenuSelectedTableShift = this.shiftTable.categories[tableCategoryIndex].shifts[tableShiftIndex];

@@ -1,6 +1,6 @@
 <div #contextMenu class="context-menu">
-    <div class="item" (click)="editContextMenuSelection()">Bearbeiten</div>
-    <div class="item" (click)="deleteContextMenuSelection()">Löschen</div>
+    <div class="context-item" (click)="editContextMenuSelection()">Bearbeiten</div>
+    <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
 <div class="pb-4">
     <div class="shift-card">
@@ -38,11 +38,8 @@
                     <td></td>
                     <td colspan="100%" (click)="onTableClick(tableCategory.category, $event)">
                         <ng-container *ngFor="let tableShift of tableCategory.shifts; let iTableShift = index">
-                            <!--div class="absolute top-0 h-full" [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'">
-                            .
-                        </div-->
                             <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
-                                [class]="(tableShift.selected ? 'bg-green-300' : 'bg-orange-300') + ' rounded px-2'"
+                                [class]="(editMode ? 'table-shift-item-edit' : '') + ' rounded px-2 bg-orange-300 text-gray-700'"
                                 (mousedown)="onShiftMouseDown($event, tableShift)"
                                 [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift">
                                 {{tableShift.shift.get('user').get('firstName')}}

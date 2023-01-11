@@ -23,7 +23,7 @@
                 <p *ngIf="validated && errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}
                 </p>
             </div>
-            <button class="btn w-full" type="submit" [disabled]="!phoneReactiveForm.value.phone">Weiter</button>
+            <button class="btn-wide" type="submit" [disabled]="!phoneReactiveForm.value.phone">Weiter</button>
         </form>
     </div>
     <ng-template #authChallengeCreated>
@@ -43,7 +43,7 @@
                 [(ngModel)]="authChallengeVerificationCode">
             <p *ngIf="errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}</p>
         </div>
-        <button class="btn w-full" [disabled]="!authChallengeVerificationCode"
+        <button class="btn-wide" [disabled]="!authChallengeVerificationCode"
             (click)="onValidateAuthChallenge()">Verifizieren</button>
 
     </ng-template>

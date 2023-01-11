@@ -13,6 +13,19 @@ tr>td:first-child {
     left: 0;
 }
 
+.table-shift-item-edit:after {
+    content: "";
+    border: 0.5rem solid transparent;
+    cursor: col-resize;
+    float: right;
+    height: 20px;
+}
+
+.table-shift-item-edit:before {
+    content: "";
+    border: 0.5rem solid transparent;
+    cursor: col-resize;
+}
 
 .context-menu {
     position: fixed;
@@ -27,7 +40,7 @@ tr>td:first-child {
     display: block;
 }
 
-.context-menu .item {
+.context-menu .context-item {
     padding: 8px 10px;
     font-size: 15px;
     color: #eee;
@@ -35,6 +48,6 @@ tr>td:first-child {
     border-radius: inherit;
 }
 
-.context-menu .item:hover {
+.context-menu .context-item:hover {
     background: #343434;
 }
