@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
 import { TimeSpan, TimeSpanUtils } from 'src/app/shift-common/utils/timespan.utils';
 import { ShiftService } from '../services/shift.service';
@@ -20,9 +20,17 @@ export class ShiftTableComponent implements OnInit {
 
   currentEditUser?: Parse.User<Parse.Attributes>;
   selectedShift?: TableShift;
+  editMode = false;
+
+  selectedTimeSlot?: TableShift;
+  userShiftDivElement?: HTMLDivElement;
+  dragDropStartEdit = false;
+  dragDropInitialRect?: DOMRect;
 
   constructor(public readonly shiftTableService: ShiftTableService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+
+  }
 
   ngOnInit(): void {
     this.init();
@@ -36,6 +44,7 @@ export class ShiftTableComponent implements OnInit {
 
   pickEditUser(): void {
     this.currentEditUser = undefined;
+    this.selectShift(undefined);
     const dialog = this.dialog.open(UserPickerDialogComponent, {
       minWidth: '400px',
       data: this.shiftTableService.event
@@ -49,23 +58,47 @@ export class ShiftTableComponent implements OnInit {
     })
   }
 
-  async selectShift(tableShift: TableShift) {
+  changeEditMode() {
+    this.editMode = !this.editMode;
+    this.selectShift(undefined);
+  }
+
+  async selectShift(tableShift?: TableShift) {
     this.shiftTable?.categories?.forEach(category => {
       category.shifts.forEach(shift => {
         shift.selected = false;
       });
     });
-    tableShift.selected = true;
+    if (!this.editMode) {
+      this.selectedShift = undefined;
+      return;
+    }
+    if (!tableShift) {
+      return;
+    }
+    if (tableShift === this.selectedShift) {
+      tableShift.selected = false;
+    }
     this.selectedShift = tableShift;
+    tableShift.selected = true;
     this.currentEditUser = tableShift.shift.get('user');
+  }
+
+  getTarget(event: MouseEvent) {
+    if (event.target instanceof HTMLTableCellElement) {
+      return event.target as HTMLTableCellElement;
+    }
+    return undefined;
   }
 
   @fluffyLoading()
   async onTableClick(category: Parse.Object<Parse.Attributes>, event: MouseEvent) {
-    if (!this.currentEditUser || !category) {
+    const target = this.getTarget(event);
+    if (!this.editMode || !this.currentEditUser || !category || !target) {
       return;
     }
-    let bounds = (event.target as HTMLElement)?.parentElement?.getBoundingClientRect();
+
+    let bounds = target.parentElement?.getBoundingClientRect();
     if (!bounds) {
       return;
     }
@@ -84,7 +117,6 @@ export class ShiftTableComponent implements OnInit {
       start: DateUtils.addMinutes(eventStart, minutesRange.start) as Date,
       end: DateUtils.addMinutes(eventStart, minutesRange.end) as Date
     }
-    console.log(timeSpanOfSlot);
 
     const shiftsInCurrentTimeSPanForUser = this.shiftTableService.userShifts?.filter(userShift =>
       userShift.get('user').id === this.currentEditUser?.id &&
@@ -95,8 +127,7 @@ export class ShiftTableComponent implements OnInit {
       })) ?? [];
 
     if (this.selectedShift) {
-      // current shift will be edited
-      // todo
+      // a shift is currently selected, do not edit anythin
       return;
     }
 
@@ -124,5 +155,80 @@ export class ShiftTableComponent implements OnInit {
     this.shiftTableService.userShifts?.push(userShift);
     this.shiftTable = await this.shiftTableService.calculateShiftTable();
     return await userShift.save();
+  }
+
+  onShiftMouseDown(e: MouseEvent, timeslot: TableShift) {
+    if (!this.editMode) {
+      return;
+    }
+    this.selectedTimeSlot = timeslot;
+    this.selectedTimeSlot.selected = true;
+    this.currentEditUser = timeslot.shift.get('user');
+    this.dragDropInitialRect = (e.target as HTMLDivElement).getBoundingClientRect();
+    if (e.offsetX < 20) {
+      this.dragDropStartEdit = true;
+      this.userShiftDivElement = e.target as HTMLDivElement;
+      return;
+    }
+    if (e.offsetX > timeslot.widthPx - 20) {
+      this.dragDropStartEdit = false;
+      this.userShiftDivElement = e.target as HTMLDivElement;
+      return;
+    }
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(e: MouseEvent) {
+    if (!this.userShiftDivElement || !this.selectedTimeSlot || !this.dragDropInitialRect) {
+      return;
+    }
+    const boundingClient = this.userShiftDivElement.getBoundingClientRect();
+
+    const xEnd = boundingClient.x - e.x;
+    const marginLeft = parseInt(this.userShiftDivElement.style.marginLeft.replace("px", ''));
+    const diffTableLeftToScreenLeft = boundingClient.x - marginLeft;
+    const xStart = e.x - diffTableLeftToScreenLeft;
+    const newWidth = this.dragDropInitialRect.right - e.x;
+
+    if (this.dragDropStartEdit) {
+      //this.panel.style.marginLeft = xStartt + 'px';
+      this.selectedTimeSlot.marginLeftPx = xStart;
+      this.selectedTimeSlot.widthPx = newWidth;
+    } else {
+      //this.panel.style.width = -xEnd + 'px';
+      this.selectedTimeSlot.widthPx = -xEnd;
+    }
+    return;
+  }
+
+  @HostListener('window:mouseup', ['$event'])
+  async onMouseUp(e: MouseEvent) {
+    if (this.selectedTimeSlot && this.userShiftDivElement) {
+      // todo change start and end of shift
+      const intervalShiftStartCount = Math.floor(this.selectedTimeSlot.marginLeftPx / this.shiftTableService.widthInterval);
+      const intervalShiftLengthCount = this.dragDropStartEdit ?
+        Math.ceil(this.selectedTimeSlot.widthPx / this.shiftTableService.widthInterval)
+        : Math.round(this.selectedTimeSlot.widthPx / this.shiftTableService.widthInterval);
+
+      const intervalShiftEndCount = intervalShiftStartCount + intervalShiftLengthCount;
+      /// start = minutes where the timespan starts after the event starts
+      // end = minutes when the timespan ends after the event starts
+      const minutesRange = {
+        start: intervalShiftStartCount * this.shiftTableService.minuteInterval,
+        end: intervalShiftEndCount * this.shiftTableService.minuteInterval
+      }
+      const eventStart = this.shiftTableService.event?.get('start');
+      const timeSpanOfSlot: TimeSpan = {
+        start: DateUtils.addMinutes(eventStart, minutesRange.start) as Date,
+        end: DateUtils.addMinutes(eventStart, minutesRange.end) as Date
+      }
+      this.selectedTimeSlot.shift.set('start', timeSpanOfSlot.start);
+      this.selectedTimeSlot.shift.set('end', timeSpanOfSlot.end);
+      await this.selectedTimeSlot.shift.save();
+      this.shiftTableService.calculatePxForUserShift(this.selectedTimeSlot);
+    }
+    this.userShiftDivElement = undefined;
+    this.dragDropInitialRect = undefined;
+    this.selectedTimeSlot = undefined;
   }
 }

@@ -105,18 +105,22 @@ export class ShiftTableService {
             userShift.get('category')?.id === category.id) ?? [];
 
         return userShifts.map(userShift => {
-            const diferenceToStartOfEventInMin = TimeSpanUtils.getMinutesBetweenDates(this.event?.get('start'), userShift.get('start'));
-            const timeSlotsBeforeShiftCount = Math.floor(diferenceToStartOfEventInMin / this.minuteInterval);
+            const userThimeShift = {} as TableShift;
+            userThimeShift.shift = userShift;
+            return this.calculatePxForUserShift(userThimeShift);
+        });
+    }
 
-            const userShiftDurationInMinutes = TimeSpanUtils.getMinutesBetweenDates(userShift.get('start'), userShift.get('end'));
-            const timeSlotsForUserShiftCount = Math.floor(userShiftDurationInMinutes / this.minuteInterval);
+    public calculatePxForUserShift(userThimeShift: TableShift) {
+        const diferenceToStartOfEventInMin = TimeSpanUtils.getMinutesBetweenDates(this.event?.get('start'), userThimeShift.shift.get('start'));
+        const timeSlotsBeforeShiftCount = Math.floor(diferenceToStartOfEventInMin / this.minuteInterval);
 
-            return {
-                marginLeftPx: timeSlotsBeforeShiftCount * this.widthInterval + 0 * timeSlotsBeforeShiftCount,
-                widthPx: timeSlotsForUserShiftCount * this.widthInterval + 0 * timeSlotsForUserShiftCount,
-                shift: userShift
-            } as TableShift;
-        })
+        const userShiftDurationInMinutes = TimeSpanUtils.getMinutesBetweenDates(userThimeShift.shift.get('start'), userThimeShift.shift.get('end'));
+        const timeSlotsForUserShiftCount = Math.floor(userShiftDurationInMinutes / this.minuteInterval);
+
+        userThimeShift.marginLeftPx = timeSlotsBeforeShiftCount * this.widthInterval + 0 * timeSlotsBeforeShiftCount;
+        userThimeShift.widthPx = timeSlotsForUserShiftCount * this.widthInterval + 0 * timeSlotsForUserShiftCount;
+        return userThimeShift;
     }
 
     async fetchAllCategories() {

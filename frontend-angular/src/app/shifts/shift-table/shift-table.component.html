@@ -1,5 +1,9 @@
 <div class="pb-4">
-<button class="btn" (click)="pickEditUser()">Benutzer wählen</button>
+    <div class="shift-card">
+        <button class="btn" style="margin-top: 0px;" (click)="changeEditMode()" >{{editMode ? 'Ansichts Modus' : 'Bearbeiten'}}</button>
+        <button class="btn-secondary" style="margin-top: 0px;" (click)="pickEditUser()" *ngIf="editMode">{{currentEditUser ?
+            currentEditUser.get('firstName') + ' ' + currentEditUser.get('lastName') : 'HelferIn wählen'}}</button>
+    </div>
 </div>
 <div class="table-container">
     <table class="relative">
@@ -33,7 +37,8 @@
                         </div-->
                             <div [style]="'margin-left: ' + timeSlot.marginLeftPx + 'px; width: ' + timeSlot.widthPx + 'px'"
                                 [class]="(timeSlot.selected ? 'bg-green-300' : 'bg-orange-300') + ' rounded px-2'"
-                                (click)="selectShift(timeSlot)">
+                                (click)="selectShift(timeSlot)" 
+                                (mousedown)="onShiftMouseDown($event, timeSlot)">
                                 {{timeSlot.shift.get('user').get('firstName')}}
                                 {{timeSlot.shift.get('user').get('lastName')}}
                             </div>
