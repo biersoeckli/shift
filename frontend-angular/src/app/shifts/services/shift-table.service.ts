@@ -12,6 +12,14 @@ export interface ShiftTable {
 export interface ShiftTableCategory {
     category: Parse.Object<Parse.Attributes>;
     shifts: TableShift[];
+    userWishs: TableUserShiftWish[]
+}
+
+export interface TableUserShiftWish {
+    marginLeftPx: number;
+    widthPx: number;
+    isOverlapping: boolean;
+    shift: Parse.Object<Parse.Attributes>;
 }
 
 export interface TableShift {
@@ -54,14 +62,18 @@ export class ShiftTableService {
             // cannot render, because is too many slots
             return;
         }
-
-        const categories = await this.fetchAllCategories();
+        const [categories, userShiftWishForEvent, userEventCategories] = await Promise.all([
+            this.fetchAllCategories(),
+            this.fetchAllUserShiftWishForEvent(),
+            this.fetchAllUserEventCategory()
+        ])
         const eventTimeSlots = this.buildHeaderTimeSlots();
         const shiftTableCategories = await new Promise(resolve => resolve(
             categories.map(category => {
                 return {
                     category,
-                    shifts: this.buildCategoryTimeSlots(category)
+                    shifts: this.buildCategoryTimeSlots(category),
+                    userWishs: this.buildUserWishesForCategory(category, userShiftWishForEvent, userEventCategories)
                 } as ShiftTableCategory;
             })
         ));
@@ -70,6 +82,16 @@ export class ShiftTableService {
             headerTimeSlots: eventTimeSlots
         } as ShiftTable;
     }
+    buildUserWishesForCategory(category: Parse.Object<Parse.Attributes>, userShiftWishForEvent: Parse.Object<Parse.Attributes>[],
+        userEventCategories: Parse.Object<Parse.Attributes>[]): TableUserShiftWish[] {
+
+        const usersWithThisCategory = userEventCategories.filter(userEventCategory =>
+            userEventCategory.get('category').id === category.id)
+            .map(userEventCategory => userEventCategory.get('user').id);
+        return userShiftWishForEvent.filter(userShiftWish => usersWithThisCategory.includes(userShiftWish.get('user').id))
+            .map(x => undefined as any);
+    }
+
 
     buildHeaderTimeSlots(): TimeSpan[] {
         if (!this.event) {
@@ -123,10 +145,40 @@ export class ShiftTableService {
         return userThimeShift;
     }
 
+    public async fetchAllUserShiftWishForEvent() {
+        if (!this.event) {
+            return [];
+        }
+        const query = new Parse.Query(Parse.Object.extend('UserShiftWish'));
+        query.equalTo('event', this.event);
+        query.include('event');
+        query.include('user');
+        query.include('shift');
+        query.limit(10000);
+        return await query.find();
+    }
+
+    public async fetchAllUserEventCategory() {
+        if (!this.event) {
+            return [];
+        }
+        const query = new Parse.Query(Parse.Object.extend('UserEventCategory'));
+        query.equalTo('event', this.event);
+        query.include('event');
+        query.include('user');
+        query.include('category');
+        query.limit(10000);
+        return await query.find();
+    }
+
     async fetchAllCategories() {
+        if (!this.event) {
+            return [];
+        }
         const query = new Parse.Query(Parse.Object.extend('EventCategory'));
         query.equalTo('event', this.event);
         query.ascending('name');
+        query.limit(10000);
         return await query.find();
     }
 }

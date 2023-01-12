@@ -45,6 +45,14 @@ Parse.Cloud.beforeSave("Event", async (request) => {
     if (!DateUtils.gt(request.object.get('start'), request.object.get('end'))) {
         throw 'Das Startdatum muss vor dem Enddatum liegen';
     }
+    if (request.object.get('start')) {
+        (request.object.get('start') as Date).setSeconds(0);
+        (request.object.get('start') as Date).setMilliseconds(0);
+    }
+    if (request.object.get('end')) {
+        (request.object.get('end') as Date).setSeconds(0);
+        (request.object.get('end') as Date).setMilliseconds(0);
+    }
 }, {
     fields: {
         name: {
