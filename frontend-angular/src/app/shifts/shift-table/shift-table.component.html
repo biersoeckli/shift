@@ -3,12 +3,14 @@
     <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
 <div class="pb-4">
-    <div class="shift-card">
-        <button class="btn" style="margin-top: 0px;" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
+    <div class="shift-card" style="padding-top: 0px;" >
+        <button class="btn" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
             'Bearbeiten'}}</button>
-        <button class="btn-secondary" style="margin-top: 0px;" (click)="pickAddUser()"
+        <button class="btn-secondary" (click)="pickAddUser()"
             *ngIf="editMode">{{currentAddUser ?
                 currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') : 'Schicht hinzufügen'}}</button>
+        <button class="btn-secondary"  (click)="toggleIncludeWishes()">{{includeWishesInTable ?
+                'Wünschschichten ausblenden' : 'Wünschschichten anzeigen'}}</button>
     </div>
 </div>
 <div class="table-container no-select">
@@ -47,6 +49,19 @@
                             </div>
                         </ng-container>
                         <span *ngIf="tableCategory.shifts?.length === 0" class="text-white">.</span>
+                    </td>
+                </tr>
+                <tr *ngIf="(tableCategory.userWishs ?? []).length > 1">
+                    <td></td>
+                    <td colspan="100%">
+                        <ng-container *ngFor="let tableShift of tableCategory.userWishs">
+                            <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
+                                class="rounded px-2 bg-gray-300 text-gray-700">
+                                {{tableShift.shift.get('user').get('firstName')}}
+                                {{tableShift.shift.get('user').get('lastName')}}
+                            </div>
+                        </ng-container>
+                        <span *ngIf="tableCategory.userWishs?.length === 0" class="text-white">.</span>
                     </td>
                 </tr>
             </ng-container>

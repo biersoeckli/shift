@@ -12,7 +12,7 @@ export interface ShiftTable {
 export interface ShiftTableCategory {
     category: Parse.Object<Parse.Attributes>;
     shifts: TableShift[];
-    userWishs: TableUserShiftWish[]
+    userWishs?: TableUserShiftWish[]
 }
 
 export interface TableUserShiftWish {
@@ -48,7 +48,7 @@ export class ShiftTableService {
         this.userShifts = await this.shiftService.getShiftsBookingsForEvent(this.event);
     }
 
-    async calculateShiftTable() {
+    async calculateShiftTable(includeWishes = false) {
         if (!this.event) {
             return;
         }
@@ -73,7 +73,7 @@ export class ShiftTableService {
                 return {
                     category,
                     shifts: this.buildCategoryTimeSlots(category),
-                    userWishs: this.buildUserWishesForCategory(category, userShiftWishForEvent, userEventCategories)
+                    userWishs: includeWishes ? this.buildUserWishesForCategory(category, userShiftWishForEvent, userEventCategories) : []
                 } as ShiftTableCategory;
             })
         ));
@@ -82,14 +82,20 @@ export class ShiftTableService {
             headerTimeSlots: eventTimeSlots
         } as ShiftTable;
     }
+
     buildUserWishesForCategory(category: Parse.Object<Parse.Attributes>, userShiftWishForEvent: Parse.Object<Parse.Attributes>[],
         userEventCategories: Parse.Object<Parse.Attributes>[]): TableUserShiftWish[] {
 
         const usersWithThisCategory = userEventCategories.filter(userEventCategory =>
             userEventCategory.get('category').id === category.id)
             .map(userEventCategory => userEventCategory.get('user').id);
+
         return userShiftWishForEvent.filter(userShiftWish => usersWithThisCategory.includes(userShiftWish.get('user').id))
-            .map(x => undefined as any);
+            .map(userShiftWish => {
+                const userThimeShift = {} as TableUserShiftWish;
+                userThimeShift.shift = userShiftWish;
+                return this.calculatePxForUserShift(userThimeShift);
+            });
     }
 
 
@@ -122,7 +128,6 @@ export class ShiftTableService {
         if (!this.event) {
             return [];
         }
-
         const userShifts = this.userShifts?.filter(userShift =>
             userShift.get('category')?.id === category.id) ?? [];
 
@@ -133,11 +138,19 @@ export class ShiftTableService {
         });
     }
 
-    public calculatePxForUserShift(userThimeShift: TableShift) {
-        const diferenceToStartOfEventInMin = TimeSpanUtils.getMinutesBetweenDates(this.event?.get('start'), userThimeShift.shift.get('start'));
-        const timeSlotsBeforeShiftCount = Math.floor(diferenceToStartOfEventInMin / this.minuteInterval);
+    public calculatePxForUserShift<TInOutType extends TableShift | TableUserShiftWish>(userThimeShift: TInOutType): TInOutType {
+        if (!this.event) {
+            return undefined as any;
+        }
+        const eventStart = this.event.get('start');
+        const eventEnd = this.event.get('end');
+        const shiftStart = userThimeShift.shift.className === 'UserShift' ? userThimeShift.shift.get('start') : userThimeShift.shift.get('shift').get('start');
+        const shiftEnd = userThimeShift.shift.className === 'UserShift' ? userThimeShift.shift.get('end') : userThimeShift.shift.get('shift').get('end');
 
-        const userShiftDurationInMinutes = TimeSpanUtils.getMinutesBetweenDates(userThimeShift.shift.get('start'), userThimeShift.shift.get('end'));
+        const diferenceToStartOfEventInMin = TimeSpanUtils.getMinutesBetweenDates(eventStart, shiftStart);
+        const timeSlotsBeforeShiftCount = shiftStart.getTime() < eventStart.getTime() ? 0 : Math.floor(diferenceToStartOfEventInMin / this.minuteInterval);
+
+        let userShiftDurationInMinutes = eventEnd.getTime() < shiftEnd.getTime() ? TimeSpanUtils.getMinutesBetweenDates(shiftStart, eventEnd) : TimeSpanUtils.getMinutesBetweenDates(shiftStart, shiftEnd);
         const timeSlotsForUserShiftCount = Math.floor(userShiftDurationInMinutes / this.minuteInterval);
 
         userThimeShift.marginLeftPx = timeSlotsBeforeShiftCount * this.widthInterval + 0 * timeSlotsBeforeShiftCount;

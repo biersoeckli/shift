@@ -29,6 +29,8 @@ export class ShiftTableComponent implements OnInit {
   dragDropInitialRect?: DOMRect;
   contextMenuSelectedTableShift?: TableShift;
 
+  includeWishesInTable = false;
+
   constructor(public readonly shiftTableService: ShiftTableService,
     public dialog: MatDialog) {
 
@@ -41,7 +43,7 @@ export class ShiftTableComponent implements OnInit {
   @fluffyLoading()
   async init() {
     await this.shiftTableService.initByEventId(this.eventId ?? '');
-    this.shiftTable = await this.shiftTableService.calculateShiftTable();
+    this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
   }
 
   pickAddUser(): void {
@@ -135,7 +137,7 @@ export class ShiftTableComponent implements OnInit {
     userShift.set('end', timeSpanOfSlot.end);
     userShift.set('category', category);
     this.shiftTableService.userShifts?.push(userShift);
-    this.shiftTable = await this.shiftTableService.calculateShiftTable();
+    this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
     return await userShift.save();
   }
 
@@ -241,7 +243,7 @@ export class ShiftTableComponent implements OnInit {
     }
     await this.contextMenuSelectedTableShift.shift.destroy();
     this.shiftTableService.userShifts = this.shiftTableService.userShifts?.filter(x => x !== this.contextMenuSelectedTableShift?.shift);
-    this.shiftTable = await this.shiftTableService.calculateShiftTable();
+    this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
     this.contextMenuElement.nativeElement.classList.remove("visible");
   }
 
@@ -265,5 +267,10 @@ export class ShiftTableComponent implements OnInit {
     this.contextMenuElement.nativeElement.style.left = `${mouseX}px`;
 
     this.contextMenuElement.nativeElement.classList.add("visible");
+  }
+
+  async toggleIncludeWishes() {
+    this.includeWishesInTable = !this.includeWishesInTable;
+    this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
   }
 }
