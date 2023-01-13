@@ -1,1 +1,5 @@
-<p>volunteer-detail-edit works!</p>
+<div class="shift-content">
+    <shift-back-arrow (backClick)="navigation.eventVolunteerOverview(params.eventId)" [title]="'HelferIn Hinzufügen'"></shift-back-arrow>
+    <shift-volunteer-edit-form [eventId]="params.eventId"
+        (createdUserEvent)="navigation.eventVolunteerOverview(params.eventId)"></shift-volunteer-edit-form>
+</div>

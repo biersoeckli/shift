@@ -1,5 +1,5 @@
 
-<div class="m-8" *ngIf="event">
+<div class="shift-content" *ngIf="event">
     <shift-back-arrow (backClick)="navigation.eventDetail(event.id)" [title]="'Event Kategorien'"></shift-back-arrow>
     <div *ngFor="let item of categories ?? []" (click)="navigation.eventCategoryEdit(event.id, item.id)" class="shift-list-item">
         {{item.get('name') }} 

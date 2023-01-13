@@ -1,1 +1,47 @@
-<p>volunteer-detail works!</p>
+<div class="shift-content">
+    <shift-back-arrow (backClick)="navigation.eventVolunteerOverview(params.eventId)"
+        [title]="'HelferIn'"></shift-back-arrow>
+    <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4" *ngIf="userEvent">
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Kontaktdaten</div>
+            <div><span class="font-semibold">Name: </span>{{user.get('firstName')}} {{user.get('lastName')}}</div>
+            <div><span class="font-semibold">Mail: </span>{{user.get('email')}}</div>
+            <div><span class="font-semibold">Tel.: </span><a [href]="'tel:' + user.get('phone')"
+                    class="underline text-blue-400">{{user.get('phone')}}</a></div>
+        </div>
+
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Zugeteilte Schichten</div>
+            <div *ngFor="let shift of userShifts ?? []">- {{shift.get('start') | fromTo: shift.get('end'): true}}</div>
+            <div *ngIf="(userShifts ?? []).length === 0">keine</div>
+        </div>
+
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Kategorie Wünsche</div>
+            <div *ngFor="let cat of userEventCategories ?? []">- {{cat.get('category').get('name')}}</div>
+            <div *ngIf="(userEventCategories ?? []).length === 0">keine</div>
+        </div>
+
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Schicht Wünsche</div>
+            <div *ngFor="let userShiftItem of userShiftWishes?? []">- {{userShiftItem.get('shift').get('start') |
+                fromTo:
+                userShiftItem.get('shift').get('end'): true}}</div>
+            <div *ngIf="(userShiftWishes ?? []).length === 0">keine</div>
+        </div>
+
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Dokumente</div>
+            todo
+        </div>
+        <div class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Auszahlung</div>
+            todo
+        </div>
+        <div>
+            <label class="input-label">Bemerkungen (von HelferIn)</label>
+            <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
+        </div>
+    </div>
+    <button class="btn-secondary" >Schichtplan drucken</button>
+</div>

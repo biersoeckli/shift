@@ -21,6 +21,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./shifts/shifts.module').then(m => m.ShiftsModule),
     canActivate: [CanActivateAuthenticated]
+  }, {
+    path: '',
+    loadChildren: () => import('./volunteer/volunteer.module').then(m => m.VolunteerModule),
+    canActivate: [CanActivateAuthenticated]
   }
 ];
 

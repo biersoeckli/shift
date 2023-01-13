@@ -34,7 +34,7 @@ export interface TableShift {
 export class ShiftTableService {
 
     minuteInterval = 60; // todo make this as event param
-    widthInterval = 100; // width in px
+    widthInterval = 50; // width in px
 
     event?: Parse.Object<Parse.Attributes>;
     shifts?: Parse.Object<Parse.Attributes>[];

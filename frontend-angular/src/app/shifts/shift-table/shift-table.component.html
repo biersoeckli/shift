@@ -1,21 +1,20 @@
 <div #contextMenu class="context-menu">
     <div class="context-item" (click)="editContextMenuSelection()">Bearbeiten</div>
+    <div class="context-item" (click)="editUserForShiftContextMenuSelection()">HelferIn Ändern</div>
     <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
 <div class="pb-4">
     <div class="shift-card flex mt-4" style="padding-top: 0px;">
-        <div>
+        <div class="flex-1">
             <button class="btn" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
                 'Bearbeiten'}}</button>
-        </div>
-        <div>
+            <button class="btn-secondary" (click)="toggleIncludeWishes()">{{includeWishesInTable ?
+                'Wünschschichten ausblenden' : 'Wünschschichten anzeigen'}}</button>
             <button class="btn-secondary" (click)="pickAddUser()" *ngIf="editMode">{{currentAddUser ?
                 currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') : 'Schicht hinzufügen'}}</button>
+
         </div>
-        <div><button class="btn-secondary" (click)="toggleIncludeWishes()">{{includeWishesInTable ?
-                'Wünschschichten ausblenden' : 'Wünschschichten anzeigen'}}</button>
-        </div>
-        <div class="flex-1"></div>
+
         <div class="justify-end" *ngIf="eventId">
             <div [matMenuTriggerFor]="menu"
                 class="mt-3.5 text-orange-500 py-3 px-5 rounded-xl hover:bg-slate-100 active:bg-slate-200 cursor-pointer transition-all">
@@ -33,10 +32,10 @@
                     <span>Schichten Bearbeiten</span>
                 </button>
                 <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
-                    <span>Event Kategorien Bearbeiten</span>
+                    <span>Kategorien Bearbeiten</span>
                 </button>
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">
-                    <span>Helfer Übersicht</span>
+                    <span>Helferübersicht</span>
                 </button>
             </mat-menu>
         </div>
@@ -48,10 +47,9 @@
             <tr>
                 <th>Kategorien</th>
                 <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []; let i = index">
-
                     <th>
                         <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
-                            {{timeSlot.start | fromTo: timeSlot.end}}
+                            {{timeSlot.start | fluffyTime}}
                         </div>
                         <div class="absolute top-0 h-full border-l border-dotted text-white">
                             .

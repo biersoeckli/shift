@@ -9,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EventDetailEditComponent } from '../event-planner/event-detail-edit/event-detail-edit.component';
 import { EventDetailComponent } from '../event-planner/event-detail/event-detail.component';
 import { EventsComponent } from '../event-planner/events/events.component';
+import { VolunteerEditFormComponent } from './volunteer-edit-form/volunteer-edit-form.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,8 @@ const routes: Routes = [
     VolunteerListComponent,
     VolunteerOverviewComponent,
     VolunteerDetailComponent,
-    VolunteerDetailEditComponent
+    VolunteerDetailEditComponent,
+    VolunteerEditFormComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [
-    VolunteerListComponent
+    VolunteerListComponent,
+    VolunteerEditFormComponent
   ]
 })
 export class VolunteerModule { }

@@ -1,4 +1,4 @@
-<div class="m-8" *ngIf="event && userEventCategories && userShift && userEvent">
+<div class="shift-content" *ngIf="event && userEventCategories && userShift && userEvent">
     <div class="shift-header">Überprüfen</div>
     <div class="shift-card">
         Bitte Überprüfe deine Angaben für den Event <span
@@ -11,6 +11,7 @@
         <div>{{event.get('name')}}</div>
         <div class="text-slate-500">Dauer des gesamten Events: <br>{{event.get('start') | fromTo: event.get('end'): true}}</div>
     </div>
+    
     <div class="rounded-xl border-2 border-dotted p-4 mt-4" *ngIf="currentUser">
         <div class="text-xl font-semibold pb-1">Deine Infos</div>
         <div><span class="font-semibold">Name:</span> {{currentUser.get('firstName')}} {{currentUser.get('lastName')}}</div>
@@ -28,7 +29,7 @@
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
         <div class="text-xl font-semibold pb-1">Schichten</div>
         <div *ngFor="let userShiftItem of userShift">- {{userShiftItem.get('shift').get('start') | fromTo:
-            userShiftItem.get('shift').get('start')}}</div>
+            userShiftItem.get('shift').get('end'): true}}</div>
         <button class="btn-secondary" (click)="navigation.registrationShiftChooser(params.eventId)">Bearbeiten</button>
     </div>
 

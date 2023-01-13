@@ -103,8 +103,10 @@ input, textarea {
     }
 }
 
-.shift-sm-layout {
-    
+.shift-info-card {
+    @apply rounded-xl border-2 border-dotted px-4 py-3;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.shift-content {
+    @apply m-8 lg:px-40 xl:px-72;
+}

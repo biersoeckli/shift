@@ -1,4 +1,4 @@
-<div class="m-8">
+<div class="shift-content">
     <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)" [title]="'Schichten'"></shift-back-arrow>
     <div *ngFor="let item of shiftWithBookings ?? []"
         (click)="navigation.shiftDetailEdit(item.shift.get('event').id, item.shift.id)" class="shift-list-item">

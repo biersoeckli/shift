@@ -56,6 +56,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     }
     const dialog = this.dialog.open(UserPickerDialogComponent, {
       minWidth: '400px',
+      width: '50%',
       data: this.shiftTableService.event
     });
 
@@ -64,7 +65,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
         return;
       }
       this.currentAddUser = selectedUser;
-    })
+    });
   }
 
   changeEditMode() {
@@ -98,8 +99,8 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     /// start = minutes where the timespan starts after the event starts
     // end = minutes when the timespan ends after the event starts
     const minutesRange = {
-      start: (intervalCount - 1) * this.shiftTableService.minuteInterval,
-      end: (intervalCount) * this.shiftTableService.minuteInterval
+      start: (intervalCount - 2) * this.shiftTableService.minuteInterval,
+      end: (intervalCount - 1) * this.shiftTableService.minuteInterval
     }
 
     const eventStart = this.shiftTableService.event?.get('start');
@@ -236,6 +237,32 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     }
 
     this.contextMenuElement.nativeElement.classList.remove("visible");
+  }
+
+  async editUserForShiftContextMenuSelection() {
+    if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
+      return;
+    }
+    this.contextMenuElement.nativeElement.classList.remove("visible");
+
+    const selectedShift = this.contextMenuSelectedTableShift.shift;
+    if (!selectedShift) {
+      return;
+    }
+    const dialog = this.dialog.open(UserPickerDialogComponent, {
+      minWidth: '400px',
+      width: '50%',
+      data: this.shiftTableService.event
+    });
+
+    dialog.afterClosed().subscribe(async selectedUser => {
+      if (!selectedUser) {
+        return;
+      }
+      
+      selectedShift.set('user', selectedUser);
+      await selectedShift.save();
+    });
   }
 
   async deleteContextMenuSelection() {

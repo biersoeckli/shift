@@ -1,4 +1,4 @@
-<div class="m-8" *ngIf="item">
+<div class="shift-content" *ngIf="item">
     <div class="shift-header">Schicht {{item.id ? 'bearbeiten' : 'erstellen'}}</div>
 
     <shift-datetime-input [label]="'Start der Schicht'" [date]="item.get('start')"
