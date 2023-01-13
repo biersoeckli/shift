@@ -1,8 +1,9 @@
-<div *ngFor="let item of shiftWithBookings ?? []"
-    (click)="navigation.shiftDetailEdit(item.shift.get('event').id, item.shift.id)" class="shift-list-item">
-    {{item.shift.get('start') | fromTo: item.shift.get('end'): true}}<br>
-    <span>{{item.bookings.length}} Buchungen</span>
-</div>
-<div class="mt-4">
-    <shift-table [eventId]="eventId"></shift-table>
+<div class="m-8">
+    <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)" [title]="'Schichten'"></shift-back-arrow>
+    <div *ngFor="let item of shiftWithBookings ?? []"
+        (click)="navigation.shiftDetailEdit(item.shift.get('event').id, item.shift.id)" class="shift-list-item">
+        {{item.shift.get('start') | fromTo: item.shift.get('end'): true}}<br>
+        <span>{{item.bookings.length}} Buchungen</span>
+    </div>
+    <button class="btn" (click)="navigation.shiftDetailEdit(params.eventId)">Schicht hinzufügen</button>
 </div>

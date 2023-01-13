@@ -1,8 +1,4 @@
 <div class="m-8" *ngIf="event">
     <shift-back-arrow (backClick)="navigation.eventOverview()" [title]="event.get('name') ?? 'unbenannter Event'"></shift-back-arrow>
-    <shifts-overview [eventId]="event.id"></shifts-overview>
-    
-    <button class="btn mt-2" (click)="navigation.eventDetailEdit(event.id)">Event bearbeiten</button>
-    <button class="btn-secondary mt-2" (click)="navigation.shiftDetailEdit(event.id)">Schicht hinzufügen</button>
-    <button class="btn-secondary mt-2" (click)="navigation.eventCategoryOverview(event.id)">Kategorien bearbeiten</button>
+    <shift-table [eventId]="event.id"></shift-table>
 </div>

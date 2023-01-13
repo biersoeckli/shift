@@ -27,7 +27,7 @@ export class ShiftService {
         return allShifts.map(shift => {
             return {
                 shift,
-                bookings: userShifts.filter(userShift => userShift.get('shift').id === shift.id)
+                bookings: userShifts.filter(userShift => userShift.get('shift')?.id === shift.id)
             } as ShiftWithBookings;
         })
     }
@@ -44,7 +44,7 @@ export class ShiftService {
         return allShifts.map(shift => {
             return {
                 shift,
-                booking: userShifts.find(userShift => userShift.get('shift').id === shift.id)
+                booking: userShifts.find(userShift => userShift.get('shift')?.id === shift.id)
             } as ShiftWithWishBooking;
         })
     }

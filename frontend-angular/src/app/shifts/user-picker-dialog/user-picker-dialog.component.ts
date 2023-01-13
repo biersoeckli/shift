@@ -32,7 +32,6 @@ export class UserPickerDialogComponent {
     this.init();
   }
 
-  @fluffyLoading()
   async init() {
     const query = new Parse.Query(Parse.Object.extend('UserEvent'));
     query.equalTo('event', this.event);

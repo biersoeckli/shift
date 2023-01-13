@@ -64,6 +64,12 @@ export class NavigationService {
     });
   }
 
+  async shiftsOverview(eventId: string) {
+    await this.router.navigate(['shifts'], {
+      queryParams: new EventDetailParam(eventId)
+    });
+  }
+
   async eventDetailEdit(eventId?: string) {
     if (eventId) {
       await this.router.navigate(['events', 'detail', 'edit'], {
@@ -72,12 +78,6 @@ export class NavigationService {
     } else {
       await this.router.navigate(['events', 'detail', 'edit']);
     }
-  }
-
-  async shiftDetail(shiftId: string) {
-    await this.router.navigate(['shifts', 'detail'], {
-      queryParams: new ShiftDetailParams(shiftId)
-    });
   }
 
   async shiftDetailEdit(eventId: string, shiftId?: string) {

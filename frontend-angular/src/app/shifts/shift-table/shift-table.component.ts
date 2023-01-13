@@ -6,13 +6,15 @@ import * as Parse from 'parse';
 import { ShiftTable, ShiftTableCategory, ShiftTableService, TableShift } from '../services/shift-table.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserPickerDialogComponent } from '../user-picker-dialog/user-picker-dialog.component';
+import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
+import { CommonService } from 'src/app/shift-common/services/common.service';
 
 @Component({
   selector: 'shift-table',
   templateUrl: './shift-table.component.html',
   styleUrls: ['./shift-table.component.scss']
 })
-export class ShiftTableComponent implements OnInit {
+export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   @Input() eventId?: string;
   @ViewChild('contextMenu') contextMenuElement?: ElementRef;
@@ -32,8 +34,9 @@ export class ShiftTableComponent implements OnInit {
   includeWishesInTable = false;
 
   constructor(public readonly shiftTableService: ShiftTableService,
-    public dialog: MatDialog) {
-
+    public dialog: MatDialog,
+    common: CommonService) {
+    super(common);
   }
 
   ngOnInit(): void {
@@ -237,7 +240,7 @@ export class ShiftTableComponent implements OnInit {
 
   async deleteContextMenuSelection() {
     console.log(this.contextMenuSelectedTableShift);
-    
+
     if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
       return;
     }

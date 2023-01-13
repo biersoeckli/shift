@@ -8,15 +8,13 @@ import { ShiftService } from './services/shift.service';
 import { ShiftTableComponent } from './shift-table/shift-table.component';
 import { ShiftTableService } from './services/shift-table.service';
 import { UserPickerDialogComponent } from './user-picker-dialog/user-picker-dialog.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 const routes: Routes = [
   {
     path: 'shifts',
-    component: ShiftDetailEditComponent,
-  }, {
-    path: 'shifts/detail',
-    component: ShiftDetailEditComponent,
+    component: ShiftOverviewComponent,
   }, {
     path: 'shifts/detail/edit',
     component: ShiftDetailEditComponent,
@@ -33,10 +31,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ShiftCommonModule,
+    MatMenuModule,
     RouterModule.forChild(routes)
   ],
   exports: [
-    ShiftOverviewComponent
+    ShiftTableComponent
   ],
   providers: [
     ShiftService,

@@ -12,6 +12,7 @@ import { DatetimeInputComponent } from './components/datetime-input/datetime-inp
 import { BackArrowComponent } from './components/back-arrow/back-arrow.component';
 import { DateFromToPipe } from './pipes/date-from-to.pipe';
 import {MatDialogModule} from '@angular/material/dialog';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     DateInputComponent,
     DatetimeInputComponent,
     BackArrowComponent,
-    DateFromToPipe
+    DateFromToPipe,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     DatetimeInputComponent,
     BackArrowComponent,
     DateFromToPipe,
-    MatDialogModule
+    MatDialogModule,
+    LoaderComponent
   ],
   providers: [
     NavigationService,

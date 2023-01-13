@@ -12,10 +12,13 @@
                 [(ngModel)]="searchTerm" (keyup)="filter()">
         </div>
         <div>Bitte wähle eine/n Helfer/in</div>
+
+        <shift-loader *ngIf="!filteredUserEvents"></shift-loader>
         <div *ngFor="let item of filteredUserEvents ?? []" (click)="selectUser(item.get('user'))"
             class="shift-list-item">
             {{item.get('user').get('firstName')}} {{item.get('user').get('lastName')}}
         </div>
+
     </div>
     <ng-template #addHelper>
         <div class="mb-4">Neue/r Helfer/in hinzufügen</div>

@@ -3,14 +3,43 @@
     <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
 <div class="pb-4">
-    <div class="shift-card" style="padding-top: 0px;" >
-        <button class="btn" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
-            'Bearbeiten'}}</button>
-        <button class="btn-secondary" (click)="pickAddUser()"
-            *ngIf="editMode">{{currentAddUser ?
+    <div class="shift-card flex mt-4" style="padding-top: 0px;">
+        <div>
+            <button class="btn" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
+                'Bearbeiten'}}</button>
+        </div>
+        <div>
+            <button class="btn-secondary" (click)="pickAddUser()" *ngIf="editMode">{{currentAddUser ?
                 currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') : 'Schicht hinzufügen'}}</button>
-        <button class="btn-secondary"  (click)="toggleIncludeWishes()">{{includeWishesInTable ?
+        </div>
+        <div><button class="btn-secondary" (click)="toggleIncludeWishes()">{{includeWishesInTable ?
                 'Wünschschichten ausblenden' : 'Wünschschichten anzeigen'}}</button>
+        </div>
+        <div class="flex-1"></div>
+        <div class="justify-end" *ngIf="eventId">
+            <div [matMenuTriggerFor]="menu"
+                class="mt-3.5 text-orange-500 py-3 px-5 rounded-xl hover:bg-slate-100 active:bg-slate-200 cursor-pointer transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-6"
+                    viewBox="0 0 128 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path
+                        d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z" />
+                </svg>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="navigation.eventDetailEdit(eventId)">
+                    <span>Event Bearbeiten</span>
+                </button>
+                <button mat-menu-item (click)="navigation.shiftsOverview(eventId)">
+                    <span>Schichten Bearbeiten</span>
+                </button>
+                <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
+                    <span>Event Kategorien Bearbeiten</span>
+                </button>
+                <button mat-menu-item>
+                    <span>Helfer Übersicht</span>
+                </button>
+            </mat-menu>
+        </div>
     </div>
 </div>
 <div class="table-container no-select">

@@ -23,7 +23,8 @@ export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
     this.event = await query.get(this.params.eventId);
   }
 
-  nextStep() {
-    this.navigation.registrationUserDetails(this.params.eventId);
+  @fluffyLoading()
+  async nextStep() {
+    await this.navigation.registrationUserDetails(this.params.eventId);
   }
 }

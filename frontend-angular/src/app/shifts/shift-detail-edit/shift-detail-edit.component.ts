@@ -23,7 +23,7 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
       unsavedItem.set('event', this.event);
       return unsavedItem;
     }
-    this.afterSaveAction = savedItem => this.navigation.eventDetail(savedItem.get('event').id);
+    this.afterSaveAction = savedItem => this.navigation.shiftsOverview(savedItem.get('event').id);
   }
 
   @fluffyLoading()
