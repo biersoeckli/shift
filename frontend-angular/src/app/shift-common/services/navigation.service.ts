@@ -6,6 +6,7 @@ import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detai
 import { RegistrationParams } from 'src/app/registration/registration.params';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
 import { UserProfileParams } from 'src/app/user/user-profile/user-profile.params';
+import { VolunteerParam } from 'src/app/volunteer/volunteer.param';
 
 @Injectable()
 export class NavigationService {
@@ -95,6 +96,24 @@ export class NavigationService {
   async eventCategoryEdit(eventId: string, categoryId?: string) {
     await this.router.navigate(['events', 'categories', 'edit'], {
       queryParams: new EventCategoryParam(eventId, categoryId)
+    });
+  }
+
+  async eventVolunteerOverview(eventId: string) {
+    await this.router.navigate(['volunteers'], {
+      queryParams: new VolunteerParam(eventId)
+    });
+  }
+
+  async eventVolunteerDetail(eventId: string, userEventId?: string) {
+    await this.router.navigate(['volunteers', 'detail'], {
+      queryParams: new VolunteerParam(eventId, userEventId)
+    });
+  }
+
+  async eventVolunteerEdit(eventId: string, userEventId?: string) {
+    await this.router.navigate(['volunteers', 'detail', 'edit'], {
+      queryParams: new VolunteerParam(eventId, userEventId)
     });
   }
 }
