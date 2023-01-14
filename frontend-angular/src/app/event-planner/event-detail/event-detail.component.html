@@ -1,4 +1,4 @@
 <div class="m-8" *ngIf="event">
-    <shift-back-arrow (backClick)="navigation.eventOverview()" [title]="event.get('name') ?? 'unbenannter Event'"></shift-back-arrow>
+    <shift-back-arrow (backClick)="navigation.home()" [title]="event.get('name') ?? 'unbenannter Event'"></shift-back-arrow>
     <shift-table [eventId]="event.id"></shift-table>
 </div>

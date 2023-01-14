@@ -19,5 +19,5 @@
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()" [disabled]="!item.get('name')">Speichern</button>
     <button class="btn-secondary mt-2"
-        (click)="item.id ? navigation.eventDetail(item.id) : navigation.eventOverview()">Abbrechen</button>
+        (click)="item.id ? navigation.eventDetail(item.id) : navigation.home()">Abbrechen</button>
 </div>

@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { fluffyLoading } from 'ngx-fluffy-cow';
-import * as Parse from 'parse';
+import { initialize } from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
+import { UserEventDetailParams } from './user-event-detail.params';
 
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.component.html'
+  selector: 'app-user-event-detail',
+  templateUrl: './user-event-detail.component.html'
 })
-export class EventsComponent extends BaseComponent<void> {
-  events?: Parse.Object<Parse.Attributes>[];
+export class UserEventDetailComponent extends BaseComponent<UserEventDetailParams> {
+
+  event?: Parse.Object<Parse.Attributes>;
 
   constructor(common: CommonService) {
     super(common);
@@ -18,7 +20,8 @@ export class EventsComponent extends BaseComponent<void> {
 
   @fluffyLoading()
   async init() {
-    const query = new Parse.Query(Parse.Object.extend("Event"));
-    this.events = await query.find();
+    this.event = await this.eventService.getEventById(this.params.eventId);
   }
 }
+
+

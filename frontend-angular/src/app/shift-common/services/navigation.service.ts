@@ -5,6 +5,7 @@ import { EventCategoryParam } from 'src/app/event-categories/event-category.para
 import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detail.param';
 import { RegistrationParams } from 'src/app/registration/registration.params';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
+import { UserEventDetailParams } from 'src/app/user/user-event-detail/user-event-detail.params';
 import { UserProfileParams } from 'src/app/user/user-profile/user-profile.params';
 import { VolunteerParams } from 'src/app/volunteer/volunteer.params';
 
@@ -49,14 +50,20 @@ export class NavigationService {
     });
   }
 
+  async userEventOverview(eventId: string) {
+    await this.router.navigate(['user', 'event'], {
+      queryParams: new UserEventDetailParams(eventId)
+    });
+  }
+
   async registrationConfirmation(eventId: string) {
     await this.router.navigate(['register', 'confirmation'], {
       queryParams: new RegistrationParams(eventId)
     });
   }
 
-  async eventOverview() {
-    await this.router.navigate(['events']);
+  async home() {
+    await this.router.navigateByUrl('');
   }
 
   async eventDetail(eventId: string) {

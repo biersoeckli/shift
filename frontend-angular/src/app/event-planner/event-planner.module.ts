@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EventsComponent } from './events/events.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
@@ -9,9 +8,6 @@ import { ShiftsModule } from '../shifts/shifts.module';
 
 const routes: Routes = [
   {
-    path: 'events',
-    component: EventsComponent,
-  }, {
     path: 'events/detail',
     component: EventDetailComponent,
   }, {
@@ -25,7 +21,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    EventsComponent,
     EventDetailComponent,
     EventDetailEditComponent
   ],

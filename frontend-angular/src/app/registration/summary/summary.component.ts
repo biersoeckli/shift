@@ -40,7 +40,6 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
     this.userEvent = userEvent;
   }
 
-
   async fetchExistingUserEvent() {
     const query = new Parse.Query(Parse.Object.extend('UserEvent'));
     query.equalTo('event', this.event);

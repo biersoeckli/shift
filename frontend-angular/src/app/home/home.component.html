@@ -1,0 +1,19 @@
+<div class="shift-content" *ngIf="currentUser">
+    <div class="shift-header pt-1" style="margin-bottom: 0px;">
+        Hey, {{currentUser.get('firstName')}} 👋
+    </div>
+
+    <div class="text-xl font-semibold mt-8 ml-2">Meine Helfereinsätze</div>
+    <div *ngFor="let item of userEvents ?? []" class="shift-list-item" (click)="navigation.userEventOverview(item.get('event').id)">
+        {{item.get('event').get('name')}}<br>
+        <span>{{item.get('event').get('start') | fromTo: item.get('event').get('end'): true}}</span>
+    </div>
+    <ng-container *ngIf="isOrganizer">
+        <div class="text-xl font-semibold mt-8 ml-2">Events (OrganisatorIn)</div>
+        <div *ngFor="let event of events ?? []" (click)="navigation.eventDetail(event.id)" class="shift-list-item">
+            {{event.get('name')}}<br>
+            <span>{{event.get('start') | fluffyDateTime}} - {{event.get('end') | fluffyDateTime}}</span>
+        </div>
+        <button class="btn mt-2" (click)="navigation.eventDetailEdit()">Event erstellen</button>
+    </ng-container>
+</div>

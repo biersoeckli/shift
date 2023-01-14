@@ -6,9 +6,6 @@ import { VolunteerDetailComponent } from './volunteer-detail/volunteer-detail.co
 import { VolunteerDetailEditComponent } from './volunteer-detail-edit/volunteer-detail-edit.component';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { Routes, RouterModule } from '@angular/router';
-import { EventDetailEditComponent } from '../event-planner/event-detail-edit/event-detail-edit.component';
-import { EventDetailComponent } from '../event-planner/event-detail/event-detail.component';
-import { EventsComponent } from '../event-planner/events/events.component';
 import { VolunteerEditFormComponent } from './volunteer-edit-form/volunteer-edit-form.component';
 
 const routes: Routes = [

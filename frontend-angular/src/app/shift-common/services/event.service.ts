@@ -8,6 +8,16 @@ export class EventService {
 
   private eventCache: Parse.Object<Parse.Attributes>[] = [];
   
+
+  async getEventOrganizedByCurrentUser() {
+    const query = new Parse.Query(Parse.Object.extend('Event'));
+    query.limit(10000);
+    let events =  await query.find();
+    // todo filter by acl
+    ///events = events.filter(event => event.getACL()?.getRoleWriteAccess(x => ))
+    return events;
+  }
+
   async getEventById(eventId: string, useCachedValue = false) {
     const cachedEvent = this.eventCache.find(eventCached => eventCached.id === eventId);
     if (useCachedValue && cachedEvent) {
@@ -27,6 +37,13 @@ export class EventService {
     query.ascending('name');
     query.include('event');
     query.limit(10000);
+    return await query.find();
+  }
+
+  async getUserEventsFromCurrentUser() {
+    const query = new Parse.Query(Parse.Object.extend('UserEvent'));
+    query.include('event');
+    query.equalTo('user', Parse.User.current());
     return await query.find();
   }
 }

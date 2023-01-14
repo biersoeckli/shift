@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 import { CanActivateAuthenticated } from './shift-common/guards/authenticated.guard';
 
 const routes: Routes = [
@@ -11,9 +12,13 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   }, {
     path: '',
+    component: HomeComponent,
+    canActivate: [CanActivateAuthenticated]
+  }, {
+    path: '',
     loadChildren: () => import('./event-planner/event-planner.module').then(m => m.EventPlannerModule),
     canActivate: [CanActivateAuthenticated]
-  },{
+  }, {
     path: '',
     loadChildren: () => import('./user/user.module').then(m => m.UserModule),
     canActivate: [CanActivateAuthenticated]

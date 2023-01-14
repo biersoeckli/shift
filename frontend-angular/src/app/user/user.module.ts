@@ -3,9 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserEventDetailComponent } from './user-event-detail/user-event-detail.component';
 
 const routes: Routes = [
   {
+    path: 'user/event',
+    component: UserEventDetailComponent,
+  }, {
     path: 'user/profile',
     component: UserProfileComponent,
   }
@@ -13,7 +17,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    UserProfileComponent
+    UserProfileComponent,
+    UserEventDetailComponent
   ],
   imports: [
     CommonModule,
