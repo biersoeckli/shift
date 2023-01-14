@@ -14,6 +14,10 @@ export abstract class BaseComponent<TParamType> {
     return this.commonService.navigationService.router;
   }
 
+  get eventService() {
+    return this.commonService.eventService;
+  }
+
   constructor(public readonly commonService: CommonService) {
     this.params = UrlUtils.getUrlSearchParams<TParamType>();
   }

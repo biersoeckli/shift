@@ -26,7 +26,6 @@ export class CategoriesEditComponent extends BaseEditComponent<EventCategoryPara
 
   @fluffyLoading()
   async loadEvent() {
-    const query = new Parse.Query(Parse.Object.extend('Event'));
-    this.event = await query.get(this.params.eventId);
+    this.event = await this.eventService.getEventById(this.params.eventId);
   }
 }

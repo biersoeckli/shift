@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detail.param';
 import { BaseEditComponent } from 'src/app/shift-common/base-edit-component/base-edit-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftDetailParams } from './shift-detail.params';
@@ -28,16 +27,6 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
 
   @fluffyLoading()
   async loadAdditionalData() {
-    const query = new Parse.Query(Parse.Object.extend('Event'));
-    this.event = await query.get(this.params.eventId);
-
-    const query2 = new Parse.Query(Parse.Object.extend('EventCategory'));
-    this.categories = await query2.find();
-  }
-
-
-  categoryCompareFn = this._categoryCompareFn.bind(this);
-  _categoryCompareFn(catA: Parse.Object<Parse.Attributes>, catB: Parse.Object<Parse.Attributes>) {
-    return catA?.id === catB?.id;
+    this.event = await this.eventService.getEventById(this.params.eventId);
   }
 }

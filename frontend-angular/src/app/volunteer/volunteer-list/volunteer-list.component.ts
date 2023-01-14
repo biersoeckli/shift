@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as Parse from 'parse';
+import { EventService } from 'src/app/shift-common/services/event.service';
 
 @Component({
   selector: 'shift-volunteer-list',
@@ -13,11 +14,11 @@ export class VolunteerListComponent implements OnInit {
   filteredUserEvents?: Parse.Object<Parse.Attributes>[];
   searchTerm = '';
 
-  constructor() {
+  constructor(private readonly eventService: EventService) {
   }
 
   async ngOnInit() {
-    const event = await this.getEvent();
+    const event = await this.eventService.getEventById(this.eventId ?? '');
     await this.getUserEvents(event);
     this.filter();
   }
@@ -28,13 +29,6 @@ export class VolunteerListComponent implements OnInit {
     query.include('user');
     query.limit(10000);
     this.userEvents = await query.find();
-  }
-
-  private async getEvent() {
-    console.log(this.eventId);
-
-    const query = new Parse.Query(Parse.Object.extend('Event'));
-    return await query.get(this.eventId ?? '');
   }
 
   filter() {

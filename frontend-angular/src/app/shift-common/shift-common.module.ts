@@ -13,6 +13,7 @@ import { BackArrowComponent } from './components/back-arrow/back-arrow.component
 import { DateFromToPipe } from './pipes/date-from-to.pipe';
 import {MatDialogModule} from '@angular/material/dialog';
 import { LoaderComponent } from './components/loader/loader.component';
+import { EventService } from './services/event.service';
 
 
 @NgModule({

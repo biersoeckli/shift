@@ -20,15 +20,7 @@ export class CategoriesOverviewComponent extends BaseComponent<EventCategoryPara
 
   @fluffyLoading()
   private async init() {
-    this.event = await this.getEvent(this.params.eventId);
-    const query = new Parse.Query(Parse.Object.extend('EventCategory'));
-    query.equalTo('event', this.event);
-    query.ascending('name');
-    this.categories = await query.find();
-  }
-
-  public async getEvent(eventId: string) {
-    const query = new Parse.Query(Parse.Object.extend('Event'));
-    return await query.get(eventId);
+    this.event = await this.eventService.getEventById(this.params.eventId);
+    this.categories = await this.eventService.getEventCategories(this.params.eventId);
   }
 }
