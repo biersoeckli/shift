@@ -1,4 +1,22 @@
-export class RoleUtils {
+import { Service } from "typedi";
+import { getEventAdminRole, getEventViewerRole } from "../constants/roles.constants";
+
+@Service()
+export class RoleService {
+
+    async isUserOrganizerOfEvent(user?: Parse.User<Parse.Attributes>, eventId?: string) {
+        if (!eventId || !user) {
+            return false;
+        }
+        return await RoleService.isUserInRole(user, getEventAdminRole(eventId));
+    }
+
+    async isUserVolunteerOfEvent(user?: Parse.User<Parse.Attributes>, eventId?: string) {
+        if (!eventId || !user) {
+            return false;
+        }
+        return await RoleService.isUserInRole(user, getEventViewerRole(eventId));
+    }
 
     static async getOrCreateRole(roleName: string) {
         const query = new Parse.Query('_Role');

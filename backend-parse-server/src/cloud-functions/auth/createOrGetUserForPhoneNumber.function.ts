@@ -3,7 +3,7 @@ import { ROLE_EVENT_ORGANIZER } from "../../common/constants/roles.constants";
 import { AuthService } from "../../auth/auth.service";
 import { Service } from "typedi";
 import { BaseCloudFunction } from "../cloud-function.interface";
-import { RoleUtils } from "../../common/utils/role.utils";
+import { RoleService } from "../../common/utils/role.utils";
 import { SWISS_PHONE_NUMBER_REGEX } from "../../common/constants/phone-regex.constants";
 
 @Service()

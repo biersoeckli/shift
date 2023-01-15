@@ -1,10 +1,10 @@
 import { Service } from "typedi";
 import { BaseCloudFunction } from "../cloud-function.interface";
-import { RoleUtils } from "../../common/utils/role.utils";
+import { RoleService } from "../../common/utils/role.utils";
 import { getEventAdminRole, getEventViewerRole } from "../../common/constants/roles.constants";
 
 @Service()
-export class ShiftAfterSave extends BaseCloudFunction<void> {
+export class UserShiftAfterSave extends BaseCloudFunction<void> {
 
     constructor() {
         super();
@@ -12,15 +12,14 @@ export class ShiftAfterSave extends BaseCloudFunction<void> {
 
     async run(request: Parse.Cloud.AfterSaveRequest<Parse.Object<Parse.Attributes>>) {
         if (!request.original) {
-            const eventAdminRole = await RoleUtils.getOrCreateRole(getEventAdminRole(request.object.get('event').id));
-            const viewerRole = await RoleUtils.getOrCreateRole(getEventViewerRole(request.object.get('event').id));
+            const eventAdminRole = await RoleService.getOrCreateRole(getEventAdminRole(request.object.get('event').id));
             const acl = new Parse.ACL();
             acl.setPublicReadAccess(false);
             acl.setPublicWriteAccess(false);
             acl.setRoleReadAccess(eventAdminRole.get('name'), true);
             acl.setRoleWriteAccess(eventAdminRole.get('name'), true);
-            acl.setRoleReadAccess(viewerRole.get('name'), true);
-            acl.setRoleWriteAccess(viewerRole.get('name'), false);
+            acl.setReadAccess(request.object.get('user').id, true);
+            acl.setWriteAccess(request.object.get('user').id, false);
             request.object.setACL(acl);
             await request.object.save(null, {useMasterKey: true});
         }

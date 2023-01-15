@@ -7,11 +7,13 @@ import { AddUserByIdToEvent } from "./auth/add-user-to-event";
 import { AuthenticateWithPhoneNumberFunction } from "./auth/auth-with-phonenumber.function";
 import { GetOrCreateUserForPhoneNumberFunction } from "./auth/createOrGetUserForPhoneNumber.function";
 import { VerifyAuthChallengeCodeFunction } from "./auth/verify-auth-challenge-code.function";
-import { EventAfterSave } from "./event/event.after-save";
-import { ShiftAfterSave } from "./event/shift.after-save";
-import { UserEventAfterSave } from "./event/user-event.after-save";
-import { UserShiftWishAfterSave } from "./event/user-shift-wish.after-save";
-import { UserShiftAfterSave } from "./event/userShift.after-save";
+import { EventCategoryAfterSave } from "./after-save/event-category.after-save";
+import { EventAfterSave } from "./after-save/event.after-save";
+import { ShiftAfterSave } from "./after-save/shift.after-save";
+import { UserEventAfterSave } from "./after-save/user-event.after-save";
+import { UserShiftWishAfterSave } from "./after-save/user-shift-wish.after-save";
+import { UserShiftAfterSave } from "./after-save/userShift.after-save";
+import { UserEventCategoryAfterSave } from "./after-save/user-event-category.after-save";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -165,4 +167,35 @@ Parse.Cloud.beforeSave("UserEvent", () => { }, {
 
 Parse.Cloud.afterSave("UserEvent", async (request) => {
     return await Container.get(UserEventAfterSave).run(request);
+});
+
+
+Parse.Cloud.beforeSave("EventCategory", async request => {
+    
+}, {
+    fields: {
+        event: {
+            required: true
+        },
+        name: {
+            required: true
+        }
+    },
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
+    requireUser: true
+});
+
+Parse.Cloud.afterSave("EventCategory", async (request) => {
+    return await Container.get(EventCategoryAfterSave).run(request);
+});
+
+Parse.Cloud.beforeSave("UserEventCategory", async request => {
+    
+}, {
+    fields: ['event', 'user', 'category'],
+    requireUser: true
+});
+
+Parse.Cloud.afterSave("UserEventCategory", async (request) => {
+    return await Container.get(UserEventCategoryAfterSave).run(request);
 });

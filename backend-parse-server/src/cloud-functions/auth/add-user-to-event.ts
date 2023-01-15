@@ -3,7 +3,7 @@ import { getEventAdminRole, ROLE_EVENT_ORGANIZER } from "../../common/constants/
 import { AuthService } from "../../auth/auth.service";
 import { Service } from "typedi";
 import { BaseCloudFunction } from "../cloud-function.interface";
-import { RoleUtils } from "../../common/utils/role.utils";
+import { RoleService } from "../../common/utils/role.utils";
 import { SWISS_PHONE_NUMBER_REGEX } from "../../common/constants/phone-regex.constants";
 
 @Service()
@@ -15,7 +15,7 @@ export class AddUserByIdToEvent extends BaseCloudFunction<string> {
 
     async run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>) {
         if (!request.user) { throw 'unauthorized'; }
-        if (!(await RoleUtils.isUserInRole(request.user, getEventAdminRole(request.params.eventId)))) {
+        if (!(await RoleService.isUserInRole(request.user, getEventAdminRole(request.params.eventId)))) {
             throw 'unauthorized';
         }
 

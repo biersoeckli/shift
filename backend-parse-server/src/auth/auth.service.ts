@@ -69,7 +69,7 @@ export class AuthService {
 
     hashSmsCode(code: string) {
         const crypto = require('crypto');
-        return crypto.createHash('sha256', 'sasdfuh2o8ewzqghbvlsdazhfgvozdmlAaa8sOFj5FEeiQlYD66jHEJRS1NLLsqMCeN9pqibot*9sdtgh4sdfg1h99g*sg/0GC0dO3hfpiwuiu@sadfu29/o8z*ljdhbf')
+        return crypto.createHash('sha256', EnvUtils.get().randomStringForHash)
             .update('' + code)
             .digest('base64');
     }

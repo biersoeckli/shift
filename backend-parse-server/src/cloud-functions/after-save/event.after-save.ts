@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { BaseCloudFunction } from "../cloud-function.interface";
-import { RoleUtils } from "../../common/utils/role.utils";
+import { RoleService } from "../../common/utils/role.utils";
 import { getEventAdminRole, getEventViewerRole } from "../../common/constants/roles.constants";
 
 @Service()
@@ -12,9 +12,9 @@ export class EventAfterSave extends BaseCloudFunction<void> {
 
     async run(request: Parse.Cloud.AfterSaveRequest<Parse.Object<Parse.Attributes>>) {
         if (!request.original) {
-            const adminRole = await RoleUtils.getOrCreateRole(getEventAdminRole(request.object.id));
-            const viewerRole = await RoleUtils.getOrCreateRole(getEventViewerRole(request.object.id));
-            await RoleUtils.addUser2Role(adminRole.get('name'), request.user as any);
+            const adminRole = await RoleService.getOrCreateRole(getEventAdminRole(request.object.id));
+            const viewerRole = await RoleService.getOrCreateRole(getEventViewerRole(request.object.id));
+            await RoleService.addUser2Role(adminRole.get('name'), request.user as any);
             const acl = new Parse.ACL();
             acl.setPublicReadAccess(false);
             acl.setPublicWriteAccess(false);
