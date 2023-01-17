@@ -34,7 +34,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
   includeWishesInTable = false;
 
   constructor(public readonly shiftTableService: ShiftTableService,
-    public dialog: MatDialog,
+    private readonly dialog: MatDialog,
     common: CommonService) {
     super(common);
   }

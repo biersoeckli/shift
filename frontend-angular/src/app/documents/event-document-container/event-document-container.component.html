@@ -1,0 +1,8 @@
+<div class="shift-info-card" *ngIf="eventId">
+    <div class="text-xl font-semibold pb-1">Dokumente</div>
+    <div *ngFor="let doc of documents ?? []">
+        {{doc.get('name')}}
+    </div>
+    <div *ngIf="(documents ?? []).length === 0">keine Dokumente verfügbar</div>
+    <button class="btn-secondary" (click)="addDocuments()">Dokument hochladen</button>
+</div>

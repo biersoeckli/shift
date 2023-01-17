@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserEventDetailComponent } from './user-event-detail/user-event-detail.component';
+import { DocumentsModule } from '../documents/documents.module';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ShiftCommonModule,
+    DocumentsModule,
     RouterModule.forChild(routes)
   ]
 })

@@ -1,6 +1,7 @@
 import { UrlUtils } from 'ngx-fluffy-cow';
 import { CommonService } from '../services/common.service';
 import { NavigationService } from '../services/navigation.service';
+import * as Parse from 'parse';
 
 export abstract class BaseComponent<TParamType> {
 
@@ -20,5 +21,10 @@ export abstract class BaseComponent<TParamType> {
 
   constructor(public readonly commonService: CommonService) {
     this.params = UrlUtils.getUrlSearchParams<TParamType>();
+  }
+
+  async getUserById(userId: string) {
+    const userQuery = new Parse.Query(Parse.Object.extend('_User'))
+    return await userQuery.get(userId);
   }
 }
