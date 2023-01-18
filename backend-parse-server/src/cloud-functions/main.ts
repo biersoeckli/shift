@@ -14,6 +14,7 @@ import { UserShiftWishBeforeSave } from "./before-save/user-shift-wish.before-sa
 import { UserShiftBeforeSave } from "./before-save/user-shift.before-save";
 import { ShiftBeforeSave } from "./before-save/shift.before-save";
 import { EventCategoryBeforeSave } from "./before-save/event-category.before-save";
+import { EventDocumentBeforeSave } from "./before-save/event-document.before-save";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -158,5 +159,13 @@ Parse.Cloud.beforeSave("UserEventCategory", async request => {
     await Container.get(UserEventCategoryBeforeSave).run(request);
 }, {
     fields: ['event', 'user', 'category'],
+    requireUser: true
+});
+
+
+Parse.Cloud.beforeSave("EventDocument", async request => {
+    await Container.get(EventDocumentBeforeSave).run(request);
+}, {
+    fields: ['name', 'type', 'file', 'user', 'event'],
     requireUser: true
 });

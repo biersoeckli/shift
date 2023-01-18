@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
@@ -11,7 +11,7 @@ import { fluffyLoading } from 'ngx-fluffy-cow';
   selector: 'shift-event-document-container',
   templateUrl: './event-document-container.component.html'
 })
-export class EventDocumentContainerComponent extends BaseComponent<void> {
+export class EventDocumentContainerComponent extends BaseComponent<void> implements OnInit {
 
   @Input() eventId?: string;
   @Input() userId?: string;
@@ -22,6 +22,9 @@ export class EventDocumentContainerComponent extends BaseComponent<void> {
   constructor(private readonly dialog: MatDialog,
     common: CommonService) {
     super(common);
+  }
+
+  ngOnInit(): void {
     this.init();
   }
 
@@ -30,7 +33,7 @@ export class EventDocumentContainerComponent extends BaseComponent<void> {
     if (!this.eventId) {
       return;
     }
-    const event = await this.eventService.getEventById(this.eventId, true);
+    this.event = await this.eventService.getEventById(this.eventId, true);
     if (!this.userId) {
       this.user = Parse.User.current();
     } else {
@@ -48,7 +51,7 @@ export class EventDocumentContainerComponent extends BaseComponent<void> {
   addDocuments() {
     const dialog = this.dialog.open(EventDocumentUploadOverlayComponent, {
       minWidth: '400px',
-      width: '50%',
+      width: '40%',
       data: {
         user: this.user,
         event: this.event
@@ -56,6 +59,15 @@ export class EventDocumentContainerComponent extends BaseComponent<void> {
     });
 
     dialog.afterClosed().subscribe(() => this.init());
+  }
+
+  @fluffyLoading()
+  async deleteDocument(doc: Parse.Object<Parse.Attributes>) {
+    if (!confirm(`Willst du das Dokument ${doc.get('name')} wirklich löschen?`)) {
+      return;
+    }
+    await doc.destroy();
+    await this.init();
   }
 
 }
