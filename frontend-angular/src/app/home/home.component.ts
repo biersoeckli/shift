@@ -12,7 +12,6 @@ import { fluffyLoading, ParseUserUtils } from 'ngx-fluffy-cow';
 })
 export class HomeComponent extends BaseComponent<ShiftDetailParams>{
 
-  currentUser = Parse.User.current();
   userEvents?: Parse.Object<Parse.Attributes>[];
   events?: Parse.Object<Parse.Attributes>[];
   isOrganizer = false;

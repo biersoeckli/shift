@@ -16,7 +16,6 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
   userEventCategories?: Parse.Object<Parse.Attributes>[];
   userShift?: Parse.Object<Parse.Attributes>[];
   userEvent?: Parse.Object<Parse.Attributes>;
-  currentUser = Parse.User.current();
 
 
   constructor(common: CommonService,

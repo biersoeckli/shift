@@ -61,6 +61,10 @@ export class EventDocumentContainerComponent extends BaseComponent<void> impleme
     dialog.afterClosed().subscribe(() => this.init());
   }
 
+  openDocument(doc: Parse.Object<Parse.Attributes>) {
+    window.open((doc.get('file') as Parse.File).url());
+  }
+
   @fluffyLoading()
   async deleteDocument(doc: Parse.Object<Parse.Attributes>) {
     if (!confirm(`Willst du das Dokument ${doc.get('name')} wirklich löschen?`)) {

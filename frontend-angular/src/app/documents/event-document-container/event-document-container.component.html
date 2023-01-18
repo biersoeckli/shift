@@ -2,7 +2,7 @@
     <div class="text-xl font-semibold pb-1">Dokumente</div>
     <div *ngFor="let doc of documents ?? []" class="shift-list-item">
         <div class="flex">
-            <div class="flex-1"> {{doc.get('name')}}</div>
+            <div class="flex-1 underline text-blue-600 cursor-pointer" (click)="openDocument(doc)"> {{doc.get('name')}}</div>
             <div class="justify-end">
                 <svg (click)="deleteDocument(doc)" class="h-4 w-4 text-red-500 mt-0.5" xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"

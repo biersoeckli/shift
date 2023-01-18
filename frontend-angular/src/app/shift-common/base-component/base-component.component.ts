@@ -19,6 +19,10 @@ export abstract class BaseComponent<TParamType> {
     return this.commonService.eventService;
   }
 
+  get currentUser() {
+    return Parse.User.current();
+  }
+
   constructor(public readonly commonService: CommonService) {
     this.params = UrlUtils.getUrlSearchParams<TParamType>();
   }

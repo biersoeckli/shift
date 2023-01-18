@@ -2,7 +2,32 @@
     <shift-back-arrow (backClick)="navigation.home()" [title]="'Heflereinsatz'"></shift-back-arrow>
     <ng-container *ngIf="event">
 
-    </ng-container>
+        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+            <div class="shift-info-card">
+                <div class="text-xl font-semibold pb-1">Eventinfos</div>
+                <div>{{event.get('name')}}</div>
+                <div class="text-slate-500">Dauer des gesamten Events: <br>{{event.get('start') | fromTo:
+                    event.get('end'):
+                    true}}</div>
+            </div>
 
-    <shift-event-document-container [eventId]="params.eventId"></shift-event-document-container>
+            <div class="shift-info-card">
+                <div class="text-xl font-semibold pb-1">Zugeteilte Schichten</div>
+                <div *ngFor="let shift of userShifts ?? []">- {{shift.get('start') | fromTo: shift.get('end'): true}}
+                </div>
+                <div *ngIf="(userShifts ?? []).length === 0">keine</div>
+            </div>
+
+            <div class="shift-info-card" *ngIf="currentUser">
+                <div class="text-xl font-semibold pb-1">Deine Infos</div>
+                <div><span class="font-semibold">Name:</span> {{currentUser.get('firstName')}}
+                    {{currentUser.get('lastName')}}</div>
+                <div><span class="font-semibold">Mail:</span> {{currentUser.get('email')}}</div>
+                <div><span class="font-semibold">Tel.:</span> {{currentUser.get('phone')}}</div>
+                <button class="btn-secondary" (click)="editUserInfo()">Bearbeiten</button>
+            </div>
+
+            <shift-event-document-container [eventId]="params.eventId"></shift-event-document-container>
+        </div>
+    </ng-container>
 </div>

@@ -30,10 +30,8 @@
             <div *ngIf="(userShiftWishes ?? []).length === 0">keine</div>
         </div>
 
-        <div class="shift-info-card">
-            <div class="text-xl font-semibold pb-1">Dokumente</div>
-            todo
-        </div>
+        <shift-event-document-container [eventId]="params.eventId" [userId]="user.id"></shift-event-document-container>
+
         <div class="shift-info-card">
             <div class="text-xl font-semibold pb-1">Auszahlung</div>
             todo
@@ -43,5 +41,5 @@
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
         </div>
     </div>
-    <button class="btn-secondary" >Schichtplan drucken</button>
+    <button class="btn-secondary">Schichtplan drucken</button>
 </div>

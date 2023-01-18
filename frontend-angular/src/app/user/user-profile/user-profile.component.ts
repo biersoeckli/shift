@@ -14,7 +14,6 @@ export class UserProfileComponent extends BaseComponent<UserProfileParams> {
 
   reactiveForm: FormGroup;
   validated = false;
-  currentUser: any;
 
   get firstName() { return this.reactiveForm.get('firstName'); }
   get lastName() { return this.reactiveForm.get('lastName'); }
@@ -22,11 +21,10 @@ export class UserProfileComponent extends BaseComponent<UserProfileParams> {
 
   constructor(common: CommonService) {
     super(common);
-    this.currentUser = Parse.User.current();
     this.reactiveForm = new FormGroup({
-      firstName: new FormControl(this.currentUser.get('firstName') ?? '', Validators.required),
-      lastName: new FormControl(this.currentUser.get('lastName') ?? '', Validators.required),
-      mail: new FormControl(this.currentUser.get('email') ?? '', [
+      firstName: new FormControl(this.currentUser?.get('firstName') ?? '', Validators.required),
+      lastName: new FormControl(this.currentUser?.get('lastName') ?? '', Validators.required),
+      mail: new FormControl(this.currentUser?.get('email') ?? '', [
         Validators.email,
         Validators.required
       ]),
@@ -37,7 +35,7 @@ export class UserProfileComponent extends BaseComponent<UserProfileParams> {
   @fluffyLoading()
   async onSubmit() {
     this.validated = true;
-    if (!this.reactiveForm.valid) {
+    if (!this.reactiveForm.valid || !this.currentUser) {
       return;
     }
     this.currentUser.set('firstName', this.reactiveForm.value.firstName);
