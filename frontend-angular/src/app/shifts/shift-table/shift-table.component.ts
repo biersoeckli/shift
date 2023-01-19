@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserPickerDialogComponent } from '../user-picker-dialog/user-picker-dialog.component';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'shift-table',
@@ -18,6 +20,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   @Input() eventId?: string;
   @ViewChild('contextMenu') contextMenuElement?: ElementRef;
+  @ViewChild('shiftTableElement') shiftTableElement?: ElementRef;
   shiftTable?: ShiftTable;
   tableShiftIdPrefix = 'timeslot_';
 
@@ -41,6 +44,26 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   ngOnInit(): void {
     this.init();
+  }
+
+  @fluffyLoading()
+  async print() {
+    const canvas = await html2canvas(this.shiftTableElement?.nativeElement, {
+      removeContainer: true
+    })
+    const s = canvas.toDataURL('JPEG');
+    
+    const doc = new jsPDF({
+      unit: 'px',
+      format: 'a4',
+      orientation: 'landscape'
+    });
+
+    var width = doc.internal.pageSize.getWidth();
+    var height = doc.internal.pageSize.getHeight();
+
+    doc.addImage(s, 'JPEG', 15, 40, width, canvas.height);
+    await doc.save('schichtplan.pdf');
   }
 
   @fluffyLoading()
@@ -259,7 +282,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
       if (!selectedUser) {
         return;
       }
-      
+
       selectedShift.set('user', selectedUser);
       await selectedShift.save();
     });

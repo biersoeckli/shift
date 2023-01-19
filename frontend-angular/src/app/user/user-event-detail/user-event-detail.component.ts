@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { fluffyLoading } from 'ngx-fluffy-cow';
-import { initialize } from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { UserEventDetailParams } from './user-event-detail.params';
+import * as Parse from 'parse';
 
 @Component({
   selector: 'app-user-event-detail',
@@ -25,7 +25,7 @@ export class UserEventDetailComponent extends BaseComponent<UserEventDetailParam
       return;
     }
     this.event = await this.eventService.getEventById(this.params.eventId);
-    this.userShifts = await this.getUserShiftForEvent(this.event, this.currentUser);
+    this.userShifts = await this.getUserShiftForEvent(this.event, this.currentUser);    
   }
 
 

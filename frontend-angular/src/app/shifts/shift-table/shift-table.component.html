@@ -42,7 +42,7 @@
     </div>
 </div>
 <div class="table-container no-select">
-    <table class="relative" (contextmenu)="onContextMenu($event)">
+    <table class="relative" (contextmenu)="onContextMenu($event)" #shiftTableElement>
         <thead>
             <tr>
                 <th>Kategorien</th>
@@ -95,3 +95,4 @@
         </tbody>
     </table>
 </div>
+<button class="btn-secondary" (click)="print()">Durcken</button>
