@@ -10,6 +10,7 @@ import { BaseComponent } from 'src/app/shift-common/base-component/base-componen
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { HtmlContentExporterService } from 'src/app/shift-common/services/html-content-exporter.service';
 
 @Component({
   selector: 'shift-table',
@@ -38,6 +39,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   constructor(public readonly shiftTableService: ShiftTableService,
     private readonly dialog: MatDialog,
+    private readonly contentExporter: HtmlContentExporterService,
     common: CommonService) {
     super(common);
   }
@@ -48,22 +50,17 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   @fluffyLoading()
   async print() {
-    const canvas = await html2canvas(this.shiftTableElement?.nativeElement, {
-      removeContainer: true
-    })
-    const s = canvas.toDataURL('JPEG');
-    
-    const doc = new jsPDF({
-      unit: 'px',
-      format: 'a4',
-      orientation: 'landscape'
+    if (!this.shiftTableElement) {
+      return;
+    }
+    await this.contentExporter.print({
+      exportItems: [{
+        htmlElement: this.shiftTableElement,
+        widthPercent: 100
+      }],
+      outputType: 'pdf',
+      fileName: 'schichtplan.pdf'
     });
-
-    var width = doc.internal.pageSize.getWidth();
-    var height = doc.internal.pageSize.getHeight();
-
-    doc.addImage(s, 'JPEG', 15, 40, width, canvas.height);
-    await doc.save('schichtplan.pdf');
   }
 
   @fluffyLoading()

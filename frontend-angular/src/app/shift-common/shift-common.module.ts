@@ -11,9 +11,10 @@ import { DateInputComponent } from './components/date-input/date-input.component
 import { DatetimeInputComponent } from './components/datetime-input/datetime-input.component';
 import { BackArrowComponent } from './components/back-arrow/back-arrow.component';
 import { DateFromToPipe } from './pipes/date-from-to.pipe';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { LoaderComponent } from './components/loader/loader.component';
 import { EventService } from './services/event.service';
+import { HtmlContentExporterService } from './services/html-content-exporter.service';
 
 
 @NgModule({
@@ -43,9 +44,8 @@ import { EventService } from './services/event.service';
     LoaderComponent
   ],
   providers: [
-    NavigationService,
-    CommonService,
-    CanActivateAuthenticated
+    CanActivateAuthenticated,
+    HtmlContentExporterService
   ]
 })
 export class ShiftCommonModule { }

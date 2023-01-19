@@ -82,8 +82,8 @@
                     <td></td>
                     <td colspan="100%">
                         <ng-container *ngFor="let tableShift of tableCategory.userWishs">
-                            <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
-                                class="rounded px-2 bg-gray-300 text-gray-700">
+                            <div  [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
+                                class="shift-entry rounded px-2 bg-gray-300 text-gray-700">
                                 {{tableShift.shift.get('user').get('firstName')}}
                                 {{tableShift.shift.get('user').get('lastName')}}
                             </div>

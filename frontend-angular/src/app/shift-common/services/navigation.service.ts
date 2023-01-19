@@ -9,7 +9,9 @@ import { UserEventDetailParams } from 'src/app/user/user-event-detail/user-event
 import { UserProfileParams } from 'src/app/user/user-profile/user-profile.params';
 import { VolunteerParams } from 'src/app/volunteer/volunteer.params';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NavigationService {
 
   constructor(public readonly router: Router) { }
