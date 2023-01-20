@@ -68,7 +68,9 @@ export class ShiftTableService {
     }
 
     initTailwindColors() {
-        const colorNames = Object.keys(Colors);
+        // const colorNames = Object.keys(Colors);
+        const colorNames = ['red', 'green', 'blue', 'orange', 'purple', 'pink', 'yellow', 'amber', 'lime', 'emerald', 'teal',
+            'cyan', 'sky', 'indigo', 'violet', 'fuchsia', 'rose'];
         return colorNames.map(color => (Colors as any)[color]['300']).filter(colorCode => !!colorCode);
     }
 
