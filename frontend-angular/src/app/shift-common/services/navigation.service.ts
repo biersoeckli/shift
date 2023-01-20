@@ -58,6 +58,12 @@ export class NavigationService {
     });
   }
 
+  async userEventShiftTable(eventId: string) {
+    await this.router.navigate(['user', 'event', 'shift-table'], {
+      queryParams: new UserEventDetailParams(eventId)
+    });
+  }
+
   async registrationConfirmation(eventId: string) {
     await this.router.navigate(['register', 'confirmation'], {
       queryParams: new RegistrationParams(eventId)

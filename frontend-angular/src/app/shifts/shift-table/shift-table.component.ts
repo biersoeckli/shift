@@ -11,6 +11,7 @@ import { CommonService } from 'src/app/shift-common/services/common.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { HtmlContentExporterService } from 'src/app/shift-common/services/html-content-exporter.service';
+import { ShiftTablePrintOverlayComponent } from '../shift-table-print-overlay/shift-table-print-overlay.component';
 
 @Component({
   selector: 'shift-table',
@@ -20,8 +21,10 @@ import { HtmlContentExporterService } from 'src/app/shift-common/services/html-c
 export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   @Input() eventId?: string;
+  @Input() readonly = false;
   @ViewChild('contextMenu') contextMenuElement?: ElementRef;
   @ViewChild('shiftTableElement') shiftTableElement?: ElementRef;
+  @ViewChild('shiftTableUsersElement') shiftTableUsersElement?: ElementRef;
   shiftTable?: ShiftTable;
   tableShiftIdPrefix = 'timeslot_';
 
@@ -39,7 +42,6 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   constructor(public readonly shiftTableService: ShiftTableService,
     private readonly dialog: MatDialog,
-    private readonly contentExporter: HtmlContentExporterService,
     common: CommonService) {
     super(common);
   }
@@ -48,18 +50,11 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     this.init();
   }
 
-  @fluffyLoading()
   async print() {
-    if (!this.shiftTableElement) {
-      return;
-    }
-    await this.contentExporter.print({
-      exportItems: [{
-        htmlElement: this.shiftTableElement,
-        widthPercent: 100
-      }],
-      outputType: 'pdf',
-      fileName: 'schichtplan.pdf'
+    this.dialog.open(ShiftTablePrintOverlayComponent, {
+      minWidth: '400px',
+      width: '50%',
+      data: [this.shiftTableElement, this.shiftTableUsersElement]
     });
   }
 
@@ -86,6 +81,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
       }
       this.currentAddUser = selectedUser;
     });
+
   }
 
   changeEditMode() {

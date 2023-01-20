@@ -3,7 +3,7 @@
     <div class="context-item" (click)="editUserForShiftContextMenuSelection()">HelferIn Ändern</div>
     <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
-<div class="pb-4">
+<div class="pb-4" *ngIf="!readonly">
     <div class="shift-card flex mt-4" style="padding-top: 0px;">
         <div class="flex-1">
             <button class="btn" (click)="changeEditMode()">{{editMode ? 'Ansichts Modus' :
@@ -95,7 +95,14 @@
             </ng-container>
         </tbody>
     </table>
-    <div></div>
-    <div #userColorOverview></div>
 </div>
-<button class="btn-secondary" (click)="print()">Durcken</button>
+<div #shiftTableUsersElement>
+    <div class="font-medium mt-4">Legende:</div>
+    <div class="w-fit">
+        <p *ngFor="let item of shiftTableService.userColors" [style]="'background-color: ' + item.colorCode + ';'"
+            class="rounded px-2 py-0.5 mt-0.5 text-slate-600">
+            {{item.user.get('firstName')}} {{item.user.get('lastName')}}
+        </p>
+    </div>
+</div>
+<button class="btn-secondary" (click)="print()">Drucken</button>

@@ -4,8 +4,9 @@ import jsPDF from 'jspdf';
 
 export interface HtmlContentExport {
     exportItems: HtmlContentExportItem[];
-    outputType: 'image' | 'pdf';
     fileName: string;
+    outputType: 'image' | 'pdf';
+    format: 'A4' | 'fit';
 }
 
 export interface HtmlContentExportItem {
@@ -38,8 +39,7 @@ export class HtmlContentExporterService {
             return;
         }
 
-        const doc2 = this.createA4Pdf();
-        const doc = this.createFitPdf(htmlContentExportItems);
+        const doc = exportConfig.format === 'A4' ? this.createA4Pdf() : this.createFitPdf(htmlContentExportItems);
 
         var pageWidth = doc.internal.pageSize.getWidth() - (2 * this.pagePadding);
 

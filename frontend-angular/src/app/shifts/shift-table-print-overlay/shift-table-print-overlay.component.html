@@ -1,0 +1,15 @@
+<div mat-dialog-content>
+    <div class="font-medium">Wähle ein Exportformat:</div>
+    <div (click)="print('image')" class="shift-list-item">
+        Bild (JPEG)
+    </div>
+    <div (click)="print('A4')" class="shift-list-item">
+        PDF: A4 Format
+    </div>
+    <div (click)="print('fit')" class="shift-list-item">
+        PDF: Format angepasst an Schichtplan
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button class="btn-secondary" style="margin-top: 0px;" mat-dialog-close>Abbrechen</button>
+</div>

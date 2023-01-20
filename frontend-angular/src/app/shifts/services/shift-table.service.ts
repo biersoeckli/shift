@@ -55,7 +55,8 @@ export class ShiftTableService {
         this.shifts = await this.shiftService.getShiftsForEvent(this.event);
         this.userShifts = await this.shiftService.getShiftsBookingsForEvent(this.event);
 
-
+        this.userColors = [];
+        this.userColorMap = new Map<string, string>();
         const allUserIds = [...new Set(this.userShifts.map(x => x.get('user').id))] as string[];
         allUserIds.forEach((userId, index) => {
             const colorIndex = index % (this.tailwindColors.length - 1);

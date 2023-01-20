@@ -10,6 +10,7 @@ import { ShiftTableService } from './services/shift-table.service';
 import { UserPickerDialogComponent } from './user-picker-dialog/user-picker-dialog.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { VolunteerModule } from '../volunteer/volunteer.module';
+import { ShiftTablePrintOverlayComponent } from './shift-table-print-overlay/shift-table-print-overlay.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
     ShiftDetailEditComponent,
     ShiftOverviewComponent,
     ShiftTableComponent,
-    UserPickerDialogComponent
+    UserPickerDialogComponent,
+    ShiftTablePrintOverlayComponent
   ],
   imports: [
     CommonModule,

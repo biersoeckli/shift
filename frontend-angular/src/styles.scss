@@ -110,3 +110,7 @@ input, textarea {
 .shift-content {
     @apply m-8 lg:px-40 xl:px-72;
 }
+
+body > div:last-child > span + img {
+    display: inline !important;
+}
