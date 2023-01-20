@@ -3,7 +3,7 @@ import { DateUtils } from "ngx-fluffy-cow";
 import * as Parse from 'parse';
 import { TimeSpan, TimeSpanUtils } from "src/app/shift-common/utils/timespan.utils";
 import { ShiftService } from "./shift.service";
-
+import * as Colors from 'tailwindcss/colors';
 export interface ShiftTable {
     headerTimeSlots: TimeSpan[];
     categories: ShiftTableCategory[];
@@ -30,6 +30,11 @@ export interface TableShift {
     shift: Parse.Object<Parse.Attributes>;
 }
 
+export interface UserColor {
+    user: Parse.Object<Parse.Attributes>;
+    colorCode: string;
+}
+
 @Injectable()
 export class ShiftTableService {
 
@@ -39,6 +44,9 @@ export class ShiftTableService {
     event?: Parse.Object<Parse.Attributes>;
     shifts?: Parse.Object<Parse.Attributes>[];
     userShifts?: Parse.Object<Parse.Attributes>[];
+    userColorMap = new Map<string, string>(); // userId, color
+    userColors: UserColor[] = [];
+    private tailwindColors = this.initTailwindColors();
 
     constructor(private shiftService: ShiftService) { }
 
@@ -46,6 +54,22 @@ export class ShiftTableService {
         this.event = await this.shiftService.getEvent(eventId);
         this.shifts = await this.shiftService.getShiftsForEvent(this.event);
         this.userShifts = await this.shiftService.getShiftsBookingsForEvent(this.event);
+
+
+        const allUserIds = [...new Set(this.userShifts.map(x => x.get('user').id))] as string[];
+        allUserIds.forEach((userId, index) => {
+            const colorIndex = index % (this.tailwindColors.length - 1);
+            this.userColorMap.set(userId, this.tailwindColors[colorIndex]);
+            this.userColors.push({
+                colorCode: this.tailwindColors[colorIndex],
+                user: this.userShifts?.find(userShift => userShift.get('user').id === userId)?.get('user')
+            });
+        });
+    }
+
+    initTailwindColors() {
+        const colorNames = Object.keys(Colors);
+        return colorNames.map(color => (Colors as any)[color]['300']).filter(colorCode => !!colorCode);
     }
 
     async calculateShiftTable(includeWishes = false) {

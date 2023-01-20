@@ -67,8 +67,9 @@
                     <td></td>
                     <td colspan="100%" (click)="onTableClick(tableCategory.category, $event)">
                         <ng-container *ngFor="let tableShift of tableCategory.shifts; let iTableShift = index">
-                            <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
-                                [class]="(editMode ? 'table-shift-item-edit' : '') + ' rounded px-2 bg-orange-300 text-gray-700'"
+                            <div [style]="'background-color: ' + shiftTableService.userColorMap.get(tableShift.shift.get('user').id) +
+                            '; margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
+                                [class]="(editMode ? 'table-shift-item-edit ' : ' ') + ' rounded px-2  text-gray-700'"
                                 (mousedown)="onShiftMouseDown($event, tableShift)"
                                 [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift">
                                 {{tableShift.shift.get('user').get('firstName')}}
@@ -82,7 +83,7 @@
                     <td></td>
                     <td colspan="100%">
                         <ng-container *ngFor="let tableShift of tableCategory.userWishs">
-                            <div  [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
+                            <div [style]="'margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
                                 class="shift-entry rounded px-2 bg-gray-300 text-gray-700">
                                 {{tableShift.shift.get('user').get('firstName')}}
                                 {{tableShift.shift.get('user').get('lastName')}}
@@ -94,5 +95,7 @@
             </ng-container>
         </tbody>
     </table>
+    <div></div>
+    <div #userColorOverview></div>
 </div>
 <button class="btn-secondary" (click)="print()">Durcken</button>

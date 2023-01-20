@@ -38,11 +38,8 @@ export class HtmlContentExporterService {
             return;
         }
 
-        const doc = new jsPDF({
-            unit: 'px',
-            format: 'a4',
-            orientation: 'landscape'
-        });
+        const doc2 = this.createA4Pdf();
+        const doc = this.createFitPdf(htmlContentExportItems);
 
         var pageWidth = doc.internal.pageSize.getWidth() - (2 * this.pagePadding);
 
@@ -64,6 +61,25 @@ export class HtmlContentExporterService {
         doc.save(exportConfig.fileName ?? 'export.pdf');
     }
 
+    createFitPdf(htmlContentExportItems: HtmlContentExportCanvasItem[]) {
+        const heigthOfAllCanvas = htmlContentExportItems.reduce((prev, current) => prev + current.canvas.height, 0);
+        const maxWidthOfCanvas = htmlContentExportItems.reduce((prev, current) =>
+            prev < current.canvas.width ? current.canvas.width : prev, 0);
+        return new jsPDF({
+            unit: 'px',
+            format: [maxWidthOfCanvas + (2 * this.pagePadding), heigthOfAllCanvas + (2 * this.pagePadding)],
+            orientation: 'landscape'
+        });
+    }
+
+    private createA4Pdf() {
+        return new jsPDF({
+            unit: 'px',
+            format: 'A4',
+            orientation: 'landscape'
+        });
+    }
+
     private downloadImage(canvas: HTMLCanvasElement, fileName: string) {
         const link = document.createElement('a')
         link.href = canvas.toDataURL('JPEG');
@@ -75,17 +91,17 @@ export class HtmlContentExporterService {
 
     private async getCanvas(htmlElement: ElementRef) {
         return await html2canvas(htmlElement.nativeElement, {
-            removeContainer: true, 
-           /* onclone: (document) => {
-                if (!document) {
-                    return;
-                } // todo
-                const sss = (document?.querySelector('.shift-entry') as any).style;
-                if (!sss) {
-                    return;
-                }
-                sss.marginLeft = 0;
-              }*/
+            removeContainer: true,
+            /* onclone: (document) => {
+                 if (!document) {
+                     return;
+                 } // todo
+                 const sss = (document?.querySelector('.shift-entry') as any).style;
+                 if (!sss) {
+                     return;
+                 }
+                 sss.marginLeft = 0;
+               }*/
         });
     }
 }
