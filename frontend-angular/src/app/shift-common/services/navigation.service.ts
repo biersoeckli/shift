@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthParams } from 'src/app/auth/auth.params';
 import { EventCategoryParam } from 'src/app/event-categories/event-category.param';
 import { EventDetailParam } from 'src/app/event-planner/event-detail/event-detail.param';
+import { PayoutParams } from 'src/app/payout/payout.params';
 import { RegistrationParams } from 'src/app/registration/registration.params';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
 import { UserEventDetailParams } from 'src/app/user/user-event-detail/user-event-detail.params';
@@ -129,6 +130,17 @@ export class NavigationService {
   async eventVolunteerEdit(eventId: string, userEventId?: string) {
     await this.router.navigate(['volunteers', 'detail', 'edit'], {
       queryParams: new VolunteerParams(eventId, userEventId)
+    });
+  }
+
+  async payoutConfigOverview(eventId: string) {
+    await this.router.navigate(['payout-configs'], {
+      queryParams: new PayoutParams(eventId)
+    });
+  }
+  async payoutConfigEdit(eventId: string, userEventId?: string) {
+    await this.router.navigate(['payout-configs', 'detail', 'edit'], {
+      queryParams: new PayoutParams(eventId, userEventId)
     });
   }
 }

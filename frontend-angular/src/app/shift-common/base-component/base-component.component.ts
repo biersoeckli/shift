@@ -28,7 +28,6 @@ export abstract class BaseComponent<TParamType> {
   }
 
   async getUserById(userId: string) {
-    const userQuery = new Parse.Query(Parse.Object.extend('_User'))
-    return await userQuery.get(userId);
+    return await this.commonService.getUserById(userId);
   }
 }

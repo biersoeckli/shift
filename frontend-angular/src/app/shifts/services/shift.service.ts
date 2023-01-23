@@ -59,6 +59,7 @@ export class ShiftService {
         query.equalTo('event', event);
         query.include('event');
         query.ascending('start');
+        query.limit(100000);
         return await query.find();
     }
 
@@ -70,6 +71,7 @@ export class ShiftService {
         query.include('event');
         query.include('user');
         query.include('shift');
+        query.limit(100000);
         return await query.find();
     }
 
@@ -79,6 +81,7 @@ export class ShiftService {
         query.include('event');
         query.include('user');
         query.include('shift');
+        query.limit(100000);
         return await query.find();
     }
 }

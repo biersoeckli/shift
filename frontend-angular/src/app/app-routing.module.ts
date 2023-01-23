@@ -30,6 +30,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./volunteer/volunteer.module').then(m => m.VolunteerModule),
     canActivate: [CanActivateAuthenticated]
+  },{
+    path: '',
+    loadChildren: () => import('./payout/payout.module').then(m => m.PayoutModule),
+    canActivate: [CanActivateAuthenticated]
   }
 ];
 

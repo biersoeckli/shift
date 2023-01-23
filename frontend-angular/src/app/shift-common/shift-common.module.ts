@@ -15,6 +15,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoaderComponent } from './components/loader/loader.component';
 import { EventService } from './services/event.service';
 import { HtmlContentExporterService } from './services/html-content-exporter.service';
+import { TimeFromToPipe } from './pipes/time-from-to.pipe';
+import { TimeInputComponent } from './components/time-input/time-input.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { HtmlContentExporterService } from './services/html-content-exporter.ser
     DatetimeInputComponent,
     BackArrowComponent,
     DateFromToPipe,
-    LoaderComponent
+    TimeFromToPipe,
+    LoaderComponent,
+    TimeInputComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +45,9 @@ import { HtmlContentExporterService } from './services/html-content-exporter.ser
     BackArrowComponent,
     DateFromToPipe,
     MatDialogModule,
-    LoaderComponent
+    TimeFromToPipe,
+    LoaderComponent,
+    TimeInputComponent
   ],
   providers: [
     CanActivateAuthenticated,
