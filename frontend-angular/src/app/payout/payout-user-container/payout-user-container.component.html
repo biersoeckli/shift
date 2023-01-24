@@ -1,0 +1,9 @@
+<div class="shift-info-card" *ngIf="userPayoutInfo">
+    <div class="text-xl font-semibold pb-1">Auszahlung</div>
+    <div *ngFor="let item of userPayoutInfo.shifts ?? []" class="shift-list-item">
+        {{item.shift.get('start') |fromTo: item.shift.get('end'): true}}
+        <br><span>{{item.shiftPayoutTotal | currency: 'CHF '}}</span>
+    </div>
+    <div *ngIf="(userPayoutInfo.shifts ?? []).length === 0">keine Auszahlungsinformationen verfügbar</div>
+    <div class="font-medium pl-4 pt-4">Total: {{userPayoutInfo.payoutTotal | currency: 'CHF '}}</div>
+</div>

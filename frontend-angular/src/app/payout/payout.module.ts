@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PayoutOverviewComponent } from './payout-overview/payout-overview.component';
 import { PayoutDetailEditComponent } from './payout-detail-edit/payout-detail-edit.component';
-import { PayoutCalculationService } from './services/payout-calculation.service';
+import { PayoutService } from './services/payout.service';
 import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { Routes, RouterModule } from '@angular/router';
+import { PayoutUserContainerComponent } from './payout-user-container/payout-user-container.component';
 
 const routes: Routes = [
   {
@@ -19,15 +20,19 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PayoutOverviewComponent,
-    PayoutDetailEditComponent
+    PayoutDetailEditComponent,
+    PayoutUserContainerComponent
   ],
   imports: [
     CommonModule,
     ShiftCommonModule,
     RouterModule.forChild(routes)
   ],
+  exports: [
+    PayoutUserContainerComponent
+  ],
   providers: [
-    PayoutCalculationService
+    PayoutService
   ]
 })
 export class PayoutModule { }

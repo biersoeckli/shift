@@ -1,9 +1,8 @@
-
 <div class="shift-content">
     <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)" [title]="'Payout Config'"></shift-back-arrow>
     <div *ngFor="let item of payoutConfigs ?? []" class="shift-list-item flex">
         <div class="flex-1" (click)="navigation.payoutConfigEdit(params.eventId, item.id)">
-            {{item.get('start') | fromToTime: item.get('end') }} 
+            {{item.get('start') | fromTo: item.get('end') :true }}
             <br><span>{{item.get('hourlyRate')}} CHF</span>
         </div>
         <div class="justify-end">
@@ -17,4 +16,3 @@
     </div>
     <button class="btn mt-2" (click)="navigation.payoutConfigEdit(params.eventId)">Payout Config hinzufügen</button>
 </div>
-

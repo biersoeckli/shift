@@ -8,6 +8,7 @@ import { ShiftCommonModule } from '../shift-common/shift-common.module';
 import { Routes, RouterModule } from '@angular/router';
 import { VolunteerEditFormComponent } from './volunteer-edit-form/volunteer-edit-form.component';
 import { DocumentsModule } from '../documents/documents.module';
+import { PayoutModule } from '../payout/payout.module';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
     CommonModule,
     ShiftCommonModule,
     DocumentsModule,
+    PayoutModule,
     RouterModule.forChild(routes)
   ],
   exports: [

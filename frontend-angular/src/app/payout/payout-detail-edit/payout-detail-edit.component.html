@@ -13,8 +13,8 @@
         <input type="number" placeholder="" [ngModel]="item.get('hourlyRate')" (ngModelChange)="item.set('hourlyRate', $event)">
     </div>
 
-    <shift-time-input [label]="'Startrange'" [date]="item.get('start')" (dateChange)="item.set('start', $event)"></shift-time-input>
-    <shift-time-input [label]="'Endrange'" [date]="item.get('end')" (dateChange)="item.set('end', $event)"></shift-time-input>
+    <shift-datetime-input [label]="'Startrange'" [date]="item.get('start')" (dateChange)="item.set('start', $event)"></shift-datetime-input>
+    <shift-datetime-input [label]="'Endrange'" [date]="item.get('end')" (dateChange)="item.set('end', $event)"></shift-datetime-input>
 
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()">Speichern</button>

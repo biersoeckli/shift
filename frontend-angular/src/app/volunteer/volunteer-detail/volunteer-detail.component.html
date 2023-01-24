@@ -32,10 +32,8 @@
 
         <shift-event-document-container [eventId]="params.eventId" [userId]="user.id"></shift-event-document-container>
 
-        <div class="shift-info-card">
-            <div class="text-xl font-semibold pb-1">Auszahlung</div>
-            todo
-        </div>
+        <shift-payout-user-container [eventId]="params.eventId" [userId]="user.id"></shift-payout-user-container>
+
         <div>
             <label class="input-label">Bemerkungen (von HelferIn)</label>
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>

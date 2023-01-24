@@ -15,6 +15,7 @@ import { UserShiftBeforeSave } from "./before-save/user-shift.before-save";
 import { ShiftBeforeSave } from "./before-save/shift.before-save";
 import { EventCategoryBeforeSave } from "./before-save/event-category.before-save";
 import { EventDocumentBeforeSave } from "./before-save/event-document.before-save";
+import {  CalculateUserPayoutInfoFunction } from "./payout/payout-calculation.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -42,6 +43,13 @@ Parse.Cloud.define("addUserByIdToEvent", async (request) => {
     fields: ['userId', 'eventId'],
     requireUser: true,
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER]
+});
+
+Parse.Cloud.define("calculateUserPayoutInfoForEvent", async (request) => {
+    return await Container.get(CalculateUserPayoutInfoFunction).run(request);
+}, {
+    fields: ['userId', 'eventId'],
+    requireUser: true
 });
 
 Parse.Cloud.beforeSave("Event", async (request) => {

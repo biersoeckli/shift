@@ -3,7 +3,7 @@ import { fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { PayoutParams } from '../payout.params';
-import { PayoutCalculationService } from '../services/payout-calculation.service';
+import { PayoutService } from '../services/payout.service';
 import * as Parse from 'parse';
 
 @Component({
@@ -15,7 +15,7 @@ export class PayoutOverviewComponent extends BaseComponent<PayoutParams> {
   payoutConfigs?: Parse.Object<Parse.Attributes>[];
 
   constructor(common: CommonService,
-    private payoutService: PayoutCalculationService) {
+    private payoutService: PayoutService) {
     super(common);
     this.init();
   }

@@ -7,6 +7,7 @@ import { UserEventDetailComponent } from './user-event-detail/user-event-detail.
 import { DocumentsModule } from '../documents/documents.module';
 import { UserShiftOverviewComponent } from './user-shift-overview/user-shift-overview.component';
 import { ShiftsModule } from '../shifts/shifts.module';
+import { PayoutModule } from '../payout/payout.module';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
     ShiftCommonModule,
     ShiftsModule,
     DocumentsModule,
+    PayoutModule,
     RouterModule.forChild(routes)
   ]
 })
