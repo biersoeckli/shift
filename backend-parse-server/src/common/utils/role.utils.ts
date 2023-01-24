@@ -18,6 +18,13 @@ export class RoleService {
         return await RoleService.isUserInRole(user, getEventViewerRole(eventId));
     }
 
+    async isVolunteerOrOrganizer(requestUser: Parse.User<Parse.Attributes>, userId: string, eventId: string) {
+        const isVolunteer = requestUser.id === userId &&
+            await this.isUserVolunteerOfEvent(requestUser, eventId);
+        const isOrganizer = await this.isUserOrganizerOfEvent(requestUser, eventId);
+        return isVolunteer || isOrganizer;
+    }
+
     static async getOrCreateRole(roleName: string) {
         const query = new Parse.Query('_Role');
         query.equalTo('name', roleName);

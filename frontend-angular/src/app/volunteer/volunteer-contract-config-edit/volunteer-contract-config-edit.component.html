@@ -1,0 +1,28 @@
+<div class="shift-content">
+    <shift-back-arrow (backClick)="navigation.eventDetailEdit(params.eventId)"
+        [title]="'Helfervereinbarung'"></shift-back-arrow>
+
+    <div class="grid lg:grid-cols-2 gap-4">
+        <div>
+            <label class="input-label">Vertragsinhalt (Markdown)</label>
+            <ng-container *ngIf="contractConfig">
+                <textarea [ngModel]="contractConfig.get('content')" rows="6"
+                    (ngModelChange)="contractConfig.set('content', $event)" (keyup)="renderPreview()"></textarea>
+            </ng-container>
+            <div class="text-sm text-slate-400 mt-1">Folgende Placeholder können genutzt werden:<br>
+                - PAYOUT_TABLE => Auszahlungsinformationen HelferIn<br>
+                - V_FIRSTNAME => Vorname HelferIn<br>
+                - V_LASTNAME => Nachname HelferIn<br>
+                - V_PHONE => Telefonnummer HelferIn<br>
+                - V_MAIL => E-Mail HelferIn<br>
+                - SIGNATURE_SECTION => Bereich für Unterschriften<br>
+            </div>
+        </div>
+
+        <div *ngIf="htmlPreview" class="shift-info-card">
+            <div class="text-xl font-semibold pb-1">Vorschau (HTML code)</div>
+            {{htmlPreview}}
+        </div>
+    </div>
+    <button class="btn mt-2" (click)="save()">Speichern</button>
+</div>

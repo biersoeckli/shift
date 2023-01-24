@@ -39,5 +39,5 @@
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
         </div>
     </div>
-    <button class="btn-secondary">Schichtplan drucken</button>
+    <button class="btn-secondary" (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
 </div>

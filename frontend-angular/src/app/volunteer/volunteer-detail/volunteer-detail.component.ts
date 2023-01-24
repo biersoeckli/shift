@@ -3,7 +3,12 @@ import { fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
+import { DownloadUtils } from 'src/app/shift-common/utils/download.utils';
 import { VolunteerParams } from '../volunteer.params';
+
+export interface VolunteerContractResult {
+  base64Content: string;
+}
 
 @Component({
   selector: 'app-volunteer-detail',
@@ -39,7 +44,7 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
     query.include('event');
     this.userEvent = await query.get(this.params.userEventId);
     [this.userEventCategories, this.userShiftWishes, this.userShifts] = await Promise.all([
-      this.fetchUserCategories(this.event, this.user), 
+      this.fetchUserCategories(this.event, this.user),
       this.getWishBookingsForEventAndUser(this.event, this.user),
       this.getUserShiftForEvent(this.event, this.user),
     ]);
@@ -70,5 +75,11 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
     query.equalTo('user', user);
     query.ascending('start');
     return await query.find();
+  }
+
+  @fluffyLoading()
+  async downloadVolunteerContract() {
+    const returnVal: Uint8Array = await Parse.Cloud.run('generateVolunteerContract', { userId: this.user?.id, eventId: this.event?.id });
+    DownloadUtils.donwload(returnVal);
   }
 }

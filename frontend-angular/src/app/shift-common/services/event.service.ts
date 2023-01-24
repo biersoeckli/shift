@@ -18,12 +18,15 @@ export class EventService {
     return events;
   }
 
-  async getEventById(eventId: string, useCachedValue = false) {
+  async getEventById(eventId: string, useCachedValue = false, includeContractConfig = false) {
     const cachedEvent = this.eventCache.find(eventCached => eventCached.id === eventId);
     if (useCachedValue && cachedEvent) {
       return cachedEvent;
     }
     const query = new Parse.Query(Parse.Object.extend('Event'));
+    if (includeContractConfig) {
+      query.include('volunteerContractConfig');
+    }
     const event = await query.get(eventId);
     if (!cachedEvent) {
       this.eventCache.push(event);

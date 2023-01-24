@@ -9,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { VolunteerEditFormComponent } from './volunteer-edit-form/volunteer-edit-form.component';
 import { DocumentsModule } from '../documents/documents.module';
 import { PayoutModule } from '../payout/payout.module';
+import { VolunteerContractConfigEditComponent } from './volunteer-contract-config-edit/volunteer-contract-config-edit.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,9 @@ const routes: Routes = [
   }, {
     path: 'volunteers/detail/edit',
     component: VolunteerDetailEditComponent,
+  }, {
+    path: 'volunteers/contract-config/edit',
+    component: VolunteerContractConfigEditComponent,
   }
 ];
 
@@ -29,7 +33,8 @@ const routes: Routes = [
     VolunteerOverviewComponent,
     VolunteerDetailComponent,
     VolunteerDetailEditComponent,
-    VolunteerEditFormComponent
+    VolunteerEditFormComponent,
+    VolunteerContractConfigEditComponent
   ],
   imports: [
     CommonModule,

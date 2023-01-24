@@ -133,6 +133,12 @@ export class NavigationService {
     });
   }
 
+  async eventVolunteerContractConfig(eventId: string) {
+    await this.router.navigate(['volunteers', 'contract-config', 'edit'], {
+      queryParams: new VolunteerParams(eventId)
+    });
+  }
+
   async payoutConfigOverview(eventId: string) {
     await this.router.navigate(['payout-configs'], {
       queryParams: new PayoutParams(eventId)

@@ -15,8 +15,10 @@ import { UserShiftBeforeSave } from "./before-save/user-shift.before-save";
 import { ShiftBeforeSave } from "./before-save/shift.before-save";
 import { EventCategoryBeforeSave } from "./before-save/event-category.before-save";
 import { EventDocumentBeforeSave } from "./before-save/event-document.before-save";
-import {  CalculateUserPayoutInfoFunction } from "./payout/payout-calculation.function";
+import { CalculateUserPayoutInfoFunction } from "./payout/payout-calculation.function";
 import { PayoutConfigBeforeSave } from "./before-save/payout-config.before-save";
+import { VolunteerContractConfigBeforeSave } from "./before-save/volunteer-contract-config.before-save";
+import { GenerateVolunteerContractFunction } from "./volunteer-contract/generate-volunteer-contract.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -48,6 +50,13 @@ Parse.Cloud.define("addUserByIdToEvent", async (request) => {
 
 Parse.Cloud.define("calculateUserPayoutInfoForEvent", async (request) => {
     return await Container.get(CalculateUserPayoutInfoFunction).run(request);
+}, {
+    fields: ['userId', 'eventId'],
+    requireUser: true
+});
+
+Parse.Cloud.define("generateVolunteerContract", async (request) => {
+    return await Container.get(GenerateVolunteerContractFunction).run(request);
 }, {
     fields: ['userId', 'eventId'],
     requireUser: true
@@ -116,6 +125,21 @@ Parse.Cloud.beforeSave("PayoutConfig", async request => {
             required: true
         },
         end: {
+            required: true
+        },
+        event: {
+            required: true
+        }
+    },
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
+    requireUser: true
+});
+
+Parse.Cloud.beforeSave("VolunteerContractConfig", async request => {
+    await Container.get(VolunteerContractConfigBeforeSave).run(request);
+}, {
+    fields: {
+        content: {
             required: true
         },
         event: {
