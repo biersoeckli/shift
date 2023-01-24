@@ -6,10 +6,16 @@ import { CronJobConfigurator } from "./jobs/cron-job.config";
 import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
 const ParseServer = require('parse-server').ParseServer;
+var FSFilesAdapter = require('@parse/fs-files-adapter');
 
 EnvUtils.appRoot = __dirname.replace('build', '');
 const { appName, databaseUri, appId, masterKey, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
 IpFilterUtil.setupHostnames(dashboardHostnames);
+
+var fsAdapter = new FSFilesAdapter({
+  // "filesSubDirectory": "my/files/folder", // optional, defaults to ./files
+  // "encryptionKey": "someKey" //optional, but mandatory if you want to encrypt files
+});
 
 const parseServerApp = new ParseServer({
   databaseURI: databaseUri,
@@ -17,6 +23,7 @@ const parseServerApp = new ParseServer({
   appId: appId,
   masterKey: masterKey,
   serverURL: serverUrl,
+  filesAdapter: fsAdapter,
   liveQuery: {
     classNames: [],
   },
