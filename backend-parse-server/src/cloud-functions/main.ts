@@ -16,6 +16,7 @@ import { ShiftBeforeSave } from "./before-save/shift.before-save";
 import { EventCategoryBeforeSave } from "./before-save/event-category.before-save";
 import { EventDocumentBeforeSave } from "./before-save/event-document.before-save";
 import {  CalculateUserPayoutInfoFunction } from "./payout/payout-calculation.function";
+import { PayoutConfigBeforeSave } from "./before-save/payout-config.before-save";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -98,6 +99,24 @@ Parse.Cloud.beforeSave("Shift", async request => {
         end: {
             required: true,
             error: 'Das Enddatum ist ein Pflichtfeld.'
+        },
+        event: {
+            required: true
+        }
+    },
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
+    requireUser: true
+});
+
+Parse.Cloud.beforeSave("PayoutConfig", async request => {
+    await Container.get(PayoutConfigBeforeSave).run(request);
+}, {
+    fields: {
+        start: {
+            required: true
+        },
+        end: {
+            required: true
         },
         event: {
             required: true
