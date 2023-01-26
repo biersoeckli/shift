@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading, DateUtils } from 'ngx-fluffy-cow';
+import { fluffyLoading, DateUtils, fluffyCatch } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftService, ShiftWithWishBooking } from 'src/app/shifts/services/shift.service';
@@ -29,6 +29,7 @@ export class CategoryChooserComponent extends BaseComponent<RegistrationParams> 
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     this.event = await this.shiftService.getEvent(this.params.eventId);
     const categories = await this.fetchAllCategories();
@@ -83,6 +84,7 @@ export class CategoryChooserComponent extends BaseComponent<RegistrationParams> 
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async save() {
     if (!this.selectionUserCategories) {
       return;

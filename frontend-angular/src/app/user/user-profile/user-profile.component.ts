@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { UserProfileParams } from './user-profile.params';
@@ -33,6 +33,7 @@ export class UserProfileComponent extends BaseComponent<UserProfileParams> {
 
 
   @fluffyLoading()
+  @fluffyCatch()
   async onSubmit() {
     this.validated = true;
     if (!this.reactiveForm.valid || !this.currentUser) {

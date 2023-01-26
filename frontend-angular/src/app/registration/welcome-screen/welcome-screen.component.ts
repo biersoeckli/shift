@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { RegistrationParams } from '../registration.params';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 
 @Component({
@@ -18,6 +18,7 @@ export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     const query = new Parse.Query(Parse.Object.extend("Event"));
     this.event = await query.get(this.params.eventId);

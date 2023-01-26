@@ -4,7 +4,7 @@ import { BaseEditComponent } from 'src/app/shift-common/base-edit-component/base
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import * as Parse from 'parse';
 import { EventCategoryParam } from '../event-category.param';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'app-categories-edit',
@@ -25,6 +25,7 @@ export class CategoriesEditComponent extends BaseEditComponent<EventCategoryPara
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async loadEvent() {
     this.event = await this.eventService.getEventById(this.params.eventId);
   }

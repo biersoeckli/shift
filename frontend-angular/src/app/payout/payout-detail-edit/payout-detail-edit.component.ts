@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseEditComponent } from 'src/app/shift-common/base-edit-component/base-edit-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { PayoutParams } from '../payout.params';
@@ -24,6 +24,7 @@ export class PayoutDetailEditComponent extends BaseEditComponent<PayoutParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async loadEvent() {
     this.event = await this.eventService.getEventById(this.params.eventId, true);
     if (!this.params.payoutConfigId) {

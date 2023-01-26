@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 
 interface NewUser {
@@ -22,6 +22,7 @@ export class VolunteerEditFormComponent {
   errorString?: string;
 
   @fluffyLoading()
+  @fluffyCatch()
   async createAndSaveUser() {
     try {
       const userId = await Parse.Cloud.run('getOrCreateUserForPhoneNumber', this.newUser);

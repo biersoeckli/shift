@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftService } from 'src/app/shifts/services/shift.service';
@@ -25,6 +25,7 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     this.event = await this.shiftService.getEvent(this.params.eventId);
     this.userEventCategories = await this.fetchUserCategories();
@@ -63,6 +64,7 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async save() {
     await this.userEvent?.save();
     await this.navigation.registrationConfirmation(this.params.eventId);

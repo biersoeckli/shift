@@ -7,12 +7,14 @@ import { GlobalLoaderComponent } from './global-loader/global-loader.component';
 import { ShiftCommonModule } from './shift-common/shift-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
+import { GlobalAlertComponent } from './global-alert/global-alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GlobalLoaderComponent,
-    HomeComponent
+    HomeComponent,
+    GlobalAlertComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,5 @@
 <div class="shift-content" *ngIf="item">
-    <div class="shift-header">Schicht Kategorie {{item.id ? 'bearbeiten' : 'erstellen'}}</div>
-
+    <shift-back-arrow (backClick)="event?.id ? navigation.eventCategoryOverview(event?.id ?? '') : navigation.home()" [title]="'Schicht Kategorie' + (item.id ? 'bearbeiten' : 'erstellen')"></shift-back-arrow>
     <label for="input-group-1" class="input-label">Kategorie Name</label>
     <div class="icon-input">
         <div>
@@ -15,6 +14,4 @@
 
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()">Speichern</button>
-    <button class="btn-secondary mt-2"
-        (click)="event?.id ? navigation.eventCategoryOverview(event?.id ?? '') : navigation.home()">Abbrechen</button>
 </div>

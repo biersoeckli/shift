@@ -1,5 +1,6 @@
 <div class="shift-content" *ngIf="item">
-    <div class="shift-header">Event {{item.get('name') || 'erstellen'}}</div>
+    <shift-back-arrow (backClick)="item.id ? navigation.eventDetail(item.id) : navigation.home()"
+        [title]="'Event ' + (item.get('name') || 'erstellen')"></shift-back-arrow>
 
     <label class="input-label">Eventname</label>
     <div class="icon-input">
@@ -18,12 +19,10 @@
     <shift-datetime-input [label]="'Ende des Events'" [date]="item.get('end')"
         (dateChange)="item.set('end', $event)"></shift-datetime-input>
 
-
     <button class="btn-secondary mt-2"
-        (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract Config</button>
+        (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract
+        Config</button>
     <br />
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()" [disabled]="!item.get('name')">Speichern</button>
-    <button class="btn-secondary mt-2"
-        (click)="item.id ? navigation.eventDetail(item.id) : navigation.home()">Abbrechen</button>
 </div>

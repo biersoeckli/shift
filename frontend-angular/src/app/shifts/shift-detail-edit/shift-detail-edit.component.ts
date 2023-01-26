@@ -3,7 +3,7 @@ import { BaseEditComponent } from 'src/app/shift-common/base-edit-component/base
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftDetailParams } from './shift-detail.params';
 import * as Parse from 'parse';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'app-shift-detail-edit',
@@ -26,6 +26,7 @@ export class ShiftDetailEditComponent extends BaseEditComponent<ShiftDetailParam
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async loadAdditionalData() {
     this.event = await this.eventService.getEventById(this.params.eventId);
   }

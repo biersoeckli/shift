@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as Parse from 'parse';
 import { environment } from 'src/environments/environment';
+import { AlertService } from './shift-common/services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
   title = 'shift';
-  constructor() {
+  constructor(alertService: AlertService) {
     Parse.initialize(environment.parseAppId);
     (Parse as any).serverURL = environment.parseServerUrl;
+    alertService.initFluffyCatch();
   }
 }

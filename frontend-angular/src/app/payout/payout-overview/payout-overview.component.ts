@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { PayoutParams } from '../payout.params';
@@ -21,11 +21,13 @@ export class PayoutOverviewComponent extends BaseComponent<PayoutParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   private async init() {
     this.payoutConfigs = await this.payoutService.getPayoutConfigsForEvent(this.params.eventId);
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async deleteItem(payoutConfig: Parse.Object<Parse.Attributes>) {
     if (!confirm(`Willst du die Payment Config wirklich löschen?`)) {
       return;

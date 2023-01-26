@@ -21,6 +21,11 @@ const constractCss = `
 <style>
 body {
     font-family: Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+p, ul, li {
+    font-size: 14px;
 }
 
 table {

@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
+import { DateUtils, fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { TimeSpan, TimeSpanUtils } from 'src/app/shift-common/utils/timespan.utils';
 import { ShiftService } from '../services/shift.service';
 import * as Parse from 'parse';
@@ -59,6 +59,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     await this.shiftTableService.initByEventId(this.eventId ?? '');
     this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
@@ -96,6 +97,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async onTableClick(category: Parse.Object<Parse.Attributes>, event: MouseEvent) {
     if (!this.editMode || !this.currentAddUser || !category) {
       return;
@@ -255,6 +257,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     this.contextMenuElement.nativeElement.classList.remove("visible");
   }
 
+  @fluffyCatch()
   async editUserForShiftContextMenuSelection() {
     if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
       return;
@@ -281,6 +284,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     });
   }
 
+  @fluffyCatch()
   async deleteContextMenuSelection() {
     console.log(this.contextMenuSelectedTableShift);
 

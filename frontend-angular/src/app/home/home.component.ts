@@ -4,7 +4,7 @@ import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftWithBookings, ShiftService } from 'src/app/shifts/services/shift.service';
 import { ShiftDetailParams } from 'src/app/shifts/shift-detail-edit/shift-detail.params';
 import * as Parse from 'parse';
-import { fluffyLoading, ParseUserUtils } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading, ParseUserUtils } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +22,7 @@ export class HomeComponent extends BaseComponent<ShiftDetailParams>{
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     [this.userEvents, this.events, this.isOrganizer] = await Promise.all([
       this.eventService.getUserEventsFromCurrentUser(),

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { VolunteerParams } from '../volunteer.params';
@@ -7,6 +7,7 @@ import * as Parse from 'parse';
 import * as DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { VolunteerContractResult } from '../volunteer-detail/volunteer-detail.component';
 
 @Component({
   selector: 'app-volunteer-contract-config-edit',
@@ -18,14 +19,13 @@ export class VolunteerContractConfigEditComponent extends BaseComponent<Voluntee
   event?: Parse.Object<Parse.Attributes>;
   contractConfig?: Parse.Object<Parse.Attributes>;
 
-
-  constructor(common: CommonService,
-    private sanitizer: DomSanitizer) {
+  constructor(common: CommonService) {
     super(common);
     this.init();
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     this.event = await this.eventService.getEventById(this.params.eventId, false, true);
     if (!this.event.get('volunteerContractConfig')) {
@@ -50,6 +50,18 @@ export class VolunteerContractConfigEditComponent extends BaseComponent<Voluntee
   }
 
   @fluffyLoading()
+  @fluffyCatch()
+  async preview() {
+    if (!this.contractConfig) {
+      return;
+    }
+    await this.contractConfig.save();
+    const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerContract', { userId: Parse.User.current()?.id, eventId: this.event?.id });
+    window.open(returnVal.url, '_blank');
+  }
+
+  @fluffyLoading()
+  @fluffyCatch()
   async save() {
     if (!this.contractConfig) {
       return;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
@@ -19,6 +19,7 @@ export class CategoriesOverviewComponent extends BaseComponent<EventCategoryPara
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   private async init() {
     this.event = await this.eventService.getEventById(this.params.eventId);
     this.categories = await this.eventService.getEventCategories(this.params.eventId);

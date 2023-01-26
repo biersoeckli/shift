@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { UserEventDetailParams } from './user-event-detail.params';
@@ -20,6 +20,7 @@ export class UserEventDetailComponent extends BaseComponent<UserEventDetailParam
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     if (!this.currentUser) {
       return;

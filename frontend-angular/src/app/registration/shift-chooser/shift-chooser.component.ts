@@ -4,7 +4,7 @@ import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftService, ShiftWithWishBooking } from 'src/app/shifts/services/shift.service';
 import { RegistrationParams } from '../registration.params';
 import * as Parse from 'parse';
-import { DateUtils, fluffyLoading } from 'ngx-fluffy-cow';
+import { DateUtils, fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { KeyValue } from '@angular/common';
 
 export interface GroupedShiftsWithBooking {
@@ -36,6 +36,7 @@ export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async init() {
     this.event = await this.shiftService.getEvent(this.params.eventId);
     this.bookings = await this.shiftService.getShiftsWithWishBookingsForUser(this.params.eventId);
@@ -77,6 +78,7 @@ export class ShiftChooserComponent extends BaseComponent<RegistrationParams> {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async save() {
     if (!this.bookings) {
       return;

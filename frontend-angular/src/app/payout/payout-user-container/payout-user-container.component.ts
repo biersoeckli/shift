@@ -3,6 +3,7 @@ import { BaseComponent } from 'src/app/shift-common/base-component/base-componen
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { PayoutService, UserPayoutInfo } from '../services/payout.service';
 import * as Parse from 'parse';
+import { fluffyCatch } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'shift-payout-user-container',
@@ -26,5 +27,4 @@ export class PayoutUserContainerComponent extends BaseComponent<void> implements
     this.userPayoutInfo = await Parse.Cloud.run('calculateUserPayoutInfoForEvent',
       { userId: this.userId, eventId: this.eventId });
   }
-
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import * as Parse from 'parse';
@@ -20,6 +20,7 @@ export class ShiftOverviewComponent extends BaseComponent<ShiftDetailParams> imp
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async ngOnInit() {
     if (!this.params.eventId) {
       return;

@@ -32,7 +32,7 @@ export class PdfCreatorService {
 
             // Downlaod the PDF
             const generatedPdf = await page.pdf({
-                margin: { top: '30px', right: '30px', bottom: '30px', left: '30px' },
+                margin: { top: '40px', right: '40px', bottom: '40px', left: '40px' },
                 printBackground: true,
                 format: 'A4',
             });
