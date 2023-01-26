@@ -20,7 +20,7 @@ export interface GeneratedContractOutput {
 const constractCss = `
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: Helvetica, sans-serif;
 }
 
 table {
@@ -31,7 +31,7 @@ th,
 td {
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
-    width: 50%;
+    width: 33%;
     padding: 0;
 }
 </style>`
@@ -45,7 +45,7 @@ export class VolunteerContractService {
         private readonly pdfCreator: PdfCreatorService) { }
 
     async generateAndSaveContractToPublicFolder(eventId: string, userId: string) {
-        const htmlContent = await this.generateContractHtml(eventId, userId);        
+        const htmlContent = await this.generateContractHtml(eventId, userId);
         const buffer = await this.pdfCreator.generateFromHtml(htmlContent);
         const fileName = `contract-${eventId}-${userId}.pdf`;
         const filePath = path.join(StaticPathConstants.getVolunteerContractFilePath(), fileName);
@@ -66,10 +66,11 @@ export class VolunteerContractService {
         }
 
         const userPayoutInfo = await this.payoutCalculationService.getPayoutInfoForUser(userId, eventId);
+        const eventCategories = await this.getEventCategories(eventId);
         let htmlContractContent = constractCss;
         htmlContractContent += marked.parse(contractConfig.get('content'));
         htmlContractContent = this.replaceUserInfoPlaceholders(htmlContractContent, user);
-        htmlContractContent = this.replacePayoutInfoPlaceholders(htmlContractContent, userPayoutInfo);
+        htmlContractContent = this.replacePayoutInfoPlaceholders(htmlContractContent, userPayoutInfo, eventCategories);
         htmlContractContent = this.replaceSignatureSectionPlaceholders(htmlContractContent, user);
         return htmlContractContent;
     }
@@ -82,10 +83,13 @@ export class VolunteerContractService {
         return htmlInput;
     }
 
-    replacePayoutInfoPlaceholders(htmlInput: string, userPayoutInfo: UserPayoutInfo) {
+    replacePayoutInfoPlaceholders(htmlInput: string, userPayoutInfo: UserPayoutInfo, eventCategories: Parse.Object<Parse.Attributes>[]) {
 
         const shiftTableItems = userPayoutInfo.shifts.map(shift => `
             <tr>
+                <td>
+                    ${SanitazionUtils.sanitize(eventCategories.find(category => category.id === shift.shift.get('category')?.id)?.get('name'))}
+                </td>
                 <td>
                     ${SanitazionUtils.sanitize(StringUtils.fromTo(shift.shift.get('start'), shift.shift.get('end'), true))}
                 </td>
@@ -97,6 +101,7 @@ export class VolunteerContractService {
             <table>
                 <thead>
                     <tr>
+                        <th>Kategorie</th>
                         <th>Schicht</th>
                         <th>Vergütung</th>
                     </tr>
@@ -117,5 +122,12 @@ export class VolunteerContractService {
             <p style="width: 50%; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">Unterschrift: ${SanitazionUtils.sanitize(user.get('firstName'))} ${SanitazionUtils.sanitize(user.get('lastName'))}</p>
         `);
         return htmlInput;
+    }
+
+    public async getEventCategories(eventId: string) {
+        const query = new Parse.Query(Parse.Object.extend('EventCategory'));
+        query.equalTo('event', await this.eventService.getEventById(eventId));
+        query.limit(100000);
+        return await query.find({ useMasterKey: true });
     }
 }
