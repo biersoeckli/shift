@@ -33,3 +33,5 @@ node_modules
 
 build
 src/env.json
+
+public-data

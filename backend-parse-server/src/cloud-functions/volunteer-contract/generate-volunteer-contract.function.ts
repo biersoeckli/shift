@@ -10,28 +10,29 @@ import { AuthenticateWithPhoneNumberResult } from "../auth/auth-with-phonenumber
 import { BaseCloudFunction } from "../cloud-function.interface";
 
 export interface VolunteerContractResult {
-    base64Content: Uint8Array;
+    url: string;
+    fileName: string;
 }
 
 @Service()
 export class GenerateVolunteerContractFunction extends BaseCloudFunction<VolunteerContractResult> {
 
     constructor(private readonly volunteerContractService: VolunteerContractService,
-        private readonly roleService: RoleService,
-        private readonly pdfCreator: PdfCreatorService) {
+        private readonly roleService: RoleService) {
         super();
     }
 
-    async run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>): Promise<any> {
+    async run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>) {
         if ([request.params.userId, request.params.eventId].some(x => !x)) {
             throw 'not all params provided';
         }
         if (!(await this.roleService.isVolunteerOrOrganizer(request.user as Parse.User, request.params.userId, request.params.eventId))) {
             throw 'unauthorized';
         }
-        const html = await this.volunteerContractService.generateContractHtml(request.params.eventId, request.params.userId);
-        const base64String = await this.pdfCreator.generateFromHtml(html);
-        
-        return base64String; // todo fix
+        const outputInfo = await this.volunteerContractService.generateAndSaveContractToPublicFolder(request.params.eventId, request.params.userId);
+        return {
+            url: outputInfo.url,
+            fileName: outputInfo.fileName
+        } as VolunteerContractResult;
     }
 }

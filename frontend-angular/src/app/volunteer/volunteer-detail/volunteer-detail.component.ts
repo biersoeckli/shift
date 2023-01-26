@@ -7,7 +7,8 @@ import { DownloadUtils } from 'src/app/shift-common/utils/download.utils';
 import { VolunteerParams } from '../volunteer.params';
 
 export interface VolunteerContractResult {
-  base64Content: string;
+  url: string;
+  fileName: string;
 }
 
 @Component({
@@ -79,7 +80,7 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
 
   @fluffyLoading()
   async downloadVolunteerContract() {
-    const returnVal: Uint8Array = await Parse.Cloud.run('generateVolunteerContract', { userId: this.user?.id, eventId: this.event?.id });
-    DownloadUtils.donwload(returnVal);
+    const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerContract', { userId: this.user?.id, eventId: this.event?.id });
+    window.open(returnVal.url, '_blank');
   }
 }

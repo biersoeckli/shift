@@ -32,30 +32,15 @@ export class PdfCreatorService {
 
             // Downlaod the PDF
             const generatedPdf = await page.pdf({
-                path: 'result.pdf',
                 margin: { top: '30px', right: '30px', bottom: '30px', left: '30px' },
                 printBackground: true,
                 format: 'A4',
             });
-            /*
-            var mime = 'application/pdf';
-            var encoding = 'base64';
-            var base64Uri = 'data:' + mime + ';' + encoding + ',' + generatedPdf.toString('base64');
-*/
-            return this.toArrayBuffer(generatedPdf);
+            return generatedPdf;
 
         } finally {
             // Close the browser instance
             await browser.close();
         }
-    }
-
-    toArrayBuffer(buf: Buffer) {
-        const ab = new ArrayBuffer(buf.length);
-        const view = new Uint8Array(ab);
-        for (let i = 0; i < buf.length; ++i) {
-            view[i] = buf[i];
-        }
-        return view;
     }
 }

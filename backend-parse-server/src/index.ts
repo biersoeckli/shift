@@ -5,12 +5,16 @@ import http from "http"
 import { CronJobConfigurator } from "./jobs/cron-job.config";
 import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
+import { StaticPathConstants } from './common/constants/static-paths.constants';
+import { FsUtils } from './common/utils/fs.utils';
 const ParseServer = require('parse-server').ParseServer;
 var FSFilesAdapter = require('@parse/fs-files-adapter');
 
 EnvUtils.appRoot = __dirname.replace('build', '');
 const { appName, databaseUri, appId, masterKey, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
 IpFilterUtil.setupHostnames(dashboardHostnames);
+FsUtils.createDirIfNotExists(StaticPathConstants.getPublicDataFilePath());
+FsUtils.createDirIfNotExists(StaticPathConstants.getVolunteerContractFilePath());
 
 var fsAdapter = new FSFilesAdapter({
   // "filesSubDirectory": "my/files/folder", // optional, defaults to ./files
@@ -60,7 +64,9 @@ app.use('/dashboard', async (req, res, next) => {
     next();
   }
 });
+
 app.use('/dashboard', parseDashboardApp);
+app.use(StaticPathConstants.publicDataUrlPath, express.static(StaticPathConstants.getPublicDataFilePath()))
 app.get('/', (req, res) => {
   res.status(403).send({ "error": "unauthorized" });
 });

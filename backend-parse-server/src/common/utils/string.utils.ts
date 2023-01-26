@@ -1,4 +1,5 @@
 import { DateUtils } from "./date.utils";
+import dateFormatter from 'date-and-time';
 
 export class StringUtils {
     public static isEmpty(value: string) {
@@ -13,17 +14,27 @@ export class StringUtils {
         if (!from || !to) {
             return '';
         }
-        return 'todo';
-        /*
         let returnVal = '';
         if (showDateOnFirst) {
-            returnVal = `${} `;
+            returnVal = `${this.formatDate(from)} `;
         }
         if (DateUtils.isSameDay(from, to)) {
-            returnVal += `${this.timePipe.transform(from)} - ${this.timePipe.transform(to)}`;
+            returnVal += `${this.formatTime(from)} - ${this.formatTime(to)}`;
         } else {
-            returnVal += `${this.timePipe.transform(from)} - ${this.dateTimePipe.transform(to)}`;
+            returnVal += `${this.formatTime(from)} - ${this.formatDateTime(to)}`;
         }
-        return returnVal;*/
+        return returnVal;
+    }
+
+    public static formatTime(date: Date, addSeconds = false) {
+        return dateFormatter.format(date, addSeconds ? 'HH:mm:ss' : 'HH:mm');
+    }
+
+    public static formatDate(date: Date) {
+        return dateFormatter.format(date, 'DD.MM.YYYY');
+    }
+
+    public static formatDateTime(date: Date, addSeconds = false) {
+        return this.formatDate(date) + ' ' + this.formatTime(date, addSeconds);
     }
 }
