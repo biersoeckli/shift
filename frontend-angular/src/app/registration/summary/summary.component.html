@@ -23,24 +23,24 @@
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
         <div class="text-xl font-semibold pb-1">Kategorien</div>
         <div *ngFor="let cat of userEventCategories">- {{cat.get('category').get('name')}}</div>
-        <button class="btn-secondary" (click)="editCategories()">Bearbeiten</button>
+        <button *ngIf="event.get('volunteerRegistrationEnabled')" class="btn-secondary" (click)="editCategories()">Bearbeiten</button>
     </div>
 
     <div class="rounded-xl border-2 border-dotted p-4 mt-4">
         <div class="text-xl font-semibold pb-1">Schichten</div>
         <div *ngFor="let userShiftItem of userShift">- {{userShiftItem.get('shift').get('start') | fromTo:
             userShiftItem.get('shift').get('end'): true}}</div>
-        <button class="btn-secondary" (click)="navigation.registrationShiftChooser(params.eventId)">Bearbeiten</button>
+        <button *ngIf="event.get('volunteerRegistrationEnabled')" class="btn-secondary" (click)="navigation.registrationShiftChooser(params.eventId)">Bearbeiten</button>
     </div>
 
     <label class="input-label mt-4">Bemerkungen (optional)</label>
-    <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6"
+    <textarea [disabled]="!event.get('volunteerRegistrationEnabled')" type="text" [ngModel]="userEvent.get('comment')" rows="6"
         (ngModelChange)="userEvent.set('comment', $event)"></textarea>
 
     <div style="height: 90px;">
         <div></div>
     </div>
-    <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2">
+    <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t-2" *ngIf="event.get('volunteerRegistrationEnabled')">
         <button class="btn-wide" style="margin-top: 0;" (click)="save()">Helfereinsatz bestätigen</button>
     </div>
 </div>

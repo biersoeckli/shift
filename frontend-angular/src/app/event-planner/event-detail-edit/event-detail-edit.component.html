@@ -36,6 +36,10 @@
         (valueChange)="item.set('volunteerContractEnabled', $event)" [label]="'Modul: Helferverträge'">
     </shift-toggle-switch>
 
+    <shift-toggle-switch [value]="item.get('documentUploadEnabled')"
+        (valueChange)="item.set('documentUploadEnabled', $event)" [label]="'Modul: Dokumentenupload'">
+    </shift-toggle-switch>
+
     <ng-container *ngIf="item.get('volunteerContractEnabled')">
         <button class="btn-secondary mt-2"
             (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract

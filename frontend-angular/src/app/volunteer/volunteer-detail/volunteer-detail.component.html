@@ -30,14 +30,17 @@
             <div *ngIf="(userShiftWishes ?? []).length === 0">keine</div>
         </div>
 
-        <shift-event-document-container [eventId]="params.eventId" [userId]="user.id"></shift-event-document-container>
+        <shift-event-document-container *ngIf="event?.get('documentUploadEnabled')" [eventId]="params.eventId"
+            [userId]="user.id"></shift-event-document-container>
 
-        <shift-payout-user-container *ngIf="event?.get('volunteerPayoutEnabled')" [eventId]="params.eventId" [userId]="user.id"></shift-payout-user-container>
+        <shift-payout-user-container *ngIf="event?.get('volunteerPayoutEnabled')" [eventId]="params.eventId"
+            [userId]="user.id"></shift-payout-user-container>
 
         <div>
             <label class="input-label">Bemerkungen (von HelferIn)</label>
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
         </div>
     </div>
-    <button class="btn-secondary" *ngIf="event?.get('volunteerContractEnabled')" (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
+    <button class="btn-secondary" *ngIf="event?.get('volunteerContractEnabled')"
+        (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
 </div>

@@ -24,7 +24,7 @@ export class PayoutUserContainerComponent extends BaseComponent<void> implements
     if (!this.eventId || !this.userId) {
       return;
     }
-    this.userPayoutInfo = await Parse.Cloud.run('calculateUserPayoutInfoForEvent',
-      { userId: this.userId, eventId: this.eventId });
+    this.userPayoutInfo = (await Parse.Cloud.run('calculateUserPayoutInfoForEvent',
+      { userId: this.userId, eventId: this.eventId })) ?? [];
   }
 }

@@ -3,13 +3,13 @@
         <shift-header-logo></shift-header-logo>
     </div>
     <div class="shift-card mb-6" *ngIf="!event.get('volunteerRegistrationEnabled')">
-        Hallo 😀<br>
+        Hallo 😀<br><br>
         Die Registrierung für den Event <span class="text-orange-500 font-medium">{{event.get('name')}}</span> ist nicht
         mehr möglich.<br><br>
         Vielen Dank für dein Interesse.
     </div>
     <div class="shift-card mb-6" *ngIf="event.get('volunteerRegistrationEnabled')">
-        Hallo 😀<br>
+        Hallo 😀<br><br>
         Hier kannst du dich als HelferIn für den Event <span
             class="text-orange-500 font-medium">{{event.get('name')}}</span> anmelden.<br><br>
         Sobald du alle Angaben gemacht hast, werden dir alle Informationen nochmals in einer Übersicht dargestellt und
