@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as Parse from 'parse';
+import { CsvExporterService } from 'src/app/shift-common/services/csv-exporter.service';
 import { EventService } from 'src/app/shift-common/services/event.service';
 
 @Component({
@@ -8,13 +9,15 @@ import { EventService } from 'src/app/shift-common/services/event.service';
 })
 export class VolunteerListComponent implements OnInit {
 
+  @Input() showDownloadButton = false;
   @Input() eventId?: string;
   @Output() userEventSelected = new EventEmitter<Parse.Object<Parse.Attributes>>();
   userEvents?: Parse.Object<Parse.Attributes>[];
   filteredUserEvents?: Parse.Object<Parse.Attributes>[];
   searchTerm = '';
 
-  constructor(private readonly eventService: EventService) {
+  constructor(private readonly eventService: EventService,
+    private readonly csvExporter: CsvExporterService) {
   }
 
   async ngOnInit() {
@@ -42,5 +45,11 @@ export class VolunteerListComponent implements OnInit {
 
   selectUser(userEvent: Parse.Object<Parse.Attributes>) {
     this.userEventSelected.next(userEvent);
+  }
+  downloadVolunteerList() {
+    if (!this.userEvents) {
+      return;
+    }
+    this.csvExporter.objectsToCsvAndDownload(this.userEvents.map(userEvent => userEvent.get('user').attributes), 'helferliste.csv');
   }
 }

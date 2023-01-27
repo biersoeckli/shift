@@ -1,5 +1,5 @@
 <div class="shift-content" *ngIf="params.eventId">
     <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)" [title]="'HelferInnen'"></shift-back-arrow>
-    <shift-volunteer-list [eventId]="params.eventId" (userEventSelected)="navigation.eventVolunteerDetail(params.eventId, $event.id)"></shift-volunteer-list>
+    <shift-volunteer-list [showDownloadButton]="true" [eventId]="params.eventId" (userEventSelected)="navigation.eventVolunteerDetail(params.eventId, $event.id)"></shift-volunteer-list>
     <button class="btn" (click)="navigation.eventVolunteerEdit(params.eventId)">Helfer hinzufügen</button>
 </div>

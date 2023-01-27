@@ -16,7 +16,7 @@ export class ShiftTablePrintOverlayComponent {
 
   @fluffyLoading()
   async print(format: 'A4' | 'fit' | 'image') {
-    await this.contentExporter.print({
+    await this.contentExporter.export({
       exportItems: this.elements.map((element, index) => {
         return {
           htmlElement: element,

@@ -18,6 +18,7 @@ import { HtmlContentExporterService } from './services/html-content-exporter.ser
 import { TimeFromToPipe } from './pipes/time-from-to.pipe';
 import { TimeInputComponent } from './components/time-input/time-input.component';
 import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
+import { CsvExporterService } from './services/csv-exporter.service';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.
   ],
   providers: [
     CanActivateAuthenticated,
-    HtmlContentExporterService
+    HtmlContentExporterService,
+    CsvExporterService
   ]
 })
 export class ShiftCommonModule { }

@@ -25,7 +25,7 @@ export class HtmlContentExporterService {
 
     private pagePadding = 20;
 
-    async print(exportConfig: HtmlContentExport) {
+    async export(exportConfig: HtmlContentExport) {
         if (!exportConfig?.outputType) {
             return;
         }
@@ -61,7 +61,7 @@ export class HtmlContentExporterService {
         doc.save(exportConfig.fileName ?? 'export.pdf');
     }
 
-    createFitPdf(htmlContentExportItems: HtmlContentExportCanvasItem[]) {
+   private createFitPdf(htmlContentExportItems: HtmlContentExportCanvasItem[]) {
         const heigthOfAllCanvas = htmlContentExportItems.reduce((prev, current) => prev + current.canvas.height, 0);
         const maxWidthOfCanvas = htmlContentExportItems.reduce((prev, current) =>
             prev < current.canvas.width ? current.canvas.width : prev, 0);
@@ -91,17 +91,7 @@ export class HtmlContentExporterService {
 
     private async getCanvas(htmlElement: ElementRef) {
         return await html2canvas(htmlElement.nativeElement, {
-            removeContainer: true,
-            /* onclone: (document) => {
-                 if (!document) {
-                     return;
-                 } // todo
-                 const sss = (document?.querySelector('.shift-entry') as any).style;
-                 if (!sss) {
-                     return;
-                 }
-                 sss.marginLeft = 0;
-               }*/
+            removeContainer: true
         });
     }
 }
