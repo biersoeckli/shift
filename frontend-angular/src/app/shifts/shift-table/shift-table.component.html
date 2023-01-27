@@ -34,7 +34,7 @@
                 <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
                     <span>Kategorien</span>
                 </button>
-                <button mat-menu-item (click)="navigation.payoutConfigOverview(eventId)">
+                <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerPayoutEnabled')" (click)="navigation.payoutConfigOverview(eventId)">
                     <span>Payout Config</span>
                 </button>
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">

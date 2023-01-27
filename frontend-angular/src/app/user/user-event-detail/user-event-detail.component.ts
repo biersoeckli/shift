@@ -26,7 +26,9 @@ export class UserEventDetailComponent extends BaseComponent<UserEventDetailParam
       return;
     }
     this.event = await this.eventService.getEventById(this.params.eventId);
-    this.userShifts = await this.getUserShiftForEvent(this.event, this.currentUser);    
+    if (this.event?.get('showShiftPlanToVolunteers')) {
+      this.userShifts = await this.getUserShiftForEvent(this.event, this.currentUser);
+    }
   }
 
 

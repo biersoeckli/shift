@@ -19,10 +19,29 @@
     <shift-datetime-input [label]="'Ende des Events'" [date]="item.get('end')"
         (dateChange)="item.set('end', $event)"></shift-datetime-input>
 
-    <button class="btn-secondary mt-2"
-        (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract
-        Config</button>
-    <br />
+    <shift-toggle-switch [value]="item.get('volunteerRegistrationEnabled')"
+        (valueChange)="item.set('volunteerRegistrationEnabled', $event)" [label]="'Helferregistrierung möglich'">
+    </shift-toggle-switch>
+
+    <shift-toggle-switch [value]="item.get('showShiftPlanToVolunteers')"
+        (valueChange)="item.set('showShiftPlanToVolunteers', $event)"
+        [label]="'Einsazplanung veröffentlichen (für HelferInnen sichtbar)'">
+    </shift-toggle-switch>
+
+    <shift-toggle-switch [value]="item.get('volunteerPayoutEnabled')"
+        (valueChange)="item.set('volunteerPayoutEnabled', $event)" [label]="'Modul: Auszahlungen HelferInnen'">
+    </shift-toggle-switch>
+
+    <shift-toggle-switch [value]="item.get('volunteerContractEnabled')"
+        (valueChange)="item.set('volunteerContractEnabled', $event)" [label]="'Modul: Helferverträge'">
+    </shift-toggle-switch>
+
+    <ng-container *ngIf="item.get('volunteerContractEnabled')">
+        <button class="btn-secondary mt-2"
+            (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract
+            Config</button><br>
+    </ng-container>
+
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()" [disabled]="!item.get('name')">Speichern</button>
 </div>

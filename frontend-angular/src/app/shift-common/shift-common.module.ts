@@ -17,6 +17,7 @@ import { EventService } from './services/event.service';
 import { HtmlContentExporterService } from './services/html-content-exporter.service';
 import { TimeFromToPipe } from './pipes/time-from-to.pipe';
 import { TimeInputComponent } from './components/time-input/time-input.component';
+import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { TimeInputComponent } from './components/time-input/time-input.component
     DateFromToPipe,
     TimeFromToPipe,
     LoaderComponent,
-    TimeInputComponent
+    TimeInputComponent,
+    ToggleSwitchComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { TimeInputComponent } from './components/time-input/time-input.component
     MatDialogModule,
     TimeFromToPipe,
     LoaderComponent,
-    TimeInputComponent
+    TimeInputComponent,
+    ToggleSwitchComponent
   ],
   providers: [
     CanActivateAuthenticated,
