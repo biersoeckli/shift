@@ -1,8 +1,7 @@
 FROM node:lts
 
 # needed for puppeteer
-RUN apt-get update
-RUN apt install -y libxss1 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0
+RUN apt-get install -y libxss1 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0
 
 RUN mkdir parse
 
