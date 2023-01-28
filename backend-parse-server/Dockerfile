@@ -20,4 +20,4 @@ RUN rm -rf ./spec
 
 EXPOSE 1337
 
-CMD [ "npm", "start-no-build" ]
+CMD [ "npm", "run", "start-no-build" ]
