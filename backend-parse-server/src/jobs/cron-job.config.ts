@@ -1,7 +1,6 @@
 import cron from "node-cron"
 import Container from "typedi"
 import { IpFilterUtil } from "../common/utils/ip-filter.utils"
-import { ApplicationUpdateJob } from "./application-update.job"
 
 export class CronJobConfigurator {
 
@@ -15,7 +14,6 @@ export class CronJobConfigurator {
     cron.schedule('*/5 * * * *', async () => {
       await IpFilterUtil.updateAllIpAddressesForHostnames();
       // await wait(20);
-      await Container.get(ApplicationUpdateJob).run();
     })
     this.hasBeenConfigured = true
   }
