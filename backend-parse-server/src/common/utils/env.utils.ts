@@ -27,15 +27,15 @@ export class EnvUtils {
             return this.cachedEnv;
         }
 
-        if (!(process.env.USE_ENV_VARIABLE === 'true')) {
+        if (process.env.USE_ENV_VARIABLE === 'true') {
             // gather env variables from local ENV Variables
-            return EnvUtils.getEnvVariablesFromHost();
+            return EnvUtils.getEnvVariablesFromHostEnv();
         }
         // gather env variables from env.json file
         return EnvUtils.getEnvVariablesFromFile();
     }
 
-    static getEnvVariablesFromHost(): EnvVariables {
+    static getEnvVariablesFromHostEnv(): EnvVariables {
         this.cachedEnv = {
             appName: process.env.APP_NAME,
             databaseUri: process.env.DATABASE_URL,
