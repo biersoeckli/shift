@@ -14,12 +14,10 @@ RUN mkdir parse
 ADD . /parse
 WORKDIR /parse
 RUN npm install
+RUN npm run build
+RUN rm -rf ./src
+RUN rm -rf ./spec
 
 EXPOSE 1337
 
-# Uncomment if you want to access cloud code outside of your container
-# A main.js file must be present, if not Parse will not start
-
-# VOLUME /parse/cloud               
-
-CMD [ "npm", "start" ]
+CMD [ "npm", "start-no-build" ]
