@@ -20,7 +20,7 @@ const env = EnvUtils.get();
 let fileAdapter = undefined;
 if ([env.s3Endpoint, env.s3Bucket, env.s3BaseUrl, env.s3AccessKey, env.s3SecredKey].every(x => !!x)) {
   console.log('Using S3 Storage for files.');
-  const S3Adapter = require("");
+  const S3Adapter = require("@parse/s3-files-adapter");
   const AWS = require("aws-sdk");
 
   const spacesEndpoint = new AWS.Endpoint(env.s3Endpoint);

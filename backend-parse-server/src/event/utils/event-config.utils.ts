@@ -12,7 +12,8 @@ export class EventConfigUtils {
             volunteerRegistrationEnabled: event?.get('volunteerRegistrationEnabled') ?? false,
             showShiftPlanToVolunteers: event?.get('showShiftPlanToVolunteers') ?? false,
             volunteerPayoutEnabled: event?.get('volunteerPayoutEnabled') ?? false,
-            volunteerContractEnabled: event?.get('volunteerContractEnabled') ?? false
+            volunteerContractEnabled: event?.get('volunteerContractEnabled') ?? false,
+            documentUploadEnabled: event?.get('documentUploadEnabled') ?? false
         } as EventConfig;
     }
 }

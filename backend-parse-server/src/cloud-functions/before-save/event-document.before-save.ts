@@ -17,7 +17,7 @@ export class EventDocumentBeforeSave extends BaseCloudFunction<void> {
         if (!EventConfigUtils.getFromEvent(event).documentUploadEnabled) {
             throw `Upload von Dokumenten ist für den Event ${event.get('name')} deaktiviert.`;
         }
-        
+
         const eventAdminRole = await RoleService.getOrCreateRole(getEventAdminRole(request.object.get('event').id));
         const acl = new Parse.ACL();
         acl.setPublicReadAccess(false);
