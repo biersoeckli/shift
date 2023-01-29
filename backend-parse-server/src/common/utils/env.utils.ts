@@ -15,6 +15,11 @@ export interface EnvVariables {
     production: boolean;
     smsServiceToken: string;
     smsServiceUrl: string;
+    s3BaseUrl: string;
+    s3Bucket: string;
+    s3Endpoint: string;
+    s3AccessKey: string;
+    s3SecredKey: string;
 }
 
 export class EnvUtils {
@@ -50,6 +55,11 @@ export class EnvUtils {
             production: process.env.PRODUCTION === 'true',
             smsServiceToken: process.env.SMS_SERVICE_TOKEN,
             smsServiceUrl: process.env.SMS_SERVICE_URL,
+            s3BaseUrl: process.env.S3_BASE_URL,
+            s3Bucket: process.env.S3_BUCKET,
+            s3Endpoint: process.env.S3_ENDPOINT,
+            s3AccessKey: process.env.S3_ACCESS_KEY,
+            s3SecredKey: process.env.S3_SECRED_KEY,
         } as EnvVariables;
         this.checkEnvVariables();
         return this.cachedEnv;

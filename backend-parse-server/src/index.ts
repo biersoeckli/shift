@@ -7,19 +7,46 @@ import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
 import { StaticPathConstants } from './common/constants/static-paths.constants';
 import { FsUtils } from './common/utils/fs.utils';
+
 const ParseServer = require('parse-server').ParseServer;
-var FSFilesAdapter = require('@parse/fs-files-adapter');
 
 EnvUtils.appRoot = __dirname.replace('build', '');
 const { appName, databaseUri, appId, masterKey, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
 IpFilterUtil.setupHostnames(dashboardHostnames);
 FsUtils.createDirIfNotExists(StaticPathConstants.getPublicDataFilePath());
 FsUtils.createDirIfNotExists(StaticPathConstants.getVolunteerContractFilePath());
+const env = EnvUtils.get();
 
-var fsAdapter = new FSFilesAdapter({
-  // "filesSubDirectory": "my/files/folder", // optional, defaults to ./files
-  // "encryptionKey": "someKey" //optional, but mandatory if you want to encrypt files
-});
+let fileAdapter = undefined;
+if ([env.s3Endpoint, env.s3Bucket, env.s3BaseUrl, env.s3AccessKey, env.s3SecredKey].every(x => !!x)) {
+  console.log('Using S3 Storage for files.');
+  const S3Adapter = require("");
+  const AWS = require("aws-sdk");
+
+  const spacesEndpoint = new AWS.Endpoint(env.s3Endpoint);
+  var s3Options = {
+    bucket: env.s3Bucket, // prefix of enpoint url
+    baseUrl: env.s3BaseUrl, // base url für public file url
+    region: '',
+    directAccess: true,
+    globalCacheControl: "public, max-age=31536000",
+    bucketPrefix: '',
+    s3overrides: {
+      accessKeyId: env.s3AccessKey,
+      secretAccessKey: env.s3SecredKey,
+      endpoint: spacesEndpoint
+    },
+    fileAcl: 'public-read'
+  };
+  fileAdapter = new S3Adapter(s3Options);
+} else {
+  console.log('Using FSFilesAdapter for files.');
+  var FSFilesAdapter = require('@parse/fs-files-adapter');
+  fileAdapter = new FSFilesAdapter({
+    // "filesSubDirectory": "my/files/folder", // optional, defaults to ./files
+    // "encryptionKey": "someKey" //optional, but mandatory if you want to encrypt files
+  });
+}
 
 const parseServerApp = new ParseServer({
   databaseURI: databaseUri,
@@ -27,7 +54,7 @@ const parseServerApp = new ParseServer({
   appId: appId,
   masterKey: masterKey,
   serverURL: serverUrl,
-  filesAdapter: fsAdapter,
+  filesAdapter: fileAdapter,
   liveQuery: {
     classNames: [],
   },
