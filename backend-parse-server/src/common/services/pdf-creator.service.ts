@@ -19,10 +19,9 @@ export class PdfCreatorService {
             headless: true,
             args: ['--no-sandbox']
         });
-
+        // Create a new page
+        const page = await browser.newPage();
         try {
-            // Create a new page
-            const page = await browser.newPage();
 
             //Get HTML content from HTML file
             await page.setContent(htmlString, { waitUntil: 'domcontentloaded' });
@@ -40,6 +39,7 @@ export class PdfCreatorService {
 
         } finally {
             // Close the browser instance
+            await page.close();
             await browser.close();
         }
     }
