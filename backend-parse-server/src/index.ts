@@ -68,7 +68,6 @@ const users = !dashboardUser || !dashboardPass ? undefined : [
   },
 ];
 const parseDashboardApp = new ParseDashboard({
-  allowInsecureHTTP: true,
   apps: [
     {
       serverURL: serverUrl,
@@ -80,7 +79,9 @@ const parseDashboardApp = new ParseDashboard({
   ],
   users,
   useEncryptedPasswords: false,
-}, true);
+}, {
+  allowInsecureHTTP: true
+});
 
 const app = express();
 app.use('/parse', parseServerApp);
