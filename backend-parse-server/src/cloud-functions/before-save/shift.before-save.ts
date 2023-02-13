@@ -30,7 +30,7 @@ export class ShiftBeforeSave extends BaseCloudFunction<void> {
         const eventAdminRole = await RoleService.getOrCreateRole(getEventAdminRole(request.object.get('event').id));
         const viewerRole = await RoleService.getOrCreateRole(getEventViewerRole(request.object.get('event').id));
         const acl = new Parse.ACL();
-        acl.setPublicReadAccess(false);
+        acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(false);
         acl.setRoleReadAccess(eventAdminRole.get('name'), true);
         acl.setRoleWriteAccess(eventAdminRole.get('name'), true);
