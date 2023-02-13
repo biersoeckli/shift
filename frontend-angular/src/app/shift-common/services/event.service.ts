@@ -39,9 +39,20 @@ export class EventService {
     query.equalTo('event', await this.getEventById(eventId, true));
     query.ascending('name');
     query.include('event');
+    query.include('responsibleUser');
     query.limit(10000);
     return await query.find();
   }
+
+  public async fetchAllUserEventCategory(eventId: string) {
+    const query = new Parse.Query(Parse.Object.extend('UserEventCategory'));
+    query.equalTo('event', await this.getEventById(eventId, true));
+    query.include('event');
+    query.include('user');
+    query.include('category');
+    query.limit(10000);
+    return await query.find();
+}
 
   async getUserEventsFromCurrentUser() {
     const query = new Parse.Query(Parse.Object.extend('UserEvent'));

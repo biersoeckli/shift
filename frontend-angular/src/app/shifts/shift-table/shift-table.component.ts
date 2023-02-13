@@ -82,7 +82,6 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
       }
       this.currentAddUser = selectedUser;
     });
-
   }
 
   changeEditMode() {

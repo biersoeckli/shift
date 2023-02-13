@@ -4,6 +4,7 @@ import * as Parse from 'parse';
 import { TimeSpan, TimeSpanUtils } from "src/app/shift-common/utils/timespan.utils";
 import { ShiftService } from "./shift.service";
 import * as Colors from 'tailwindcss/colors';
+import { EventService } from "src/app/shift-common/services/event.service";
 export interface ShiftTable {
     headerTimeSlots: TimeSpan[];
     categories: ShiftTableCategory[];
@@ -48,7 +49,8 @@ export class ShiftTableService {
     userColors: UserColor[] = [];
     private tailwindColors = this.initTailwindColors();
 
-    constructor(private shiftService: ShiftService) { }
+    constructor(private shiftService: ShiftService,
+        private readonly eventService: EventService) { }
 
     public async initByEventId(eventId: string) {
         this.event = await this.shiftService.getEvent(eventId);
@@ -90,9 +92,9 @@ export class ShiftTableService {
             return;
         }
         const [categories, userShiftWishForEvent, userEventCategories] = await Promise.all([
-            this.fetchAllCategories(),
+            this.eventService.getEventCategories(this.event.id),
             this.fetchAllUserShiftWishForEvent(),
-            this.fetchAllUserEventCategory()
+            this.eventService.fetchAllUserEventCategory(this.event.id)
         ])
         const eventTimeSlots = this.buildHeaderTimeSlots();
         const shiftTableCategories = await new Promise(resolve => resolve(
@@ -194,30 +196,6 @@ export class ShiftTableService {
         query.include('event');
         query.include('user');
         query.include('shift');
-        query.limit(10000);
-        return await query.find();
-    }
-
-    public async fetchAllUserEventCategory() {
-        if (!this.event) {
-            return [];
-        }
-        const query = new Parse.Query(Parse.Object.extend('UserEventCategory'));
-        query.equalTo('event', this.event);
-        query.include('event');
-        query.include('user');
-        query.include('category');
-        query.limit(10000);
-        return await query.find();
-    }
-
-    async fetchAllCategories() {
-        if (!this.event) {
-            return [];
-        }
-        const query = new Parse.Query(Parse.Object.extend('EventCategory'));
-        query.equalTo('event', this.event);
-        query.ascending('name');
         query.limit(10000);
         return await query.find();
     }

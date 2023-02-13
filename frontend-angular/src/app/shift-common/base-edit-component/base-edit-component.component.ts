@@ -11,6 +11,7 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
 
   beforeSaveAction?: (unsavedItem: Parse.Object<Parse.Attributes>) => Promise<Parse.Object<Parse.Attributes>> | Parse.Object<Parse.Attributes>;
   afterSaveAction?: (savedItem: Parse.Object<Parse.Attributes>) => Promise<void> | void;
+  beforeQueryAction?: (query: Parse.Query<Parse.Object<Parse.Attributes>>) => Promise<Parse.Query<Parse.Object<Parse.Attributes>>> | Parse.Query<Parse.Object<Parse.Attributes>>;
 
   constructor(common: CommonService,
     private className: string,
@@ -26,6 +27,9 @@ export abstract class BaseEditComponent<TParamType> extends BaseComponent<TParam
     try {
       if (this.params[this.idParamName]) {
         let query = new Parse.Query(Parse.Object.extend(this.className));
+        if (this.beforeQueryAction) {
+          query = await this.beforeQueryAction(query);
+        }
         this.item = await query.get(this.params[this.idParamName] + '');
       } else {
         if (!this.canCreateNewItems) {

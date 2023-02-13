@@ -27,6 +27,16 @@ export class DateUtils {
         if (!date1 || !date2) {
             return false;
         }
+        return date1.getTime() < date2.getTime();
+    }
+
+    /**
+     * Checks if date2 is greather than or equal to date 1
+     */
+    public static gte(date1: Date, date2: Date) {
+        if (!date1 || !date2) {
+            return false;
+        }
         return date1.getTime() <= date2.getTime();
     }
 
@@ -38,6 +48,16 @@ export class DateUtils {
             return false;
         }
         return date1.getTime() > date2.getTime();
+    }
+
+    /**
+     * Checks if date2 is less than or equal to date 1
+     */
+    public static lte(date1: Date, date2: Date) {
+        if (!date1 || !date2) {
+            return false;
+        }
+        return date1.getTime() >= date2.getTime();
     }
 
     public static isSameDay(date1: Date, date2: Date) {

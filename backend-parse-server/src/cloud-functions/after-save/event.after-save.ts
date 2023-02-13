@@ -16,7 +16,7 @@ export class EventAfterSave extends BaseCloudFunction<void> {
             const viewerRole = await RoleService.getOrCreateRole(getEventViewerRole(request.object.id));
             await RoleService.addUser2Role(adminRole.get('name'), request.user as any);
             const acl = new Parse.ACL();
-            acl.setPublicReadAccess(false);
+            acl.setPublicReadAccess(true);
             acl.setPublicWriteAccess(false);
             acl.setRoleReadAccess(adminRole.get('name'), true);
             acl.setRoleWriteAccess(adminRole.get('name'), true);

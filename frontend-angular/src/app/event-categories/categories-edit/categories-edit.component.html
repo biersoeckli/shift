@@ -1,5 +1,6 @@
 <div class="shift-content" *ngIf="item">
-    <shift-back-arrow (backClick)="event?.id ? navigation.eventCategoryOverview(event?.id ?? '') : navigation.home()" [title]="'Schicht Kategorie' + (item.id ? 'bearbeiten' : 'erstellen')"></shift-back-arrow>
+    <shift-back-arrow (backClick)="event?.id ? navigation.eventCategoryOverview(event?.id ?? '') : navigation.home()"
+        [title]="'Schicht Kategorie' + (item.id ? 'bearbeiten' : 'erstellen')"></shift-back-arrow>
     <label for="input-group-1" class="input-label">Kategorie Name</label>
     <div class="icon-input">
         <div>
@@ -12,6 +13,13 @@
         <input type="text" placeholder="" [ngModel]="item.get('name')" (ngModelChange)="item.set('name', $event)">
     </div>
 
+    <shift-toggle-switch label="Ist Auswahlmöglichkeit bei Registrierung" [value]="item.get('availableForRegistration')"
+        (valueChange)="item.set('availableForRegistration', $event)"></shift-toggle-switch>
+    <label for="input-group-1" class="input-label">Verantwortliche/r</label>
+    <button class="btn-secondary mb-3" style="margin-top: 0px;"
+        (click)="pickResponsibleUser()">{{item.get('responsibleUser') ? item.get('responsibleUser').get('firstName') + '
+        ' + item.get('responsibleUser').get('lastName') : 'nicht definiert'}}</button>
+    <br />
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()">Speichern</button>
 </div>

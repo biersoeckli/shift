@@ -19,6 +19,7 @@ import { CalculateUserPayoutInfoFunction } from "./payout/payout-calculation.fun
 import { PayoutConfigBeforeSave } from "./before-save/payout-config.before-save";
 import { VolunteerContractConfigBeforeSave } from "./before-save/volunteer-contract-config.before-save";
 import { GenerateVolunteerContractFunction } from "./volunteer-contract/generate-volunteer-contract.function";
+import { UserEventAfterSave } from "./after-save/user-event.after-save";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -87,6 +88,10 @@ Parse.Cloud.beforeSave("Event", async (request) => {
         end: {
             required: true,
             error: 'Das Enddatum ist ein Pflichtfeld.'
+        },
+        contactMail: {
+            required: true,
+            error: 'Der Kontakt ist ein Pflichtfeld.'
         }
     },
     requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
@@ -179,7 +184,6 @@ Parse.Cloud.beforeSave("UserShiftWish", async request => {
             required: true
         }
     },
-    requireAllUserRoles: [ROLE_EVENT_ORGANIZER],
     requireUser: true
 });
 
@@ -195,6 +199,10 @@ Parse.Cloud.beforeSave("UserEvent", async request => {
         }
     },
     requireUser: true
+});
+
+Parse.Cloud.afterSave("UserEvent", async request => {
+    await Container.get(UserEventAfterSave).run(request);
 });
 
 Parse.Cloud.beforeSave("EventCategory", async request => {

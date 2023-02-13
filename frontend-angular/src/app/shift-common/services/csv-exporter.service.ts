@@ -10,14 +10,15 @@ export class CsvExporterService {
     }
 
     objectsToCsv<T extends Object>(inputObject: T[], addHeader = true) {
-        const allKeys = [...new Set(inputObject.flatMap(obj => Object.keys(obj)))];
+        const allKeys = [...new Set(inputObject.flatMap(obj => Object.keys(obj)))]
+            .filter(x => !['ACL', 'sessionToken', 'username'].includes(x));
         const header = allKeys.join(';');
         const rows = inputObject.map(obj => allKeys.map(key => (obj as any)[key]).join(';'));
         const fileData = (addHeader ? [header, ...rows] : rows).join('\n');
-        return this.createTextUrl(fileData);
+        return this.createPlainTextUrl(fileData);
     }
 
-    private createTextUrl(data: string) {
+    private createPlainTextUrl(data: string) {
         return 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
     }
 }

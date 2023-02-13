@@ -34,7 +34,8 @@
                 <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
                     <span>Kategorien</span>
                 </button>
-                <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerPayoutEnabled')" (click)="navigation.payoutConfigOverview(eventId)">
+                <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerPayoutEnabled')"
+                    (click)="navigation.payoutConfigOverview(eventId)">
                     <span>Payout Config</span>
                 </button>
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">
@@ -64,10 +65,14 @@
         <tbody>
             <ng-container *ngFor="let tableCategory of shiftTable?.categories ?? []; let iCategory = index">
                 <tr>
-                    <td class="bg-white z-20">{{tableCategory.category.get('name')}}</td>
+                    <td class="bg-white z-20">{{tableCategory.category.get('name')}}<span *ngIf="tableCategory.category.get('availableForRegistration')">*</span></td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        <span class="text-slate-500 text-sm" *ngIf="tableCategory.category.get('responsibleUser')">Verantwortung:<br>
+                            {{ tableCategory.category.get('responsibleUser').get('firstName') + '
+                            ' + tableCategory.category.get('responsibleUser').get('lastName')}}</span>
+                    </td>
                     <td colspan="100%" (click)="onTableClick(tableCategory.category, $event)">
                         <ng-container *ngFor="let tableShift of tableCategory.shifts; let iTableShift = index">
                             <div [style]="'background-color: ' + shiftTableService.userColorMap.get(tableShift.shift.get('user').id) +

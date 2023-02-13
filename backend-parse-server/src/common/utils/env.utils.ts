@@ -20,6 +20,11 @@ export interface EnvVariables {
     s3Endpoint: string;
     s3AccessKey: string;
     s3SecredKey: string;
+    mailUser: string;
+    mailPassword: string;
+    mailHost: string;
+    mailPort: number;
+    mailSecure: boolean;
 }
 
 export class EnvUtils {
@@ -60,6 +65,11 @@ export class EnvUtils {
             s3Endpoint: process.env.S3_ENDPOINT,
             s3AccessKey: process.env.S3_ACCESS_KEY,
             s3SecredKey: process.env.S3_SECRED_KEY,
+            mailUser: process.env.MAIL_USER,
+            mailPassword: process.env.MAIL_PASSWORD,
+            mailHost: process.env.MAIL_HOST,
+            mailPort: +(process.env.MAIL_PORT ?? 0),
+            mailSecure: process.env.MAIL_SECURE === 'true'
         } as EnvVariables;
         this.checkEnvVariables();
         return this.cachedEnv;

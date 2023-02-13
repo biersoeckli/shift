@@ -21,6 +21,7 @@ export class UserEventBeforeSave extends BaseCloudFunction<void> {
             throw 'unauthorized';
         }
 
+
         const event = await this.eventService.getEventById(request.object.get('event').id);
         if (isRelatedUser && !isOrganizer && !EventConfigUtils.getFromEvent(event).volunteerRegistrationEnabled) {
             throw `Es können keine Anpassungen mehr für Registrierungen an dem Event "${event.get('name')}" vorgenommen werden.`;
@@ -37,6 +38,7 @@ export class UserEventBeforeSave extends BaseCloudFunction<void> {
         request.object.setACL(acl);
         if (!request.original) {
             await RoleService.addUser2Role(getEventViewerRole(request.object.get('event').id), request.object.get('user'));
+            request.object.set('createdByOrganizer', isOrganizer && !isRelatedUser)
         }
     }
 }

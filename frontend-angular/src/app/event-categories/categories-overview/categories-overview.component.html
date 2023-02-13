@@ -3,6 +3,9 @@
     <shift-back-arrow (backClick)="navigation.eventDetail(event.id)" [title]="'Event Kategorien'"></shift-back-arrow>
     <div *ngFor="let item of categories ?? []" (click)="navigation.eventCategoryEdit(event.id, item.id)" class="shift-list-item">
         {{item.get('name') }} 
+        <span *ngIf="item.get('responsibleUser')"><br>- Verantwortliche/r: {{ item.get('responsibleUser').get('firstName') + '
+            ' + item.get('responsibleUser').get('lastName')}}</span>
+            <span *ngIf="item.get('availableForRegistration')"><br>- bei Registrierung sichtbar</span>
     </div>
     <button class="btn mt-2" (click)="navigation.eventCategoryEdit(event.id)">Kategorie hinzufügen</button>
 </div>

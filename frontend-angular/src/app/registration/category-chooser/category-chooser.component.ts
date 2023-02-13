@@ -52,6 +52,7 @@ export class CategoryChooserComponent extends BaseComponent<RegistrationParams> 
   async fetchAllCategories() {
     const query = new Parse.Query(Parse.Object.extend('EventCategory'));
     query.equalTo('event', this.event);
+    query.equalTo('availableForRegistration', true);
     query.ascending('name');
     return await query.find();
   }
