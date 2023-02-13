@@ -95,6 +95,13 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     return undefined;
   }
 
+  async showVolunteerDetail(userId: string) {
+    if (this.editMode) {
+      return;
+    }
+    // todo implement logic
+  }
+
   @fluffyLoading()
   @fluffyCatch()
   async onTableClick(category: Parse.Object<Parse.Attributes>, event: MouseEvent) {
@@ -318,6 +325,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     this.contextMenuElement.nativeElement.classList.add("visible");
   }
 
+  @fluffyLoading()
   async toggleIncludeWishes() {
     this.includeWishesInTable = !this.includeWishesInTable;
     this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);

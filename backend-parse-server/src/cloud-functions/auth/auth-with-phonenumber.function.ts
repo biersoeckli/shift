@@ -20,8 +20,8 @@ export class AuthenticateWithPhoneNumberFunction extends BaseCloudFunction<Authe
 
     async run(request: Parse.Cloud.FunctionRequest<Parse.Cloud.Params>) {
 
-        if (!SWISS_PHONE_NUMBER_REGEX.test(request.params.phone)) {
-            throw 'Die Telefonnummer ist ungültig.';
+        if (!SWISS_PHONE_NUMBER_REGEX.test(request.params.phone) || request.params.phone.length !== 10) {
+            throw 'Die Telefonnummer ist in einem ungültigen Format. Hinweis: Schweizer Telefonnummer in folgendem Format: 0791234567';
         }
 
         const user = await this.authService.createOrGetUserForPhoneNumber(request.params.phone);

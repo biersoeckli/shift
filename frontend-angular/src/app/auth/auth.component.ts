@@ -37,7 +37,7 @@ export class AuthComponent extends BaseComponent<AuthParams> {
     }
     try {
       this.errorString = undefined;
-      const { challengeId } = await Parse.Cloud.run('authenticateWithPhoneNumber', { phone: this.phoneReactiveForm.value.phone });
+      const { challengeId } = await Parse.Cloud.run('authenticateWithPhoneNumber', { phone: this.phoneReactiveForm.value.phone?.replaceAll(' ', '') });
       this.authChallengeId = challengeId;
     } catch (e) {
       const ex = e as Parse.Error;

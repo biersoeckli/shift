@@ -30,4 +30,11 @@ export class HomeComponent extends BaseComponent<ShiftDetailParams>{
       ParseUserUtils.isLoggedInUserInRole('event_organizer')
     ]);
   }
+
+  @fluffyLoading()
+  @fluffyCatch()
+  async logout() {
+    await Parse.User.logOut();
+    window.open('/', '_self');
+  }
 }

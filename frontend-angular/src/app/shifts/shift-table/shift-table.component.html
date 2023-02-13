@@ -79,7 +79,7 @@
                             '; margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
                                 [class]="(editMode ? 'table-shift-item-edit ' : ' ') + ' rounded px-2  text-gray-700'"
                                 (mousedown)="onShiftMouseDown($event, tableShift)"
-                                [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift">
+                                [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift" (click)="showVolunteerDetail(tableShift.shift.get('user').id)">
                                 {{tableShift.shift.get('user').get('firstName')}}
                                 {{tableShift.shift.get('user').get('lastName')}}
                             </div>
