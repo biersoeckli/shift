@@ -24,9 +24,8 @@ export class NavigationService {
   }
 
   async registrationUserDetails(eventId: string) {
-    await this.router.navigate(['user', 'profile'], {
-      queryParams: new UserProfileParams('/register/category-chooser?eventId=' + eventId)
-    });
+    window.open('/user/profile?returnUrl=' + encodeURI('/register/category-chooser?eventId=' + eventId), '_self');
+    
   }
 
   async userProfile(returnUrl: string) {
