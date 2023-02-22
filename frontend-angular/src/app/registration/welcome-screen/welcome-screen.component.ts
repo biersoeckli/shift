@@ -20,6 +20,12 @@ export class WelcomeScreenComponent extends BaseComponent<RegistrationParams> {
   @fluffyLoading()
   @fluffyCatch()
   async init() {
+    try {
+    await Parse.User.logOut();
+    } catch (ex) {
+      console.warn('Parse error during logout:');
+      console.warn(ex);
+    }
     const query = new Parse.Query(Parse.Object.extend("Event"));
     this.event = await query.get(this.params.eventId);
   }
