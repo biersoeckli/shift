@@ -22,7 +22,7 @@ export class UserEventAfterSave extends BaseCloudFunction<void> {
             const event = await this.eventService.getEventById(request.object.get('event').id);
             const user = await this.authService.getUserById(request.object.get('user').id);
 
-           const text = `Du hast dich erfolgreich für den Event "${event.get('name')}" registriert. Vielen Dank!` +
+           const text = `Du hast dich erfolgreich für den Event "${event.get('name')}" registriert. Vielen Dank! ` +
            `Du kannst dir deine Registrierung jederzeit unter https://shift.biersoeckli.ch ansehen. ` +
            `Später werden dort auch weitere Informationen zu deinem Helfereinsatz ersichtlich sein. ` +
            `Bei Fragen wende dich bitte an ${event.get('contactMail')}. Wir melden uns in den nächsten Wochen nochmals bei dir.`;
@@ -30,7 +30,7 @@ export class UserEventAfterSave extends BaseCloudFunction<void> {
 
            this.smsService.sendSms(user.get('phone'), text);
            this.mailService.sendMail(user.get('email'), 'Registrierung erfolgreich',
-             `Hallo ${user.get('firstName')}<br><br>${text}<br><br>Freundliche Grüsse<br>Das Team vom ${event.get('name')}`, true, event.get('name'));
+             `Hallo ${user.get('firstName')}<br><br>${text}<br><br>Freundliche Grüsse<br>${event.get('name')}`, true, event.get('name'));
         }
     }
 }
