@@ -29,8 +29,9 @@ export class SummaryComponent extends BaseComponent<RegistrationParams> {
   async init() {
     this.event = await this.shiftService.getEvent(this.params.eventId);
     this.userEventCategories = await this.fetchUserCategories();
-    this.userShift = await this.shiftService.getWishBookingsForEventAndUser(this.event);
-
+    if (this.event?.get('wishShiftsEnabled')) {
+      this.userShift = await this.shiftService.getWishBookingsForEventAndUser(this.event);
+    }
     let userEvent = await this.fetchExistingUserEvent();
     if (!userEvent) {
       userEvent = new (Parse.Object.extend("UserEvent")) as Parse.Object<Parse.Attributes>;

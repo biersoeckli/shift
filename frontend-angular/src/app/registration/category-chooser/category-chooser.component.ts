@@ -35,18 +35,18 @@ export class CategoryChooserComponent extends BaseComponent<RegistrationParams> 
     const categories = await this.fetchAllCategories();
     const userEventCategories = await this.fetchUserCategories();
 
-     this.selectionUserCategories = categories.map(category =>{
+    this.selectionUserCategories = categories.map(category => {
       return {
         category,
         userEventCategory: userEventCategories.find(userEventCat => userEventCat.get('category').id === category.id)
       } as UserEventCategorySelection;
-     });
-     if (this.selectionUserCategories.every(x => !x.userEventCategory)) {
+    });
+    if (this.selectionUserCategories.every(x => !x.userEventCategory)) {
       this.selectionUserCategories.forEach(selectCat => {
         selectCat.userEventCategory = this.create(selectCat.category);
       });
-     }
-     this.selectionCount = (this.selectionUserCategories?.filter(item => item.userEventCategory) ?? []).length;
+    }
+    this.selectionCount = (this.selectionUserCategories?.filter(item => item.userEventCategory) ?? []).length;
   }
 
   async fetchAllCategories() {
@@ -102,6 +102,10 @@ export class CategoryChooserComponent extends BaseComponent<RegistrationParams> 
       await this.router.navigateByUrl(this.params.returnUrl);
       return;
     }
-    await this.navigation.registrationShiftChooser(this.params.eventId);
+    if (this.event?.get('wishShiftsEnabled')) {
+      await this.navigation.registrationShiftChooser(this.params.eventId);
+    } else {
+      await this.navigation.registrationSummary(this.params.eventId);
+    }
   }
 }

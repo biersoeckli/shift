@@ -9,6 +9,11 @@ import nodemailer from 'nodemailer';
 export class MailService {
 
     async sendMail(to: string, betreff: string, htmlBody: string, logMail = true, fromDisplayName = 'Shift Planner') {
+        if (!EnvUtils.get().production) {
+            console.warn('Cannot send sms in dev (production = false) mode.');
+            console.warn('Mail Message: ' + htmlBody);
+            return;
+        }
         if (StringUtils.isEmpty(to) || StringUtils.isEmpty(betreff) || StringUtils.isEmpty(htmlBody)) {
             throw 'Error: to, betreff and htmlBody are required fields for an email.';
         }

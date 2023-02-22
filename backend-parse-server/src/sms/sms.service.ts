@@ -9,6 +9,11 @@ import needle from 'needle';
 export class SmsService {
 
     async sendSms(phoneNumber: string, text: string) {
+        if (!EnvUtils.get().production) {
+            console.warn('Cannot send sms in dev (production = false) mode.');
+            console.warn('SMS Message: ' + text);
+            return;
+        }
         if (StringUtils.isEmpty(phoneNumber) || StringUtils.isEmpty(text)) {
             throw 'Error: Phone number or sms text not provided.';
         }

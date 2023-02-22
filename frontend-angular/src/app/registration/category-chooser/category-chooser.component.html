@@ -1,8 +1,8 @@
 <div class="shift-content" *ngIf="selectionUserCategories">
     <div class="shift-header">Kategorien</div>
     <div class="shift-card">
-        Bitte wähle <span class="text-orange-500 font-semibold">alle</span> Kategorien aus, bei welchen du mithelfen
-        möchtest.
+        Bitte wähle <span class="text-orange-500 font-semibold">alle</span> Wunschkategorien aus, bei welchen du mithelfen
+        möchtest. Es kann jedoch trotzdem sein, dass du für eine andere Kategorie eingeteilt wirst.
     </div>
     <div *ngFor="let item of selectionUserCategories ?? []" (click)="onCategoryClick(item)"
         [class]="item.userEventCategory ? 'shift-list-item-active': 'shift-list-item'">

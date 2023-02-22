@@ -1,4 +1,4 @@
-<div class="shift-content" *ngIf="event && userEventCategories && userShift && userEvent">
+<div class="shift-content" *ngIf="event && userEventCategories && userEvent">
     <div class="shift-header">Überprüfen</div>
     <div class="shift-card">
         Bitte Überprüfe deine Angaben für den Event <span
@@ -26,7 +26,7 @@
         <button *ngIf="event.get('volunteerRegistrationEnabled')" class="btn-secondary" (click)="editCategories()">Bearbeiten</button>
     </div>
 
-    <div class="rounded-xl border-2 border-dotted p-4 mt-4">
+    <div class="rounded-xl border-2 border-dotted p-4 mt-4" *ngIf="userShift && this.event?.get('wishShiftsEnabled')">
         <div class="text-xl font-semibold pb-1">Schichten</div>
         <div *ngFor="let userShiftItem of userShift">- {{userShiftItem.get('shift').get('start') | fromTo:
             userShiftItem.get('shift').get('end'): true}}</div>
