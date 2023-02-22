@@ -52,7 +52,7 @@ export class AuthComponent extends BaseComponent<AuthParams> {
       const { username, sessionKey } = await Parse.Cloud.run('verifyAuthChallengeCode', { authCode: this.authChallengeVerificationCode, challengeId: this.authChallengeId });
       await this.forceLogout();
       await Parse.User.logIn(username, sessionKey);
-      this.navigation.router.navigateByUrl(this.params.returnUrl ?? '/');
+      await this.navigation.router.navigateByUrl(this.params.returnUrl ?? '/');
     } catch (e) {
       const ex = e as Parse.Error;
       this.errorString = ex?.message ? ex.message : 'Es ist ein Fehler aufgetreten.';
