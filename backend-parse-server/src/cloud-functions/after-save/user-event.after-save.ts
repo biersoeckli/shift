@@ -28,7 +28,7 @@ export class UserEventAfterSave extends BaseCloudFunction<void> {
            `Bei Fragen wende dich bitte an ${event.get('contactMail')}. Wir melden uns in den nächsten Wochen nochmals bei dir.`;
                 
 
-           this.smsService.sendSms(user.get('phone'), text);
+           // this.smsService.sendSms(user.get('phone'), text);
            this.mailService.sendMail(user.get('email'), 'Registrierung erfolgreich',
              `Hallo ${user.get('firstName')}<br><br>${text}<br><br>Freundliche Grüsse<br>${event.get('name')}`, true, event.get('name'));
         }
