@@ -85,4 +85,20 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
     const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerContract', { userId: this.user?.id, eventId: this.event?.id });
     window.open(returnVal.url, '_blank');
   }
+
+  @fluffyLoading()
+  @fluffyCatch()
+  async save() {
+    await this.userEvent?.save();
+  }
+
+  @fluffyLoading()
+  @fluffyCatch()
+  async deleteVolunteer() {
+    if (!confirm('Willst du den/die Helfer/in wirklich vom Event entfernen?')) {
+      return;
+    }
+    await this.userEvent?.destroy();
+    await this.navigation.eventVolunteerOverview(this.params.eventId);
+  }
 }

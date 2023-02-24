@@ -20,6 +20,7 @@ import { PayoutConfigBeforeSave } from "./before-save/payout-config.before-save"
 import { VolunteerContractConfigBeforeSave } from "./before-save/volunteer-contract-config.before-save";
 import { GenerateVolunteerContractFunction } from "./volunteer-contract/generate-volunteer-contract.function";
 import { UserEventAfterSave } from "./after-save/user-event.after-save";
+import { UserEventBeforeDelete } from "./before-delete/user-event.before-delete";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -203,6 +204,10 @@ Parse.Cloud.beforeSave("UserEvent", async request => {
 
 Parse.Cloud.afterSave("UserEvent", async request => {
     await Container.get(UserEventAfterSave).run(request);
+});
+
+Parse.Cloud.beforeDelete("UserEvent", async request => {
+    await Container.get(UserEventBeforeDelete).run(request);
 });
 
 Parse.Cloud.beforeSave("EventCategory", async request => {

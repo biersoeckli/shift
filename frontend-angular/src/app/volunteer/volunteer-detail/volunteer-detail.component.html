@@ -40,7 +40,15 @@
             <label class="input-label">Bemerkungen (von HelferIn)</label>
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
         </div>
+        <div>
+            <label class="input-label">Bemerkungen Intern (von OrganisatorIn)</label>
+            <textarea type="text" (ngModelChange)="userEvent.set('commentInternal', $event)" [ngModel]="userEvent.get('commentInternal')" rows="6" (blur)="save()"></textarea>
+        </div>
     </div>
     <button class="btn-secondary" *ngIf="event?.get('volunteerContractEnabled')"
         (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
+
+
+    <br><button class="btn-secondary"
+    (click)="deleteVolunteer()">Helfer/in entfernen</button>
 </div>

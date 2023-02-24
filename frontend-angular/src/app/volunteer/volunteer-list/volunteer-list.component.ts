@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { fluffyCatch } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 import { CsvExporterService } from 'src/app/shift-common/services/csv-exporter.service';
 import { EventService } from 'src/app/shift-common/services/event.service';
@@ -20,6 +21,7 @@ export class VolunteerListComponent implements OnInit {
     private readonly csvExporter: CsvExporterService) {
   }
 
+  @fluffyCatch()
   async ngOnInit() {
     const event = await this.eventService.getEventById(this.eventId ?? '');
     await this.getUserEvents(event);
@@ -46,6 +48,8 @@ export class VolunteerListComponent implements OnInit {
   selectUser(userEvent: Parse.Object<Parse.Attributes>) {
     this.userEventSelected.next(userEvent);
   }
+
+  @fluffyCatch()
   downloadVolunteerList() {
     if (!this.userEvents) {
       return;
