@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { fluffyCatch } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 import { CsvExporterService } from 'src/app/shift-common/services/csv-exporter.service';
 import { EventService } from 'src/app/shift-common/services/event.service';
@@ -50,10 +50,22 @@ export class VolunteerListComponent implements OnInit {
   }
 
   @fluffyCatch()
-  downloadVolunteerList() {
+  @fluffyLoading()
+  async downloadVolunteerList() {
     if (!this.userEvents) {
       return;
     }
-    this.csvExporter.objectsToCsvAndDownload(this.userEvents.map(userEvent => userEvent.get('user').attributes), 'helferliste.csv');
+
+    var userCategories = await this.eventService.fetchAllUserEventCategory(this.eventId ?? '');
+    const exportData = this.userEvents.map(userEvent => {
+      const object = {
+        ...userEvent.get('user').attributes,
+      };
+      userCategories.filter(category => category.get('user').id === userEvent.get('user').id)
+        .forEach(userCat => object['Wunsch_' + userCat.get('category').get('name')] = 'x');
+      return object;
+    });
+
+    this.csvExporter.objectsToCsvAndDownload(exportData, 'helferliste.csv');
   }
 }
