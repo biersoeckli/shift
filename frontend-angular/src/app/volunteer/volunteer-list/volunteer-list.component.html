@@ -15,5 +15,3 @@
 <div *ngFor="let item of filteredUserEvents ?? []" (click)="selectUser(item)" class="shift-list-item">
     {{item.get('user').get('firstName')}} {{item.get('user').get('lastName')}}
 </div>
-
-<button class="btn-secondary" (click)="downloadVolunteerList()">Helferliste herunterladen</button><br>

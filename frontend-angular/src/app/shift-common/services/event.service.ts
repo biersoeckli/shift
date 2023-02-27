@@ -7,12 +7,12 @@ import * as Parse from 'parse';
 export class EventService {
 
   private eventCache: Parse.Object<Parse.Attributes>[] = [];
-  
+
 
   async getEventOrganizedByCurrentUser() {
     const query = new Parse.Query(Parse.Object.extend('Event'));
     query.limit(10000);
-    let events =  await query.find();
+    let events = await query.find();
     // todo filter by acl
     ///events = events.filter(event => event.getACL()?.getRoleWriteAccess(x => ))
     return events;
@@ -52,7 +52,15 @@ export class EventService {
     query.include('category');
     query.limit(10000);
     return await query.find();
-}
+  }
+
+  async getUserEvents(eventId: string) {
+    const query = new Parse.Query(Parse.Object.extend('UserEvent'));
+    query.equalTo('event', await this.getEventById(eventId, true));
+    query.include('user');
+    query.limit(10000);
+    return await query.find();
+  }
 
   async getUserEventsFromCurrentUser() {
     const query = new Parse.Query(Parse.Object.extend('UserEvent'));

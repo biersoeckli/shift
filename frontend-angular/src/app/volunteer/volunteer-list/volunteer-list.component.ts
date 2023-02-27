@@ -17,23 +17,16 @@ export class VolunteerListComponent implements OnInit {
   filteredUserEvents?: Parse.Object<Parse.Attributes>[];
   searchTerm = '';
 
-  constructor(private readonly eventService: EventService,
-    private readonly csvExporter: CsvExporterService) {
+  constructor(private readonly eventService: EventService) {
   }
 
   @fluffyCatch()
   async ngOnInit() {
-    const event = await this.eventService.getEventById(this.eventId ?? '');
-    await this.getUserEvents(event);
+    if (!this.eventId) {
+      return;
+    }
+    this.userEvents = await this.eventService.getUserEvents(this.eventId);
     this.filter();
-  }
-
-  private async getUserEvents(event: Parse.Object<Parse.Attributes>) {
-    const query = new Parse.Query(Parse.Object.extend('UserEvent'));
-    query.equalTo('event', event);
-    query.include('user');
-    query.limit(10000);
-    this.userEvents = await query.find();
   }
 
   filter() {
@@ -47,27 +40,5 @@ export class VolunteerListComponent implements OnInit {
 
   selectUser(userEvent: Parse.Object<Parse.Attributes>) {
     this.userEventSelected.next(userEvent);
-  }
-
-  @fluffyCatch()
-  @fluffyLoading()
-  async downloadVolunteerList() {
-    if (!this.userEvents) {
-      return;
-    }
-
-    var userCategories = await this.eventService.fetchAllUserEventCategory(this.eventId ?? '');
-    const exportData = this.userEvents.map(userEvent => {
-      const categoriesOfCurrentUser = userCategories.filter(category => category.get('user').id === userEvent.get('user').id);
-      const object = {
-        ...userEvent.get('user').attributes,
-        Anzahl_Wunschschichten_Kategorien: categoriesOfCurrentUser.length
-      };
-      
-      categoriesOfCurrentUser.forEach(userCat => object['Wunsch_' + userCat.get('category').get('name')] = 'x');
-      return object;
-    });
-
-    this.csvExporter.objectsToCsvAndDownload(exportData, 'helferliste.csv');
   }
 }
