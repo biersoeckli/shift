@@ -58,12 +58,13 @@ export class VolunteerListComponent implements OnInit {
 
     var userCategories = await this.eventService.fetchAllUserEventCategory(this.eventId ?? '');
     const exportData = this.userEvents.map(userEvent => {
+      const categoriesOfCurrentUser = userCategories.filter(category => category.get('user').id === userEvent.get('user').id);
       const object = {
         ...userEvent.get('user').attributes,
-        Anzahl_Wunschschichten_Kategorien: userCategories.length
+        Anzahl_Wunschschichten_Kategorien: categoriesOfCurrentUser.length
       };
-      userCategories.filter(category => category.get('user').id === userEvent.get('user').id)
-        .forEach(userCat => object['Wunsch_' + userCat.get('category').get('name')] = 'x');
+      
+      categoriesOfCurrentUser.forEach(userCat => object['Wunsch_' + userCat.get('category').get('name')] = 'x');
       return object;
     });
 
