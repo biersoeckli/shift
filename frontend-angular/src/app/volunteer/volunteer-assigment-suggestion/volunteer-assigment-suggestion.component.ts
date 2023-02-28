@@ -34,13 +34,15 @@ export class VolunteerAssigmentSuggestionComponent extends BaseComponent<void> i
     if (!this.eventId) {
       return;
     }
-    const [eventCategories, userEvents, userEventCategories] = await Promise.all([
+    const [allEventCategories, userEvents, userEventCategories] = await Promise.all([
       await this.eventService.getEventCategories(this.eventId),
       await this.eventService.getUserEvents(this.eventId),
       await this.eventService.fetchAllUserEventCategory(this.eventId)
     ]);
+
+    const relevantEventCategories = allEventCategories.filter(category => category.get('availableForRegistration'));
     let availableVolunteerCategories = this.evaluateAllUserCategories(userEvents, userEventCategories);
-    const eventWithVolunteerCategory = this.evaluateAllEventsWithVolunteerCount(eventCategories, userEventCategories);
+    const eventWithVolunteerCategory = this.evaluateAllEventsWithVolunteerCount(relevantEventCategories, userEventCategories);
 
     eventWithVolunteerCategory.forEach(eventWithVolunteerCategory => {
       const bestMatchingVolunteers = this.getBestMatchingVolunteersForCategory(availableVolunteerCategories, eventWithVolunteerCategory.category.id, eventWithVolunteerCategory.category.get('volunteerLimit'));

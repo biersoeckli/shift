@@ -1,11 +1,16 @@
-<div *ngFor="let item of eventWithVolunteerCategory">
-    {{item.category.get('name')}}
-    <div *ngFor="let volunteer of item.volunteers">
-        {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div *ngFor="let item of eventWithVolunteerCategory" class="border-2 border-dotted rounded-md px-4 py-3">
+        <div class="font-bold">{{item.category.get('name')}}</div>
+        <div *ngFor="let volunteer of item.volunteers">
+            {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+        </div>
+        {{item.volunteers.length}}/{{item.category.get('volunteerLimit')}}
     </div>
-</div>
-
-Not Assigned volunteers
-<div *ngFor="let volunteer of notAssignedVolunteers">
-    {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+    <div class="border-2 border-dotted rounded-md px-4 py-3"
+        *ngIf="notAssignedVolunteers && notAssignedVolunteers.length > 0">
+        <div class="font-bold text-red-500">Not Assigned volunteers</div>
+        <div *ngFor="let volunteer of notAssignedVolunteers">
+            {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+        </div>
+    </div>
 </div>
