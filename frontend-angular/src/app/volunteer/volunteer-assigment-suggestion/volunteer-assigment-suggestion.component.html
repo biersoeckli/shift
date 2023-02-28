@@ -1,0 +1,11 @@
+<div *ngFor="let item of eventWithVolunteerCategory">
+    {{item.category.get('name')}}
+    <div *ngFor="let volunteer of item.volunteers">
+        {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+    </div>
+</div>
+
+Not Assigned volunteers
+<div *ngFor="let volunteer of notAssignedVolunteers">
+    {{volunteer.user.get('firstName')}} {{volunteer.user.get('lastName')}}
+</div>

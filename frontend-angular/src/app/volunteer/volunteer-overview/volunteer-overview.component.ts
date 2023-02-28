@@ -22,7 +22,7 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
   @fluffyCatch()
   @fluffyLoading()
   downloadVolunteerList() {
-    const dialog = this.dialog.open(VolunteerExportOverlayComponent, {
+    this.dialog.open(VolunteerExportOverlayComponent, {
       width: '400px',
       data: this.params.eventId
     });

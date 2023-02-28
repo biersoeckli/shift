@@ -11,6 +11,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { PayoutModule } from '../payout/payout.module';
 import { VolunteerContractConfigEditComponent } from './volunteer-contract-config-edit/volunteer-contract-config-edit.component';
 import { VolunteerExportOverlayComponent } from './volunteer-export-overlay/volunteer-export-overlay.component';
+import { VolunteerAssigmentSuggestionComponent } from './volunteer-assigment-suggestion/volunteer-assigment-suggestion.component';
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
     VolunteerDetailEditComponent,
     VolunteerEditFormComponent,
     VolunteerContractConfigEditComponent,
-    VolunteerExportOverlayComponent
+    VolunteerExportOverlayComponent,
+    VolunteerAssigmentSuggestionComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ const routes: Routes = [
   ],
   exports: [
     VolunteerListComponent,
-    VolunteerEditFormComponent
+    VolunteerEditFormComponent,
+    VolunteerAssigmentSuggestionComponent
   ]
 })
 export class VolunteerModule { }

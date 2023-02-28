@@ -4,6 +4,7 @@ import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import { EventDocumentUploadOverlayComponent, EventDocumentUploadOverlayInput } from 'src/app/documents/event-document-upload-overlay/event-document-upload-overlay.component';
 import { CsvExporterService } from 'src/app/shift-common/services/csv-exporter.service';
 import { EventService } from 'src/app/shift-common/services/event.service';
+import * as Parse from 'parse';
 
 interface ExportConfig {
   addVolunteerCategoryWish: boolean;
@@ -25,6 +26,7 @@ export class VolunteerExportOverlayComponent {
     private readonly csvExporter: CsvExporterService) {
     this.init();
   }
+
   async init() {
     this.userEvents = await this.eventService.getUserEvents(this.eventId);
   }
@@ -36,13 +38,7 @@ export class VolunteerExportOverlayComponent {
       return;
     }
 
-    const exportData = this.userEvents.map(userEvent => {
-      return {
-        ...userEvent.get('user').attributes,
-        userId: userEvent.get('user').id
-      };
-    });
-
+    const exportData = await Parse.Cloud.run('getUsersForEvent', {eventId: this.eventId});
     if (this.config.addVolunteerCategoryWish) {
       await this.addCategoryWish(exportData);
     }
