@@ -10,4 +10,12 @@ export class EventService {
         }
         return await query.get(eventId, { useMasterKey: true });
     }
+
+    async getUserEvents(eventId: string) {
+        const query = new Parse.Query(Parse.Object.extend('UserEvent'));
+        query.equalTo('event', await this.getEventById(eventId));
+        query.include('user');
+        query.limit(10000);
+        return await query.find({ useMasterKey: true });
+    }
 }

@@ -21,6 +21,7 @@ import { VolunteerContractConfigBeforeSave } from "./before-save/volunteer-contr
 import { GenerateVolunteerContractFunction } from "./volunteer-contract/generate-volunteer-contract.function";
 import { UserEventAfterSave } from "./after-save/user-event.after-save";
 import { UserEventBeforeDelete } from "./before-delete/user-event.before-delete";
+import { GetUsersForEventFunction } from "./user-event/get-users-for-event.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -62,6 +63,12 @@ Parse.Cloud.define("generateVolunteerContract", async (request) => {
 }, {
     fields: ['userId', 'eventId'],
     requireUser: true
+});
+
+Parse.Cloud.define("getUsersForEvent", async (request) => {
+    return await Container.get(GetUsersForEventFunction).run(request);
+}, {
+    fields: ['eventId']
 });
 
 Parse.Cloud.beforeSave("Event", async (request) => {
