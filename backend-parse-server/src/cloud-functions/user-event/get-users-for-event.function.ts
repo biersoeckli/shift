@@ -16,6 +16,8 @@ export interface UserForEvent {
     lastName: string;
     email: string;
     phone: string;
+    comment: string;
+    commentIternal: string;
     createdByOrganizer: boolean;
     acl: unknown;
     password: unknown;
@@ -41,7 +43,9 @@ export class GetUsersForEventFunction extends BaseCloudFunction<UserForEvent[]> 
             const returnVal = {
                 ...userEvent.get('user').attributes,
                 userId: userEvent.get('user').id,
-                createdByOrganizer: userEvent.get('createdByOrganizer') ?? false
+                createdByOrganizer: userEvent.get('createdByOrganizer') ?? false,
+                comment: userEvent.get('comment'),
+                commentInternal: userEvent.get('commentInternal')
             } as UserForEvent;
             returnVal.acl = undefined;
             returnVal.password = undefined;
