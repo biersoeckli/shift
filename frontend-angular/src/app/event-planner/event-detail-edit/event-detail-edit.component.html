@@ -45,16 +45,28 @@
         (valueChange)="item.set('volunteerPayoutEnabled', $event)" [label]="'Modul: Auszahlungen HelferInnen'">
     </shift-toggle-switch>
 
+    <shift-toggle-switch *ngIf="item.get('volunteerPayoutEnabled')"
+        [value]="item.get('volunteerPayoutForVolunteersEnabled')"
+        (valueChange)="item.set('volunteerPayoutForVolunteersEnabled', $event)"
+        [label]="'Auszahlungsinformationen für Helfer sichtbar'">
+    </shift-toggle-switch>
+
     <shift-toggle-switch [value]="item.get('volunteerContractEnabled')"
         (valueChange)="item.set('volunteerContractEnabled', $event)" [label]="'Modul: Helferverträge'">
+    </shift-toggle-switch>
+
+    <shift-toggle-switch *ngIf="item.get('volunteerContractEnabled')"
+        [value]="item.get('volunteerContractForVolunteersEnabled')"
+        (valueChange)="item.set('volunteerContractForVolunteersEnabled', $event)"
+        [label]="'Helferverträge für Helfer sichtbar'">
     </shift-toggle-switch>
 
     <shift-toggle-switch [value]="item.get('documentUploadEnabled')"
         (valueChange)="item.set('documentUploadEnabled', $event)" [label]="'Modul: Dokumentenupload'">
     </shift-toggle-switch>
 
-    <shift-toggle-switch [value]="item.get('wishShiftsEnabled')"
-        (valueChange)="item.set('wishShiftsEnabled', $event)" [label]="'Modul: Wunschschichten'">
+    <shift-toggle-switch [value]="item.get('wishShiftsEnabled')" (valueChange)="item.set('wishShiftsEnabled', $event)"
+        [label]="'Modul: Wunschschichten'">
     </shift-toggle-switch>
 
     <ng-container *ngIf="item.get('volunteerContractEnabled')">

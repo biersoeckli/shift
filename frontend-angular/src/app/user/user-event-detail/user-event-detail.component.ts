@@ -4,6 +4,7 @@ import { BaseComponent } from 'src/app/shift-common/base-component/base-componen
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { UserEventDetailParams } from './user-event-detail.params';
 import * as Parse from 'parse';
+import { VolunteerContractResult } from 'src/app/volunteer/volunteer-detail/volunteer-detail.component';
 
 @Component({
   selector: 'app-user-event-detail',
@@ -31,6 +32,13 @@ export class UserEventDetailComponent extends BaseComponent<UserEventDetailParam
     }
   }
 
+
+  @fluffyLoading()
+  @fluffyCatch()
+  async downloadVolunteerContract() {
+    const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerContract', { userId: this.currentUser?.id, eventId: this.params.eventId });
+    window.open(returnVal.url, '_blank');
+  }
 
   async getUserShiftForEvent(event: Parse.Object<Parse.Attributes>, user: Parse.User<Parse.Attributes>) {
     const query = new Parse.Query(Parse.Object.extend('UserShift'));

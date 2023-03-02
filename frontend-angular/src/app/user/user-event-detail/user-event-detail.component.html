@@ -29,10 +29,15 @@
                     öffnen</button>
             </div>
 
-            <shift-event-document-container *ngIf="event?.get('documentUploadEnabled')" [eventId]="params.eventId"></shift-event-document-container>
+            <shift-event-document-container *ngIf="event?.get('documentUploadEnabled')"
+                [eventId]="params.eventId"></shift-event-document-container>
 
-            <shift-payout-user-container *ngIf="event?.get('volunteerPayoutEnabled')" [eventId]="params.eventId"
-                [userId]="currentUser?.id"></shift-payout-user-container>
+            <shift-payout-user-container *ngIf="event?.get('volunteerPayoutForVolunteersEnabled')"
+                [eventId]="params.eventId" [userId]="currentUser?.id"></shift-payout-user-container>
+
+
+            <button class="btn-secondary" *ngIf="event?.get('volunteerContractForVolunteersEnabled')"
+                (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
         </div>
     </ng-container>
 </div>
