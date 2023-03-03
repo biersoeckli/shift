@@ -1,5 +1,5 @@
 <div #contextMenu class="context-menu">
-    <div class="context-item" (click)="editContextMenuSelection()">Bearbeiten</div>
+    <div class="context-item" (click)="duplicateContextMenuSelection()">Duplizieren</div>
     <div class="context-item" (click)="editUserForShiftContextMenuSelection()">HelferIn Ändern</div>
     <div class="context-item" (click)="deleteContextMenuSelection()">Löschen</div>
 </div>
@@ -10,9 +10,11 @@
                 'Bearbeiten'}}</button>
             <button class="btn-secondary" (click)="toggleIncludeWishes()">{{includeWishesInTable ?
                 'Wünschschichten ausblenden' : 'Wünschschichten anzeigen'}}</button>
-            <button class="btn-secondary" (click)="pickAddUser()" *ngIf="editMode">{{currentAddUser ?
-                currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') : 'Schicht hinzufügen'}}</button>
-
+            <ng-container *ngIf="editMode">
+                <button class="btn-secondary" (click)="pickAddUser()">{{currentAddUser ?
+                    currentAddUser.get('firstName') + ' ' + currentAddUser.get('lastName') :
+                    'Schicht hinzufügen'}}</button>
+            </ng-container>
         </div>
 
         <div class="justify-end" *ngIf="eventId">
@@ -28,7 +30,8 @@
                 <button mat-menu-item (click)="navigation.eventDetailEdit(eventId)">
                     <span>Eventinfos Bearbeiten</span>
                 </button>
-                <button mat-menu-item (click)="navigation.shiftsOverview(eventId)" *ngIf="shiftTableService.event?.get('wishShiftsEnabled')">
+                <button mat-menu-item (click)="navigation.shiftsOverview(eventId)"
+                    *ngIf="shiftTableService.event?.get('wishShiftsEnabled')">
                     <span>Schichten</span>
                 </button>
                 <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
@@ -65,11 +68,13 @@
         <tbody>
             <ng-container *ngFor="let tableCategory of shiftTable?.categories ?? []; let iCategory = index">
                 <tr>
-                    <td class="bg-white z-20">{{tableCategory.category.get('name')}}<span *ngIf="tableCategory.category.get('availableForRegistration')">*</span></td>
+                    <td class="bg-white z-20">{{tableCategory.category.get('name')}}<span
+                            *ngIf="tableCategory.category.get('availableForRegistration')">*</span></td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="text-slate-500 text-sm" *ngIf="tableCategory.category.get('responsibleUser')">Verantwortung:<br>
+                        <span class="text-slate-500 text-sm"
+                            *ngIf="tableCategory.category.get('responsibleUser')">Verantwortung:<br>
                             {{ tableCategory.category.get('responsibleUser').get('firstName') + '
                             ' + tableCategory.category.get('responsibleUser').get('lastName')}}</span>
                     </td>
@@ -79,7 +84,8 @@
                             '; margin-left: ' + tableShift.marginLeftPx + 'px; width: ' + tableShift.widthPx + 'px'"
                                 [class]="(editMode ? 'table-shift-item-edit ' : ' ') + ' rounded px-2  text-gray-700'"
                                 (mousedown)="onShiftMouseDown($event, tableShift)"
-                                [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift" (click)="showVolunteerDetail(tableShift.shift.get('user').id)">
+                                [id]="tableShiftIdPrefix + iCategory + ':' + iTableShift"
+                                (click)="showVolunteerDetail(tableShift.shift.get('user').id)">
                                 {{tableShift.shift.get('user').get('firstName')}}
                                 {{tableShift.shift.get('user').get('lastName')}}
                             </div>

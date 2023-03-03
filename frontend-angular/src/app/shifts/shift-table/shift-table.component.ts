@@ -8,10 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserPickerDialogComponent } from '../user-picker-dialog/user-picker-dialog.component';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { HtmlContentExporterService } from 'src/app/shift-common/services/html-content-exporter.service';
 import { ShiftTablePrintOverlayComponent } from '../shift-table-print-overlay/shift-table-print-overlay.component';
+import { ParseObjectUtils } from 'src/app/shift-common/utils/parse-object.utils';
 
 @Component({
   selector: 'shift-table',
@@ -19,6 +17,7 @@ import { ShiftTablePrintOverlayComponent } from '../shift-table-print-overlay/sh
   styleUrls: ['./shift-table.component.scss']
 })
 export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
+
 
   @Input() eventId?: string;
   @Input() readonly = false;
@@ -64,7 +63,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     await this.shiftTableService.initByEventId(this.eventId ?? '');
     this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
   }
-
+  
   pickAddUser(): void {
     if (this.currentAddUser) {
       this.currentAddUser = undefined;
@@ -255,11 +254,19 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     }
   }
 
-  async editContextMenuSelection() {
+  @fluffyCatch()
+  async duplicateContextMenuSelection() {
     if (!this.contextMenuElement || !this.contextMenuSelectedTableShift) {
       return;
     }
-
+    const selectedShift = this.contextMenuSelectedTableShift.shift;
+    if (!selectedShift) {
+      return;
+    }
+    const duplicate = ParseObjectUtils.duplicate(selectedShift);
+    const savedDuplicate = await duplicate.save();
+    this.shiftTableService.userShifts?.push(savedDuplicate);
+    this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
     this.contextMenuElement.nativeElement.classList.remove("visible");
   }
 
