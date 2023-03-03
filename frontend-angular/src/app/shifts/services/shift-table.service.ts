@@ -39,14 +39,16 @@ export interface UserColor {
 @Injectable()
 export class ShiftTableService {
 
-    minuteInterval = 60; // todo make this as event param
-    widthInterval = 50; // width in px
+    minuteInterval = 60; // todo make this as event param?
+    widthInterval = 60; // width in px
 
     event?: Parse.Object<Parse.Attributes>;
     shifts?: Parse.Object<Parse.Attributes>[];
     userShifts?: Parse.Object<Parse.Attributes>[];
     userColorMap = new Map<string, string>(); // userId, color
     userColors: UserColor[] = [];
+    totalShiftMinutes = 0;
+    totalShiftHours = 0;
     private tailwindColors = this.initTailwindColors();
 
     constructor(private shiftService: ShiftService,
@@ -75,6 +77,17 @@ export class ShiftTableService {
         const colorNames = ['red', 'green', 'blue', 'orange', 'purple', 'pink', 'yellow', 'amber', 'lime', 'emerald', 'teal',
             'cyan', 'sky', 'indigo', 'violet', 'fuchsia', 'rose'];
         return colorNames.map(color => (Colors as any)[color]['300']).filter(colorCode => !!colorCode);
+    }
+
+    calculateTotalShiftHours() {
+        if (!this.userShifts) {
+            return;
+        }
+
+        this.totalShiftMinutes = this.userShifts
+            .map(userShift => TimeSpanUtils.getMinutesBetweenDates(userShift.get('start'), userShift.get('end')))
+            .reduce((prev, curr) => prev + curr, 0);
+        this.totalShiftHours = Math.round(this.totalShiftMinutes / 60);
     }
 
     async calculateShiftTable(includeWishes = false) {
@@ -106,6 +119,7 @@ export class ShiftTableService {
                 } as ShiftTableCategory;
             })
         ));
+        this.calculateTotalShiftHours();
         return {
             categories: shiftTableCategories,
             headerTimeSlots: eventTimeSlots

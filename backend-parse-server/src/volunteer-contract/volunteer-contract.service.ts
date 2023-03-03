@@ -124,7 +124,7 @@ export class VolunteerContractService {
             <br>
             <br>
             <br>
-            <p style="width: 50%; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">Unterschrift: ${SanitazionUtils.sanitize(user.get('firstName'))} ${SanitazionUtils.sanitize(user.get('lastName'))}</p>
+            <p style="width: 100%; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">Unterschrift ${SanitazionUtils.sanitize(user.get('firstName'))} ${SanitazionUtils.sanitize(user.get('lastName'))}</p>
         `);
         return htmlInput;
     }

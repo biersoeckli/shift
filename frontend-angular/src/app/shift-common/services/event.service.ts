@@ -62,6 +62,14 @@ export class EventService {
     return await query.find();
   }
 
+  async getAllUserShifts(eventId: string) {
+    const query = new Parse.Query(Parse.Object.extend('UserShift'));
+    query.equalTo('event', await this.getEventById(eventId, true));
+    query.include('user');
+    query.limit(10000);
+    return await query.find();
+  }
+
   async getUserEventsFromCurrentUser() {
     const query = new Parse.Query(Parse.Object.extend('UserEvent'));
     query.include('event');

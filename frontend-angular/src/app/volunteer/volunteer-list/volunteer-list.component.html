@@ -9,7 +9,33 @@
     <input type="text" placeholder="Suchen..." [disabled]="!userEvents || userEvents.length === 0"
         [(ngModel)]="searchTerm" (keyup)="filter()">
 </div>
-<div>Wähle eine/n Helfer/in</div>
+<div class="mb-1 text-slate-500 pl-2">{{filteredUserEvents?.length}} Ergebnisse</div>
+
+<div (click)="changeFilter(VolunteerDisplayFilter.all)"
+    [class]="activeFilter === VolunteerDisplayFilter.all ? 'shift-chip-active' : 'shift-chip'">
+    <span class="mr-1">Alle</span>
+    <svg *ngIf="activeFilter === VolunteerDisplayFilter.all" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+        </path>
+    </svg>
+</div>
+<div (click)="changeFilter(VolunteerDisplayFilter.volunteersWithShift)"
+    [class]="activeFilter === VolunteerDisplayFilter.volunteersWithShift ? 'shift-chip-active' : 'shift-chip'">
+    <span class="mr-1">Helfer mit Schichten</span>
+    <svg *ngIf="activeFilter === VolunteerDisplayFilter.volunteersWithShift" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+        </path>
+    </svg>
+</div>
+<div (click)="changeFilter(VolunteerDisplayFilter.volunteersWithoutShift)"
+    [class]="activeFilter === VolunteerDisplayFilter.volunteersWithoutShift ? 'shift-chip-active' : 'shift-chip'">
+    <span class="mr-1">Helfer ohne Schichten</span>
+    <svg *ngIf="activeFilter === VolunteerDisplayFilter.volunteersWithoutShift" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+        </path>
+    </svg>
+</div>
+
 
 <shift-loader *ngIf="!filteredUserEvents"></shift-loader>
 <div *ngFor="let item of filteredUserEvents ?? []" (click)="selectUser(item)" class="shift-list-item">

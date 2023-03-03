@@ -52,11 +52,11 @@
     <table class="relative" (contextmenu)="onContextMenu($event)" #shiftTableElement>
         <thead>
             <tr>
-                <th>Kategorien</th>
+                <th>Kategorien / Stunden</th>
                 <ng-container *ngFor="let timeSlot of shiftTable?.headerTimeSlots ?? []; let i = index">
                     <th>
                         <div [style]="'width: ' + shiftTableService.widthInterval + 'px;'">
-                            {{timeSlot.start | fluffyTime}}
+                            {{(timeSlot.start | date: 'H')}} - {{+((timeSlot.start | date: 'H') ?? 0) + 1}}
                         </div>
                         <div class="absolute top-0 h-full border-l border-dotted text-white">
                             .
@@ -110,6 +110,7 @@
         </tbody>
     </table>
 </div>
+<div class="mt-2">Total eingetragene Schichten: {{shiftTableService.totalShiftMinutes}} Min / {{shiftTableService.totalShiftHours}} Stunden</div>
 <div #shiftTableUsersElement>
     <div class="font-medium mt-4">Legende:</div>
     <div class="w-fit">

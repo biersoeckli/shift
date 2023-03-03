@@ -114,3 +114,11 @@ input, textarea {
 body > div:last-child > span + img {
     display: inline !important;
 }
+
+.shift-chip {
+    @apply inline-flex mt-2 items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 mr-2 cursor-pointer;
+}
+
+.shift-chip-active {
+    @apply inline-flex mt-2 items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-orange-100 text-orange-600 mr-2;
+}

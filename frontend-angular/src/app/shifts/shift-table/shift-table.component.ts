@@ -63,7 +63,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     await this.shiftTableService.initByEventId(this.eventId ?? '');
     this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
   }
-  
+
   pickAddUser(): void {
     if (this.currentAddUser) {
       this.currentAddUser = undefined;
