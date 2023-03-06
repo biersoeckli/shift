@@ -70,7 +70,7 @@ export class VolunteerContractService {
             throw 'Could not gather all required information to create contract.';
         }
 
-        const userPayoutInfo = await this.payoutCalculationService.getPayoutInfoForUser(userId, eventId);
+        const userPayoutInfo = (await this.payoutCalculationService.getPayoutInfoForUser(userId, eventId)) ?? {} as UserPayoutInfo;
         const eventCategories = await this.getEventCategories(eventId);
         let htmlContractContent = constractCss;
         htmlContractContent += marked.parse(contractConfig.get('content'));

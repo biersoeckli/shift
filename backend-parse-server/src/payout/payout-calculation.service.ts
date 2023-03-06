@@ -4,6 +4,11 @@ import { DateUtils } from "../common/utils/date.utils";
 import { TimeSpan, TimeSpanUtils } from "../common/utils/time-span.utils";
 import { EventService } from "../event/event.service";
 
+export interface EventPayoutInfo {
+    userPayoutInfo: UserPayoutInfo[],
+    payoutTotal: number
+}
+
 export interface UserPayoutInfo {
     shifts: ShiftPayoutInfo[],
     payoutTotal: number
@@ -37,8 +42,22 @@ export class PayoutCalculationService {
         return await query.find({ useMasterKey: true });
     }
 
+    async getTotalPayoutInfoForEvent(eventId: string) {
+        const userEvents = await this.eventService.getUserEvents(eventId);
+        const userPayoutInfos = (await Promise.all(
+            userEvents.map(userEvent => this.getPayoutInfoForUser(userEvent.get('user').id, eventId))
+        )).filter(x => !!x);
+        return {
+            userPayoutInfo: userPayoutInfos,
+            payoutTotal: userPayoutInfos.reduce((prevTotal, shift) => prevTotal + (shift?.payoutTotal ?? 0), 0)
+        } as EventPayoutInfo;
+    }
+
     async getPayoutInfoForUser(userId: string, eventId: string) {
-        const shifts = await this.getPayoutItems(userId, eventId)
+        const shifts = await this.getPayoutItems(userId, eventId);
+        if (shifts.length === 0) {
+            return undefined;
+        }
         const payoutTotal = shifts.reduce(
             (prevTotal, shift) => prevTotal + shift.shiftPayoutTotal, 0)
         return {

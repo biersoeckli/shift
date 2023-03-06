@@ -2,7 +2,13 @@ import { Injectable } from "@angular/core";
 import { DateUtils } from "ngx-fluffy-cow";
 import * as Parse from 'parse';
 import { CommonService } from "src/app/shift-common/services/common.service";
-import { TimeSpan, TimeSpanUtils } from "src/app/shift-common/utils/timespan.utils";
+import { TimeSpan } from "src/app/shift-common/utils/timespan.utils";
+
+
+export interface EventPayoutInfo {
+    userPayoutInfo: UserPayoutInfo[],
+    payoutTotal: number
+}
 
 export interface UserPayoutInfo {
     shifts: ShiftPayoutInfo[],
@@ -32,5 +38,9 @@ export class PayoutService {
         query.include('event');
         query.limit(10000);
         return await query.find();
+    }
+
+    public async getTotalPayoutForEvent(eventId: string): Promise<EventPayoutInfo> {
+        return await Parse.Cloud.run('calculateTotalEventPayoutInfo', { eventId });
     }
 }

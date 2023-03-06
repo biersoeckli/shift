@@ -110,7 +110,10 @@
         </tbody>
     </table>
 </div>
-<div class="mt-2">Total eingetragene Schichten: {{shiftTableService.totalShiftMinutes}} Min / {{shiftTableService.totalShiftHours}} Stunden</div>
+<div class="mt-2">Total eingetragene Schichten: {{shiftTableService.totalShiftMinutes}} Min /
+    {{shiftTableService.totalShiftHours}} Stunden</div>
+<button *ngIf="!readonly" class="btn-secondary" (click)="showTotalEventCosts()">Totale Kosten für HelferInnen
+    berechnen</button>
 <div #shiftTableUsersElement>
     <div class="font-medium mt-4">Legende:</div>
     <div class="w-fit">
@@ -122,5 +125,7 @@
 </div>
 <button class="btn-secondary" (click)="print()">Herunterladen</button>
 
-<div class="font-semibold text-xl mt-4 mb-2">Zuteilungsvorschlag</div>
-<app-volunteer-assigment-suggestion [eventId]="eventId"></app-volunteer-assigment-suggestion>
+<ng-container *ngIf="!readonly">
+    <div class="font-semibold text-xl mt-4 mb-2">Zuteilungsvorschlag</div>
+    <app-volunteer-assigment-suggestion [eventId]="eventId"></app-volunteer-assigment-suggestion>
+</ng-container>

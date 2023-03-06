@@ -10,6 +10,8 @@ import { BaseComponent } from 'src/app/shift-common/base-component/base-componen
 import { CommonService } from 'src/app/shift-common/services/common.service';
 import { ShiftTablePrintOverlayComponent } from '../shift-table-print-overlay/shift-table-print-overlay.component';
 import { ParseObjectUtils } from 'src/app/shift-common/utils/parse-object.utils';
+import { PayoutService } from 'src/app/payout/services/payout.service';
+import { AlertService } from 'src/app/shift-common/services/alert.service';
 
 @Component({
   selector: 'shift-table',
@@ -41,6 +43,8 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
 
   constructor(public readonly shiftTableService: ShiftTableService,
     private readonly dialog: MatDialog,
+    private readonly alertService: AlertService,
+    private readonly payoutService: PayoutService,
     common: CommonService) {
     super(common);
   }
@@ -53,7 +57,7 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
     this.dialog.open(ShiftTablePrintOverlayComponent, {
       minWidth: '400px',
       width: '50%',
-      data: [this.shiftTableElement, this.shiftTableUsersElement]
+      data: [this.shiftTableElement/*, this.shiftTableUsersElement*/]
     });
   }
 
@@ -336,5 +340,18 @@ export class ShiftTableComponent extends BaseComponent<void> implements OnInit {
   async toggleIncludeWishes() {
     this.includeWishesInTable = !this.includeWishesInTable;
     this.shiftTable = await this.shiftTableService.calculateShiftTable(this.includeWishesInTable);
+  }
+
+  @fluffyCatch()
+  @fluffyLoading()
+  async showTotalEventCosts() {
+    if (!this.eventId) {
+      return;
+    }
+    const calculations = await this.payoutService.getTotalPayoutForEvent(this.eventId);
+    this.alertService.show({
+      title: 'Kostenübersicht für HelferInnen',
+      text: `Totale Kosten: ${calculations.payoutTotal.toFixed(2)} CHF für ${calculations.userPayoutInfo.length} HelferInnen.`
+    })
   }
 }
