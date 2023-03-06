@@ -18,4 +18,12 @@ export class EventService {
         query.limit(10000);
         return await query.find({ useMasterKey: true });
     }
+
+    async getUserShifts(eventId: string) {
+        const query = new Parse.Query(Parse.Object.extend('UserShift'));
+        query.equalTo('event', await this.getEventById(eventId));
+        query.include('user');
+        query.limit(10000);
+        return await query.find({ useMasterKey: true });
+    }
 }
