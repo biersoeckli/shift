@@ -41,4 +41,4 @@
 <div *ngFor="let item of filteredUserEvents ?? []" (click)="selectUser(item)" [class]="item.picked ? 'shift-list-item-active': 'shift-list-item'">
     {{item.get('user').get('firstName')}} {{item.get('user').get('lastName')}}
 </div>
-<button *ngIf="multipleUserEventSelected" class="btn-secondary" (click)="chooseAll()">Alle wählen</button>
+<button *ngIf="pickerMode" class="btn-secondary" (click)="chooseAll()">Alle wählen</button>
