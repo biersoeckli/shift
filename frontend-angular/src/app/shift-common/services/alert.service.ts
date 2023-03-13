@@ -36,8 +36,8 @@ export class AlertService {
           width: '50%',
           data: params
         });
-        dialog.afterClosed().subscribe(() => {
-          resolve(undefined);
+        dialog.afterClosed().subscribe((result) => {
+          resolve(result);
         });
       });
     } finally {

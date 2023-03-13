@@ -3,5 +3,6 @@
     <div>{{alertParams.text}}</div>
 </div>
 <div mat-dialog-actions>
-    <button class="btn-secondary ml-2 mb-2" style="margin-top: 0px;"  mat-dialog-close>{{alertParams.okButton}}</button>
+    <button class="btn ml-2 mb-2" style="margin-top: 0px;"  [matDialogClose]="true">{{alertParams.okButton}}</button>
+    <button class="btn-secondary ml-2 mb-2" style="margin-top: 0px;" *ngIf="alertParams.cancelButton" [matDialogClose]="false">{{alertParams.cancelButton}}</button>
 </div>

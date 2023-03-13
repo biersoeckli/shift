@@ -1,6 +1,30 @@
 <div class="shift-content" *ngIf="params.eventId">
-    <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)" [title]="'HelferInnen'"></shift-back-arrow>
-    <shift-volunteer-list [showDownloadButton]="true" [eventId]="params.eventId"
+
+    <div class="flex" style="padding-top: 0px;">
+        <div class="flex-1">
+            <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)"
+                [title]="'HelferInnen'"></shift-back-arrow>
+        </div>
+        <div class="justify-end">
+            <div [matMenuTriggerFor]="menu"
+                class=" text-orange-500 py-3 px-5 rounded-xl hover:bg-slate-100 active:bg-slate-200 cursor-pointer transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-6"
+                    viewBox="0 0 128 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path
+                        d="M64 360c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zm0-160c30.9 0 56 25.1 56 56s-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56zM120 96c0 30.9-25.1 56-56 56S8 126.9 8 96S33.1 40 64 40s56 25.1 56 56z" />
+                </svg>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="sendMailToVolunteers()">
+                    <span>E-Mail an HelferInnen</span>
+                </button>
+                <button mat-menu-item (click)="deleteVolunteers()">
+                    <span>HelferInnen löschen</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+    <shift-volunteer-list [eventId]="params.eventId"
         (userEventSelected)="navigation.eventVolunteerDetail(params.eventId, $event.id)"></shift-volunteer-list>
 
     <button class="btn-secondary" (click)="downloadVolunteerList()">Helferliste herunterladen</button><br>

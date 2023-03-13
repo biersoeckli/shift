@@ -6,6 +6,7 @@ export interface GlobalDialogParams {
   title: string;
   text: string;
   okButton?: string;
+  cancelButton?: string;
 }
 
 @Component({

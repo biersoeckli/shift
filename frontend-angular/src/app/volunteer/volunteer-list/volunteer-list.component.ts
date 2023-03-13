@@ -10,17 +10,22 @@ enum VolunteerDisplayFilter {
   volunteersWithoutShift
 }
 
+interface UserEventPick extends Parse.Object<Parse.Attributes> {
+  picked: boolean;
+}
+
 @Component({
   selector: 'shift-volunteer-list',
   templateUrl: './volunteer-list.component.html'
 })
 export class VolunteerListComponent implements OnInit {
 
-  @Input() showDownloadButton = false;
+  @Input() pickerMode = false;
   @Input() eventId?: string;
   @Output() userEventSelected = new EventEmitter<Parse.Object<Parse.Attributes>>();
-  userEvents?: Parse.Object<Parse.Attributes>[];
-  filteredUserEvents?: Parse.Object<Parse.Attributes>[];
+  @Output() multipleUserEventSelected = new EventEmitter<Parse.Object<Parse.Attributes>[]>();
+  userEvents?: UserEventPick[];
+  filteredUserEvents?: UserEventPick[];
   searchTerm = '';
 
   VolunteerDisplayFilter = VolunteerDisplayFilter;
@@ -35,7 +40,7 @@ export class VolunteerListComponent implements OnInit {
     if (!this.eventId) {
       return;
     }
-    this.userEvents = await this.eventService.getUserEvents(this.eventId);
+    this.userEvents = await this.eventService.getUserEvents(this.eventId) as UserEventPick[];
     this.userShiftPromise = this.eventService.getAllUserShifts(this.eventId);
     this.filter();
   }
@@ -65,7 +70,18 @@ export class VolunteerListComponent implements OnInit {
     this.filter();
   }
 
-  selectUser(userEvent: Parse.Object<Parse.Attributes>) {
-    this.userEventSelected.next(userEvent);
+  selectUser(userEvent: UserEventPick) {
+    if (this.pickerMode) {
+      userEvent.picked = !userEvent.picked;
+      this.multipleUserEventSelected.next(this.filteredUserEvents?.filter(x => x.picked) ?? []);
+    } else {
+      this.userEventSelected.next(userEvent);
+    }
+  }
+
+  chooseAll() {
+    const shouldBePicked = this.filteredUserEvents?.find(x => x)?.picked ?? false;
+    this.filteredUserEvents?.forEach(x => x.picked = !shouldBePicked);
+    this.multipleUserEventSelected.next(this.filteredUserEvents?.filter(x => x.picked) ?? []);
   }
 }

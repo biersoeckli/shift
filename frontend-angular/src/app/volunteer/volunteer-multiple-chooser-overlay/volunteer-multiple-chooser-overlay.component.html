@@ -1,0 +1,7 @@
+<div mat-dialog-content>
+    <shift-volunteer-list [eventId]="eventId" [pickerMode]="true" (multipleUserEventSelected)="selectedValues = $event"></shift-volunteer-list>
+</div>
+<div mat-dialog-actions>
+    <button class="btn" [disabled]="selectedValues.length == 0" [matDialogClose]="selectedValues">{{selectedValues.length}} wählen</button>
+    <button class="btn-secondary" mat-dialog-close>Abbrechen</button>
+</div>

@@ -12,6 +12,8 @@ import { PayoutModule } from '../payout/payout.module';
 import { VolunteerContractConfigEditComponent } from './volunteer-contract-config-edit/volunteer-contract-config-edit.component';
 import { VolunteerExportOverlayComponent } from './volunteer-export-overlay/volunteer-export-overlay.component';
 import { VolunteerAssigmentSuggestionComponent } from './volunteer-assigment-suggestion/volunteer-assigment-suggestion.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { VolunteerMultipleChooserOverlayComponent } from './volunteer-multiple-chooser-overlay/volunteer-multiple-chooser-overlay.component';
 
 const routes: Routes = [
   {
@@ -38,12 +40,14 @@ const routes: Routes = [
     VolunteerEditFormComponent,
     VolunteerContractConfigEditComponent,
     VolunteerExportOverlayComponent,
-    VolunteerAssigmentSuggestionComponent
+    VolunteerAssigmentSuggestionComponent,
+    VolunteerMultipleChooserOverlayComponent
   ],
   imports: [
     CommonModule,
     ShiftCommonModule,
     DocumentsModule,
+    MatMenuModule,
     PayoutModule,
     RouterModule.forChild(routes)
   ],
