@@ -7,6 +7,7 @@ import * as Parse from 'parse';
 import { MatDialog } from '@angular/material/dialog';
 import { VolunteerExportOverlayComponent } from '../volunteer-export-overlay/volunteer-export-overlay.component';
 import { VolunteerMultipleChooserOverlayComponent } from '../volunteer-multiple-chooser-overlay/volunteer-multiple-chooser-overlay.component';
+import { VolunteerMailResult } from '../models/volunteer-mail-result.model';
 
 @Component({
   selector: 'app-volunteer-overview',
@@ -34,7 +35,14 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
     if (pickedUsers?.length === 0) {
       return;
     }
-    window.open("mailto:" + pickedUsers.map(user => user.get('user').get('email')).join(';'));
+    await this.loady(async () => {
+      const allUserMails = await Parse.Cloud.run('getMailAdressesForAllVolunteers', { eventId: this.params.eventId }) as VolunteerMailResult[];
+      const mailList = pickedUsers.map(userEvent => {
+        const userMail = allUserMails.find(userMail => userMail.userId === userEvent.get('user').id)?.email;
+        return userMail ?? 'NO_MAIL_USER_ID_' + userEvent.get('user').id
+      });
+      window.open("mailto:" + mailList.join(';'));
+    })
   }
 
   @fluffyCatch()

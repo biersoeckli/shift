@@ -1,4 +1,4 @@
-import { UrlUtils } from 'ngx-fluffy-cow';
+import { fluffyLoading, UrlUtils } from 'ngx-fluffy-cow';
 import { CommonService } from '../services/common.service';
 import { NavigationService } from '../services/navigation.service';
 import * as Parse from 'parse';
@@ -29,5 +29,10 @@ export abstract class BaseComponent<TParamType> {
 
   async getUserById(userId: string) {
     return await this.commonService.getUserById(userId);
+  }
+
+  @fluffyLoading()
+  async loady<T>(func: () => Promise<T>): Promise<T> {
+    return await func();
   }
 }
