@@ -41,6 +41,10 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
         const userMail = allUserMails.find(userMail => userMail.userId === userEvent.get('user').id)?.email;
         return userMail ?? 'NO_MAIL_USER_ID_' + userEvent.get('user').id
       });
+      this.commonService.alertService.show({
+        title: 'Mail Adressen',
+        text: mailList.join('; ')
+      });
       window.open("mailto:" + mailList.join(';'));
     })
   }
