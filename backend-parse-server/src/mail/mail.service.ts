@@ -42,6 +42,8 @@ export class MailService {
         const Mail = Parse.Object.extend("Mails");
         let mail = new Mail();
         mail.set("to", mailOptions.to);
+        mail.set("cc", mailOptions.cc);
+        mail.set("bcc", mailOptions.bcc);
         mail.set("betreff", mailOptions.subject);
         mail.set("content", mailOptions.html);
         mail.set("fromDisplayName", mailOptions.from);

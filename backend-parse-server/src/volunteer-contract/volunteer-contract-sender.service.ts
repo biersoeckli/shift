@@ -7,6 +7,7 @@ import { AuthService } from "../auth/auth.service";
 import { EnvUtils } from "../common/utils/env.utils";
 import Mail from "nodemailer/lib/mailer";
 import { SanitazionUtils } from "../common/utils/sanitazion.utils";
+import { marked } from 'marked';
 
 @Service()
 export class VolunteerContractSenderService {
@@ -30,11 +31,11 @@ export class VolunteerContractSenderService {
         for (const user of usersWithShifts) {
             const contractOutput = await this.volunteerContractService.generateAndSaveContractToPublicFolder(eventId, user.id);
 
-            const mailContent = this.getMailContentAndReplacePlaceholders(contractConfig, user)
+            const mailContent = this.getMailContentAndReplacePlaceholders(contractConfig, user);
 
             let mailOptions: Mail.Options = {
                 from: `"${event.get('name')}" <${EnvUtils.get().mailUser}>`,
-                to: user.get('mail'),
+                to: user.get('email'),
                 bcc: organizerUser.get('email'),
                 replyTo: organizerUser.get('email'),
                 subject: 'Helfervertrag für ' + event.get('name'),
@@ -53,7 +54,7 @@ export class VolunteerContractSenderService {
     }
 
     getMailContentAndReplacePlaceholders(contractConfig: Parse.Object<Parse.Attributes>, user: Parse.User<Parse.Attributes>) {
-        let mailContent = contractConfig.get('mailTemplate');
+        let mailContent = marked.parse(contractConfig.get('mailTemplate'));
         mailContent = mailContent.replaceAll('V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
         mailContent = mailContent.replaceAll('V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
         mailContent = mailContent.replaceAll('V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
