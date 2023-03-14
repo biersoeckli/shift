@@ -41,6 +41,10 @@
                     (click)="navigation.payoutConfigOverview(eventId)">
                     <span>Payout Config</span>
                 </button>
+                <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerContractEnabled')"
+                    (click)="navigation.eventVolunteerContractConfigMenu(eventId)">
+                    <span>Helfervertrag</span>
+                </button>
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">
                     <span>Helferübersicht</span>
                 </button>

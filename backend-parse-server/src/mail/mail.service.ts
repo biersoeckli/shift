@@ -13,32 +13,44 @@ export class MailService {
         betreff: string,
         htmlBody: string,
         logMail = true,
-        fromDisplayName = 'Shift Planner',
-        attachments: Mail.Attachment[] = [],
-        bcc?: string,
-        replyTo?: string) {
+        fromDisplayName = 'Shift Planner') {
 
-        if (!EnvUtils.get().production) {
-            console.warn('Cannot send sms in dev (production = false) mode.');
-            console.warn('Mail Message: ' + htmlBody);
-            return;
-        }
         if (StringUtils.isEmpty(to) || StringUtils.isEmpty(betreff) || StringUtils.isEmpty(htmlBody)) {
             throw 'Error: to, betreff and htmlBody are required fields for an email.';
         }
 
-        const testAccount = await nodemailer.createTestAccount();
+
+        // setup email data with unicode symbols
+        let mailOptions: Mail.Options = {
+            from: `"${fromDisplayName}" <${EnvUtils.get().mailUser}>`,
+            to,
+            subject: betreff,
+            html: htmlBody
+        };
+
+        await this.sendMailWithOptions(mailOptions, logMail);
+    }
+
+    async sendMailWithOptions(mailOptions: Mail.Options, logMail = true) {
+
+        if (!EnvUtils.get().production) {
+            console.warn('Cannot send sms in dev (production = false) mode.');
+            console.warn('Mail Message: ' + mailOptions.html);
+            return;
+        }
 
         const Mail = Parse.Object.extend("Mails");
         let mail = new Mail();
-        mail.set("to", to);
-        mail.set("betreff", betreff);
-        mail.set("content", htmlBody);
-        mail.set("fromDisplayName", fromDisplayName);
+        mail.set("to", mailOptions.to);
+        mail.set("betreff", mailOptions.subject);
+        mail.set("content", mailOptions.html);
+        mail.set("fromDisplayName", mailOptions.from);
         mail.set("sent", false);
         if (logMail) {
             mail = await mail.save(null, { useMasterKey: true });
         }
+
+        const testAccount = await nodemailer.createTestAccount();
 
         let transporter = nodemailer.createTransport({
             host: EnvUtils.get().mailHost,
@@ -50,19 +62,8 @@ export class MailService {
             }
         });
 
-        // setup email data with unicode symbols
-        let mailOptions: Mail.Options = {
-            from: `"${fromDisplayName}" <${EnvUtils.get().mailUser}>`,
-            to,
-            bcc,
-            replyTo,
-            subject: betreff,
-            html: htmlBody,
-            attachments
-        };
-
         const info = await transporter.sendMail(mailOptions);
-        console.log('Mail with betreff "' + betreff + '" was sent to ' + to + '.  Server Response: ' + info.messageId);
+        console.log('Mail with betreff "' + mailOptions.subject + '" was sent to ' + mailOptions.to + '.  Server Response: ' + info.messageId);
         const previewUrl = nodemailer.getTestMessageUrl(info);
         console.log('Preview URL: ' + previewUrl);
         if (logMail) {

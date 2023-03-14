@@ -150,7 +150,21 @@ export class NavigationService {
   }
 
   @fluffyLoading()
-  async eventVolunteerContractConfig(eventId: string) {
+  async eventVolunteerContractConfigMenu(eventId: string) {
+    await this.router.navigate(['volunteers', 'contract-config'], {
+      queryParams: new VolunteerParams(eventId)
+    });
+  }
+
+  @fluffyLoading()
+  async eventVolunteerContractConfigMailSender(eventId: string) {
+    await this.router.navigate(['volunteers', 'contract-config', 'mail-sender'], {
+      queryParams: new VolunteerParams(eventId)
+    });
+  }
+
+  @fluffyLoading()
+  async eventVolunteerContractConfigEdit(eventId: string) {
     await this.router.navigate(['volunteers', 'contract-config', 'edit'], {
       queryParams: new VolunteerParams(eventId)
     });

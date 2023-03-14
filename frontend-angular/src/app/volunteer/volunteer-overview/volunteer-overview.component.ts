@@ -46,7 +46,7 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
         text: mailList.join('; ')
       });
       window.open("mailto:" + mailList.join(';'));
-    })
+    });
   }
 
   @fluffyCatch()
@@ -57,7 +57,7 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
     }
     const alertResult = await this.commonService.alertService.show({
       title: 'HelferInnen löschen',
-      text: `Willst du wirklick ${pickedUsers.length} HelferInnen löschen?`,
+      text: `Willst du wirklich ${pickedUsers.length} HelferInnen löschen?`,
       okButton: 'Ja',
       cancelButton: 'Nein'
     });

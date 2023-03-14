@@ -69,12 +69,6 @@
         [label]="'Modul: Wunschschichten'">
     </shift-toggle-switch>
 
-    <ng-container *ngIf="item.get('volunteerContractEnabled')">
-        <button class="btn-secondary mt-2"
-            (click)="item.id ? navigation.eventVolunteerContractConfig(item.id) : navigation.home()">Volunteer Contract
-            Config</button><br>
-    </ng-container>
-
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()" [disabled]="!item.get('name')">Speichern</button>
 </div>

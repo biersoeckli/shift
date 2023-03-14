@@ -1,0 +1,10 @@
+<div class="shift-content">
+    <shift-back-arrow (backClick)="navigation.eventDetail(params.eventId)"
+        [title]="'Helfervertrag'"></shift-back-arrow>
+    <div class="shift-list-item" (click)="navigation.eventVolunteerContractConfigEdit(params.eventId)">
+        Helfervertrag Bearbeiten
+    </div>
+    <div class="shift-list-item" (click)="navigation.eventVolunteerContractConfigMailSender(params.eventId)">
+        Helfervertrag Mailversand
+    </div>
+</div>

@@ -14,6 +14,8 @@ import { VolunteerExportOverlayComponent } from './volunteer-export-overlay/volu
 import { VolunteerAssigmentSuggestionComponent } from './volunteer-assigment-suggestion/volunteer-assigment-suggestion.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { VolunteerMultipleChooserOverlayComponent } from './volunteer-multiple-chooser-overlay/volunteer-multiple-chooser-overlay.component';
+import { VolunteerContractMenuComponent } from './volunteer-contract-menu/volunteer-contract-menu.component';
+import { VolunteerContractMailSenderComponent } from './volunteer-contract-mail-sender/volunteer-contract-mail-sender.component';
 
 const routes: Routes = [
   {
@@ -26,8 +28,14 @@ const routes: Routes = [
     path: 'volunteers/detail/edit',
     component: VolunteerDetailEditComponent,
   }, {
+    path: 'volunteers/contract-config',
+    component: VolunteerContractMenuComponent,
+  }, {
     path: 'volunteers/contract-config/edit',
     component: VolunteerContractConfigEditComponent,
+  }, {
+    path: 'volunteers/contract-config/mail-sender',
+    component: VolunteerContractMailSenderComponent,
   }
 ];
 
@@ -41,7 +49,9 @@ const routes: Routes = [
     VolunteerContractConfigEditComponent,
     VolunteerExportOverlayComponent,
     VolunteerAssigmentSuggestionComponent,
-    VolunteerMultipleChooserOverlayComponent
+    VolunteerMultipleChooserOverlayComponent,
+    VolunteerContractMenuComponent,
+    VolunteerContractMailSenderComponent
   ],
   imports: [
     CommonModule,

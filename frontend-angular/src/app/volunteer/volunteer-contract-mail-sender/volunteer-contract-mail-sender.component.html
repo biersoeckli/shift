@@ -1,0 +1,21 @@
+<div class="shift-content">
+    <shift-back-arrow (backClick)="navigation.eventVolunteerContractConfigMenu(params.eventId)"
+        [title]="'Helfervertrag Mailversand'"></shift-back-arrow>
+    <div>Hier kann ein massenversand der Helferverträge per Mail mit dem unten stehenden Text erfolgen.</div>
+    <label class="input-label">Mailinhalt (Markdown)</label>
+    <ng-container *ngIf="contractConfig">
+        <textarea [ngModel]="contractConfig.get('mailTemplate')" rows="6"
+            (ngModelChange)="contractConfig.set('mailTemplate', $event)"
+            (blur)="saveContractConfig()"></textarea>
+    </ng-container>
+    <div class="text-sm text-slate-400 mt-1">Folgende Placeholder können genutzt werden:<br>
+        - V_FIRSTNAME => Vorname HelferIn<br>
+        - V_LASTNAME => Nachname HelferIn<br>
+        - V_PHONE => Telefonnummer HelferIn<br>
+        - V_MAIL => E-Mail HelferIn<br>
+    </div>
+    <button class="btn-secondary" (click)="chooseVolunteers()">HelferInnen wählen</button>
+    <br>
+    <button class="btn" [disabled]="!selectedUsers ||selectedUsers.length === 0"
+        (click)="sendContractToVolunteers()">{{selectedUsers?.length ?? ''}} Mails versenden</button>
+</div>
