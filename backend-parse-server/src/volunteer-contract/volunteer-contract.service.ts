@@ -77,7 +77,8 @@ export class VolunteerContractService {
         htmlContractContent = this.replaceUserInfoPlaceholders(htmlContractContent, user);
         htmlContractContent = this.replacePayoutInfoPlaceholders(htmlContractContent, userPayoutInfo, eventCategories);
         htmlContractContent = this.replaceSignatureSectionPlaceholders(htmlContractContent, user);
-        htmlContractContent = htmlContractContent.replaceAll('V_SHIFT_CATEGORIES', eventCategories.map(x => x.get('name')).join(', '));
+        const userCategories = userPayoutInfo.shifts.map(shift => eventCategories.find(category => category.id === shift.shift.get('category').id)?.get('name') ?? '').join(', ');
+        htmlContractContent = htmlContractContent.replaceAll('V_SHIFT_CATEGORIES', SanitazionUtils.sanitize(userCategories));
         return htmlContractContent;
     }
 
