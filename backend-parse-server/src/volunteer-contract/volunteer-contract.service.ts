@@ -77,6 +77,7 @@ export class VolunteerContractService {
         htmlContractContent = this.replaceUserInfoPlaceholders(htmlContractContent, user);
         htmlContractContent = this.replacePayoutInfoPlaceholders(htmlContractContent, userPayoutInfo, eventCategories);
         htmlContractContent = this.replaceSignatureSectionPlaceholders(htmlContractContent, user);
+        htmlContractContent = htmlContractContent.replaceAll('V_SHIFT_CATEGORIES', eventCategories.map(x => x.get('name')).join(', '));
         return htmlContractContent;
     }
 
