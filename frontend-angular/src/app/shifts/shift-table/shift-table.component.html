@@ -48,6 +48,9 @@
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">
                     <span>Helferübersicht</span>
                 </button>
+                <button mat-menu-item (click)="print()">
+                    <span>Schichtplan Herunterladen</span>
+                </button>
             </mat-menu>
         </div>
     </div>
@@ -127,9 +130,3 @@
         </p>
     </div>
 </div>
-<button class="btn-secondary" (click)="print()">Herunterladen</button>
-
-<ng-container *ngIf="!readonly">
-    <div class="font-semibold text-xl mt-4 mb-2">Zuteilungsvorschlag</div>
-    <app-volunteer-assigment-suggestion [eventId]="eventId"></app-volunteer-assigment-suggestion>
-</ng-container>

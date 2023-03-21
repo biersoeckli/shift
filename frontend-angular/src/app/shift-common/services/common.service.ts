@@ -12,7 +12,6 @@ export class CommonService {
     public readonly eventService: EventService,
     public readonly alertService: AlertService) { }
 
-
   async getUserById(userId: string) {
     const userQuery = new Parse.Query(Parse.Object.extend('_User'))
     return await userQuery.get(userId);

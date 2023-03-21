@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 
 export interface EventDocumentUploadOverlayInput {
@@ -35,13 +35,18 @@ export class EventDocumentUploadOverlayComponent {
   }
 
   @fluffyLoading()
+  @fluffyCatch()
   async upload() {
     const parseFiles = this.selectedFiles.map(file => {
-      const parseFile = new Parse.File(file.name, file, file.type);
+      const fileNameSplit = file.name.split('.');
+      const fileEnding = fileNameSplit[fileNameSplit.length - 1];
+      const newFileName = `${this.generateRandomString()}.${fileEnding}`;
+
+      const parseFile = new Parse.File(newFileName, file, file.type);
 
       const parseObject = new (Parse.Object.extend('EventDocument'));
       parseObject.set('file', parseFile);
-      parseObject.set('name', file.name);
+      parseObject.set('name', newFileName);
       parseObject.set('type', file.type);
       parseObject.set('event', this.input.event);
       parseObject.set('user', this.input.user);
@@ -49,5 +54,19 @@ export class EventDocumentUploadOverlayComponent {
     });
     await Parse.Object.saveAll(parseFiles);
     await this.dialogRef.close();
+  }
+
+  generateRandomString() {
+    const length = 20;
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    let values = new Uint32Array(length);
+
+    window.crypto.getRandomValues(values);
+
+    for (let i = 0; i < length; i++) {
+      result += charset[values[i] % charset.length];
+    }
+    return result;
   }
 }

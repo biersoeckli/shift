@@ -21,12 +21,14 @@
                 <button mat-menu-item (click)="deleteVolunteers()">
                     <span>HelferInnen löschen</span>
                 </button>
+                <button mat-menu-item (click)="downloadVolunteerList()">
+                    <span>Helferliste herunterladen</span>
+                </button>
             </mat-menu>
         </div>
     </div>
     <shift-volunteer-list [eventId]="params.eventId"
         (userEventSelected)="navigation.eventVolunteerDetail(params.eventId, $event.id)"></shift-volunteer-list>
 
-    <button class="btn-secondary" (click)="downloadVolunteerList()">Helferliste herunterladen</button><br>
     <button class="btn" (click)="navigation.eventVolunteerEdit(params.eventId)">Helfer hinzufügen</button>
 </div>
