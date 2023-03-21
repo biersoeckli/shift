@@ -1,5 +1,9 @@
 FROM node:lts-bullseye
 
+# set timezone
+RUN apt install tzdata -y
+ENV TZ="Europe/Zurich"
+
 # needed for puppeteer
 RUN apt-get update
 RUN apt-get -y install libxss1 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgbm-dev
