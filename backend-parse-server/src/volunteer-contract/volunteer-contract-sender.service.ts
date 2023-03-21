@@ -27,8 +27,9 @@ export class VolunteerContractSenderService {
         const usersWithShifts = userShifts
             .filter(userShift => userIds.includes(userShift.get('user').id))
             .map(userShift => userShift.get('user') as Parse.User);
+        const userWithoutDuplicates = this.removeDuplicates(usersWithShifts);
 
-        for (const user of usersWithShifts) {
+        for (const user of userWithoutDuplicates) {
             const contractOutput = await this.volunteerContractService.generateAndSaveContractToPublicFolder(eventId, user.id);
 
             const mailContent = this.getMailContentAndReplacePlaceholders(contractConfig, user);
@@ -51,6 +52,18 @@ export class VolunteerContractSenderService {
             await this.mailService.sendMailWithOptions(mailOptions);
             await fs.rm(contractOutput.filePath); // remove after sending mail successfully
         }
+    }
+
+    removeDuplicates<T>(list: T[]) {
+        let uniqueList = [];
+        let ids = new Set();
+        for (const obj of list) {
+            if (!ids.has((obj as any).id)) {
+                uniqueList.push(obj);
+                ids.add((obj as any).id);
+            }
+        }
+        return uniqueList;
     }
 
     getMailContentAndReplacePlaceholders(contractConfig: Parse.Object<Parse.Attributes>, user: Parse.User<Parse.Attributes>) {
