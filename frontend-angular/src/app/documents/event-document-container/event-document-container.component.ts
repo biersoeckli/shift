@@ -5,7 +5,7 @@ import { CommonService } from 'src/app/shift-common/services/common.service';
 import * as Parse from 'parse';
 import { UserPickerDialogComponent } from 'src/app/shifts/user-picker-dialog/user-picker-dialog.component';
 import { EventDocumentUploadOverlayComponent, EventDocumentUploadOverlayInput } from '../event-document-upload-overlay/event-document-upload-overlay.component';
-import { fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
 
 @Component({
   selector: 'shift-event-document-container',
@@ -28,6 +28,7 @@ export class EventDocumentContainerComponent extends BaseComponent<void> impleme
     this.init();
   }
 
+  @fluffyCatch()
   @fluffyLoading()
   async init() {
     if (!this.eventId) {
@@ -65,13 +66,15 @@ export class EventDocumentContainerComponent extends BaseComponent<void> impleme
     window.open((doc.get('file') as Parse.File).url());
   }
 
-  @fluffyLoading()
+  @fluffyCatch()
   async deleteDocument(doc: Parse.Object<Parse.Attributes>) {
     if (!confirm(`Willst du das Dokument ${doc.get('name')} wirklich löschen?`)) {
       return;
     }
-    await doc.destroy();
-    await this.init();
+    await this.loady(async () => {
+      await doc.destroy();
+      await this.init();
+    })
   }
 
 }

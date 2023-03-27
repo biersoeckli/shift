@@ -36,6 +36,13 @@ export class NavigationService {
   }
 
   @fluffyLoading()
+  async documentOverview(eventId: string) {
+    await this.router.navigate(['documents', 'overview'], {
+      queryParams: new EventDetailParam(eventId)
+    });
+  }
+
+  @fluffyLoading()
   async registrationShiftChooser(eventId: string, returnUrl?: string) {
     await this.router.navigate(['register', 'shift-chooser'], {
       queryParams: new RegistrationParams(eventId, returnUrl)

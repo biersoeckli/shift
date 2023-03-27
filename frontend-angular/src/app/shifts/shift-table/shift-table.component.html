@@ -45,6 +45,10 @@
                     (click)="navigation.eventVolunteerContractConfigMenu(eventId)">
                     <span>Helfervertrag</span>
                 </button>
+                <button mat-menu-item *ngIf="shiftTableService.event?.get('documentUploadEnabled')"
+                    (click)="navigation.documentOverview(eventId)">
+                    <span>Document Center</span>
+                </button>
                 <button mat-menu-item (click)="navigation.eventVolunteerOverview(eventId)">
                     <span>Helferübersicht</span>
                 </button>
