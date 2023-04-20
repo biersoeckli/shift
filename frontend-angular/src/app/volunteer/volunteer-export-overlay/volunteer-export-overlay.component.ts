@@ -5,9 +5,11 @@ import { EventDocumentUploadOverlayComponent, EventDocumentUploadOverlayInput } 
 import { CsvExporterService } from 'src/app/shift-common/services/csv-exporter.service';
 import { EventService } from 'src/app/shift-common/services/event.service';
 import * as Parse from 'parse';
+import { UserPayoutInfo } from 'src/app/payout/services/payout.service';
 
 interface ExportConfig {
   addVolunteerCategoryWish: boolean;
+  addPayoutInformation: boolean;
 }
 @Component({
   selector: 'app-volunteer-export-overlay',
@@ -17,7 +19,8 @@ export class VolunteerExportOverlayComponent {
 
   userEvents?: Parse.Object<Parse.Attributes>[];
   config: ExportConfig = {
-    addVolunteerCategoryWish: false
+    addVolunteerCategoryWish: false,
+    addPayoutInformation: false
   };
 
   constructor(public dialogRef: MatDialogRef<EventDocumentUploadOverlayComponent>,
@@ -38,9 +41,13 @@ export class VolunteerExportOverlayComponent {
       return;
     }
 
-    const exportData = await Parse.Cloud.run('getUsersForEvent', {eventId: this.eventId});
+    const exportData = await Parse.Cloud.run('getUsersForEvent', { eventId: this.eventId });
     if (this.config.addVolunteerCategoryWish) {
       await this.addCategoryWish(exportData);
+    }
+
+    if (this.config.addPayoutInformation) {
+      await this.addTotalPayoutToUser(exportData);
     }
 
     this.csvExporter.objectsToCsvAndDownload(exportData, 'helferliste.csv');
@@ -54,5 +61,13 @@ export class VolunteerExportOverlayComponent {
       exportItem.Anzahl_Wunschschichten_Kategorien = categoriesOfCurrentUser.length;
       categoriesOfCurrentUser.forEach(userCat => exportItem[userCat.get('category').get('name') + '_Wunschkategorie'] = 'x');
     });
+  }
+
+  async addTotalPayoutToUser(exportedData: any[]) {
+    await Promise.all(exportedData.map(async exportItem => {
+      const userPayoutInfo: UserPayoutInfo = await Parse.Cloud.run('calculateUserPayoutInfoForEvent',
+        { userId: exportItem.userId, eventId: this.eventId });
+      exportItem.Auszahlung_Total = userPayoutInfo?.payoutTotal ?? 'Keine_Auszahlungsdaten';
+    }));
   }
 }

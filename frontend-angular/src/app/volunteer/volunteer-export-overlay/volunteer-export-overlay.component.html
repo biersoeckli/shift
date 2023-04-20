@@ -1,10 +1,11 @@
 <div mat-dialog-content>
-
     <shift-loader *ngIf="!userEvents; else loaded"></shift-loader>
     <ng-template #loaded>
         <div class="font-medium">Exportoptionen:</div><br>
         <shift-toggle-switch [(value)]="config.addVolunteerCategoryWish"
             [label]="'Kategoriewünsche exportieren'"></shift-toggle-switch>
+        <shift-toggle-switch [(value)]="config.addPayoutInformation"
+            [label]="'Auszahlungsinformationen exportieren'"></shift-toggle-switch>
     </ng-template>
 </div>
 <div mat-dialog-actions>
