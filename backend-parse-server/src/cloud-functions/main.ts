@@ -25,6 +25,7 @@ import { GetUsersForEventFunction } from "./user-event/get-users-for-event.funct
 import { CalculateTotalEventPayoutInfoFunction } from "./payout/event-payout-calculation.function";
 import { GetMailForAllVolunteersFunction } from "./volunteer/get-mail-for-volunteers.function";
 import { SendVolunteerContractsByMail } from "./volunteer-contract/send-volunteer-contracts-by-mail.function";
+import { SendMessageToVolunteersFunction } from "./volunteer/send-message-to-volunteers.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -36,6 +37,14 @@ Parse.Cloud.define("verifyAuthChallengeCode", async (request) => {
     return await Container.get(VerifyAuthChallengeCodeFunction).run(request);
 }, {
     fields: ['challengeId', 'authCode']
+});
+
+Parse.Cloud.define("sendMessageToVolunteers", async (request) => {
+    return await Container.get(SendMessageToVolunteersFunction).run(request);
+}, {
+    fields: ['message', 'userIds', 'eventId'],
+    requireUser: true,
+    requireAllUserRoles: [ROLE_EVENT_ORGANIZER]
 });
 
 Parse.Cloud.define("getOrCreateUserForPhoneNumber", async (request) => {

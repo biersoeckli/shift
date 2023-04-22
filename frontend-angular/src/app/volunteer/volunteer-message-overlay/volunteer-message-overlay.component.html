@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+
+    <label class="input-label mt-4">Nachricht</label>
+    <textarea type="text" rows="6" [(ngModel)]="message"></textarea>
+</div>
+<div mat-dialog-actions>
+    <button class="btn" [disabled]="!message" (click)="send()">Senden</button>
+    <button class="btn-secondary" mat-dialog-close>Abbrechen</button>
+</div>

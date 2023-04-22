@@ -16,6 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { VolunteerMultipleChooserOverlayComponent } from './volunteer-multiple-chooser-overlay/volunteer-multiple-chooser-overlay.component';
 import { VolunteerContractMenuComponent } from './volunteer-contract-menu/volunteer-contract-menu.component';
 import { VolunteerContractMailSenderComponent } from './volunteer-contract-mail-sender/volunteer-contract-mail-sender.component';
+import { VolunteerMessageOverlayComponent } from './volunteer-message-overlay/volunteer-message-overlay.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,8 @@ const routes: Routes = [
     VolunteerAssigmentSuggestionComponent,
     VolunteerMultipleChooserOverlayComponent,
     VolunteerContractMenuComponent,
-    VolunteerContractMailSenderComponent
+    VolunteerContractMailSenderComponent,
+    VolunteerMessageOverlayComponent
   ],
   imports: [
     CommonModule,

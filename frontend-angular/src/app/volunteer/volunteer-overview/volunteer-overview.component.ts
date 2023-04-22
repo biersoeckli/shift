@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { VolunteerExportOverlayComponent } from '../volunteer-export-overlay/volunteer-export-overlay.component';
 import { VolunteerMultipleChooserOverlayComponent } from '../volunteer-multiple-chooser-overlay/volunteer-multiple-chooser-overlay.component';
 import { VolunteerMailResult } from '../models/volunteer-mail-result.model';
+import { VolunteerMessageOverlayComponent, VolunteerMessageOverlayComponentInput } from '../volunteer-message-overlay/volunteer-message-overlay.component';
 
 @Component({
   selector: 'app-volunteer-overview',
@@ -65,6 +66,24 @@ export class VolunteerOverviewComponent extends BaseComponent<VolunteerParams>  
       await Parse.Object.destroyAll(pickedUsers);
       location.reload();
     }
+  }
+
+  @fluffyCatch()
+  async sendMessageToVolunteer() {
+    const pickedUsers = await this.pickUsers();
+    if (pickedUsers?.length === 0) {
+      return;
+    }
+    console.log(pickedUsers);
+    const data = {
+      eventId: this.params.eventId,
+      userIds: pickedUsers.map(x => x.get('user').id)
+    } as VolunteerMessageOverlayComponentInput;
+
+    const dialog = this.dialog.open(VolunteerMessageOverlayComponent, {
+      width: '400px',
+      data
+    });
   }
 
   pickUsers(): Promise<Parse.Object[]> {
