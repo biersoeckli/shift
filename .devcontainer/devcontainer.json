@@ -1,0 +1,23 @@
+{
+	"name": "Ubuntu Shift",
+	"dockerComposeFile": "./docker.compose.yml",
+	"service": "vscode-container",
+	"workspaceFolder": "/workspace",
+	"shutdownAction": "stopCompose",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.vscode-pull-request-github",
+				"Prisma.prisma",
+				"pflannery.vscode-versionlens",
+				"github.vscode-github-actions",
+				"bradlc.vscode-tailwindcss",
+				"trivadis.ngtvd-extensions",
+				"GitHub.copilot",
+				"GitHub.copilot-chat"
+			]
+		}
+	},
+	"postCreateCommand": "sudo apt-get update && sudo apt-get -y chromium",
+	"postStartCommand": "npm install -g @angular/cli && git config --global --add safe.directory /workspace"
+}

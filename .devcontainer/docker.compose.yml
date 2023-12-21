@@ -1,0 +1,24 @@
+version: "3"
+services:
+  vscode-container:    
+    image: mcr.microsoft.com/devcontainers/javascript-node:18-bullseye
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - ..:/workspace
+      - ~/.ssh:/home/node/.ssh
+    env_file: devcontainer.env
+  shift-mongodb:
+    image: mongo:6-jammy
+    restart: always
+    hostname: shift-mongodb-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+      - MONGO_INITDB_DATABASE=shift
+    ports:
+      - "27017:27017"
+    volumes:
+      - shift-mongodb:/data/db
+volumes:
+  shift-mongodb:
+    driver: local
