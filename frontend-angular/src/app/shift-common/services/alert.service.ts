@@ -10,7 +10,7 @@ export class AlertService {
 
   private alertIsVisible = false;
 
-  constructor(private readonly dialog: MatDialog) { }
+  constructor(public readonly dialog: MatDialog) { }
 
   async initFluffyCatch() {
     fluffyCatchBS.subscribe(error => {

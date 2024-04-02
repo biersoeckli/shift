@@ -25,8 +25,8 @@ export class VolunteerReceiptService {
         private readonly payoutCalculationService: PayoutCalculationService,
         private readonly pdfCreator: PdfCreatorService) { }
 
-    async generateAndSaveReceiptToPublicFolder(eventId: string, userId: string) {
-        const htmlContent = await this.generateContractHtml(eventId, userId);
+    async generateAndSaveReceiptToPublicFolder(eventId: string, userId: string, overridePayoutAmount?: number) {
+        const htmlContent = await this.generateContractHtml(eventId, userId, overridePayoutAmount);
         const buffer = await this.pdfCreator.generateFromHtml(htmlContent);
         const fileName = `receipt-${eventId}-${userId}.pdf`;
         const filePath = path.join(StaticPathConstants.getVolunteerContractFilePath(), fileName);
@@ -38,7 +38,7 @@ export class VolunteerReceiptService {
         } as GeneratedContractOutput;
     }
 
-    async generateContractHtml(eventId: string, userId: string) {
+    async generateContractHtml(eventId: string, userId: string, overridePayoutAmount?: number) {
         const event = await this.eventService.getEventById(eventId, true);
         const user = await this.authService.getUserById(userId);
         if ([event, user].some(x => !x)) {
@@ -49,11 +49,12 @@ export class VolunteerReceiptService {
         const eventCategories = await this.getEventCategories(eventId);
 
         let htmlContractContent = await readFile(StaticPathConstants.getReceiptTemplateFilePath(), 'utf-8');
-        htmlContractContent = this.replaceUserInfoPlaceholders(htmlContractContent, user, userPayoutInfo, eventCategories);
+        htmlContractContent = this.replaceUserInfoPlaceholders(htmlContractContent, user, userPayoutInfo, eventCategories, overridePayoutAmount);
         return htmlContractContent;
     }
 
-    replaceUserInfoPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>, userPayoutInfo: UserPayoutInfo, eventCategories: Parse.Object<Parse.Attributes>[]) {
+    replaceUserInfoPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>, 
+        userPayoutInfo: UserPayoutInfo, eventCategories: Parse.Object<Parse.Attributes>[], overridePayoutAmount?: number) {
 
         const shiftNames = userPayoutInfo.shifts?.map(shift => eventCategories.find(category => category.id === shift.shift.get('category')?.id)?.get('name') ?? '')
             .filter(x => !!x)
@@ -65,7 +66,7 @@ export class VolunteerReceiptService {
         htmlInput = htmlInput.replaceAll('V_MAIL', SanitazionUtils.sanitize(user.get('email')));
         htmlInput = htmlInput.replaceAll('CURRENT_DATE', new Date().toLocaleDateString('de-CH'));
         htmlInput = htmlInput.replaceAll('SHIFT_CATEGORY_NAMES', SanitazionUtils.sanitize(shiftNames));
-        htmlInput = htmlInput.replaceAll('PAYOUT_TOTAL', SanitazionUtils.sanitize(`CHF ${Math.floor(userPayoutInfo.payoutTotal)}.00`));
+        htmlInput = htmlInput.replaceAll('PAYOUT_TOTAL', SanitazionUtils.sanitize(`CHF ${overridePayoutAmount ?? Math.floor(userPayoutInfo.payoutTotal)}.00`));
         return htmlInput;
     }
 

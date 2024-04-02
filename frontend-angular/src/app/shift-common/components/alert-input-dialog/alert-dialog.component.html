@@ -1,0 +1,9 @@
+<div mat-dialog-content *ngIf="data.title">
+    <h1 class="text-2xl text-slate-700 font-semibold" *ngIf="data.title">{{data.title}}</h1>
+    <p class="pb-3 mt-4 text-slate-500">{{data.text}}</p>
+    <input type="text" [placeholder]="data.placeholder" [(ngModel)]="data.value" (keyup.enter)="close()">
+    <div class="flex gap-2 mt-6">
+        <button class="btn" mat-dialog-close (click)="close()">OK</button>
+        <button class="btn-secondary" mat-dialog-close>Abbrechen</button>
+    </div>
+</div>

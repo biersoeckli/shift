@@ -35,7 +35,7 @@ export class GenerateVolunteerReceiptFunction extends BaseCloudFunction<Voluntee
         if (!EventConfigUtils.getFromEvent(event).volunteerContractEnabled) {
             throw `Das generieren von Verträgen ist für den Event ${event.get('name')} deaktiviert.`;
         }*/
-        const outputInfo = await this.volunteerReceiptService.generateAndSaveReceiptToPublicFolder(request.params.eventId, request.params.userId);
+        const outputInfo = await this.volunteerReceiptService.generateAndSaveReceiptToPublicFolder(request.params.eventId, request.params.userId, request.params.overridePayoutAmount ?? undefined);
         return {
             url: outputInfo.url,
             fileName: outputInfo.fileName

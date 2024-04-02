@@ -19,6 +19,7 @@ import { TimeFromToPipe } from './pipes/time-from-to.pipe';
 import { TimeInputComponent } from './components/time-input/time-input.component';
 import { ToggleSwitchComponent } from './components/toggle-switch/toggle-switch.component';
 import { CsvExporterService } from './services/csv-exporter.service';
+import { AlertInputDialogComponent } from './components/alert-input-dialog/alert-dialog.component';
 
 
 @NgModule({
@@ -31,12 +32,14 @@ import { CsvExporterService } from './services/csv-exporter.service';
     TimeFromToPipe,
     LoaderComponent,
     TimeInputComponent,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    AlertInputDialogComponent
   ],
   imports: [
     CommonModule,
     FluffyCowModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule
   ],
   exports: [
     FluffyCowModule,
@@ -51,7 +54,8 @@ import { CsvExporterService } from './services/csv-exporter.service';
     TimeFromToPipe,
     LoaderComponent,
     TimeInputComponent,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    AlertInputDialogComponent
   ],
   providers: [
     CanActivateAuthenticated,

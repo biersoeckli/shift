@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fluffyCatch, fluffyLoading } from 'ngx-fluffy-cow';
+import { fluffyCatch, fluffyLoading, fluffyLoady } from 'ngx-fluffy-cow';
 import * as Parse from 'parse';
 import { BaseComponent } from 'src/app/shift-common/base-component/base-component.component';
 import { CommonService } from 'src/app/shift-common/services/common.service';
@@ -86,11 +86,35 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
     window.open(returnVal.url, '_blank');
   }
 
-  @fluffyLoading()
   @fluffyCatch()
   async generateVolunteerReceipt() {
-    const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerReceipt', { userId: this.user?.id, eventId: this.params.eventId });
-    window.open(returnVal.url, '_blank');
+    let userPayoutInfo: {
+      payoutTotal: number; shifts: any[];
+    } | undefined;
+
+    await fluffyLoady(async () => {
+      userPayoutInfo = (await Parse.Cloud.run('calculateUserPayoutInfoForEvent',
+        { userId: this.user?.id, eventId: this.params.eventId })) ?? [];
+    });
+
+    const customPayoutAmount = await this.inputDialog({
+      title: 'Auszahlungsbetrag überschreiben',
+      text: 'Gib den endgültigen Auszahlungsbetrag ein',
+      placeholder: 'z.B. 100',
+      value: userPayoutInfo!.payoutTotal + '',
+    });
+    if (!customPayoutAmount) {
+      return;
+    }
+
+    await fluffyLoady(async () => {
+      const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerReceipt', {
+        userId: this.user?.id,
+        eventId: this.params.eventId,
+        overridePayoutAmount: +customPayoutAmount ?? undefined
+      });
+      window.open(returnVal.url, '_blank');
+    });
   }
 
   @fluffyLoading()
