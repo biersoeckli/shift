@@ -88,6 +88,13 @@ export class VolunteerDetailComponent extends BaseComponent<VolunteerParams>  {
 
   @fluffyLoading()
   @fluffyCatch()
+  async generateVolunteerReceipt() {
+    const returnVal: VolunteerContractResult = await Parse.Cloud.run('generateVolunteerReceipt', { userId: this.user?.id, eventId: this.params.eventId });
+    window.open(returnVal.url, '_blank');
+  }
+
+  @fluffyLoading()
+  @fluffyCatch()
   async save() {
     await this.userEvent?.save();
   }

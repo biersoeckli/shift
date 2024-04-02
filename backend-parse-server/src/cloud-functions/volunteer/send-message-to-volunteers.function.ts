@@ -7,7 +7,7 @@ import { TimeSpan, TimeSpanUtils } from "../../common/utils/time-span.utils";
 import { EventService } from "../../event/event.service";
 import { EventConfigUtils } from "../../event/utils/event-config.utils";
 import { PayoutCalculationService } from "../../payout/payout-calculation.service";
-import { VolunteerContractService } from "../../volunteer-contract/volunteer-contract.service";
+import { VolunteerContractService } from "../../volunteer/volunteer-contract.service";
 import { AuthenticateWithPhoneNumberResult } from "../auth/auth-with-phonenumber.function";
 import { BaseCloudFunction } from "../cloud-function.interface";
 import { SmsService } from "../../sms/sms.service";

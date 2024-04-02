@@ -27,6 +27,7 @@ import { GetMailForAllVolunteersFunction } from "./volunteer/get-mail-for-volunt
 import { SendVolunteerContractsByMail } from "./volunteer-contract/send-volunteer-contracts-by-mail.function";
 import { SendMessageToVolunteersFunction } from "./volunteer/send-message-to-volunteers.function";
 import { AuthenticateWithMailFunction } from "./auth/auth-with-mail.function";
+import { GenerateVolunteerReceiptFunction } from "./volunteer-contract/generate-volunteer-receipt.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
@@ -103,6 +104,13 @@ Parse.Cloud.define("sendVolunteerContractsByMail", async (request) => {
 
 Parse.Cloud.define("generateVolunteerContract", async (request) => {
     return await Container.get(GenerateVolunteerContractFunction).run(request);
+}, {
+    fields: ['userId', 'eventId'],
+    requireUser: true
+});
+
+Parse.Cloud.define("generateVolunteerReceipt", async (request) => {
+    return await Container.get(GenerateVolunteerReceiptFunction).run(request);
 }, {
     fields: ['userId', 'eventId'],
     requireUser: true

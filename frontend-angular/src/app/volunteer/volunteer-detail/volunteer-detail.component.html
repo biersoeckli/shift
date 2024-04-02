@@ -48,7 +48,9 @@
     <button class="btn-secondary" *ngIf="event?.get('volunteerContractEnabled')"
         (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
 
-
+        <button class="btn-secondary"
+        (click)="generateVolunteerReceipt()">Quittung herunterladen</button>
+        
     <br><button class="btn-secondary"
     (click)="deleteVolunteer()">Helfer/in entfernen</button>
 </div>

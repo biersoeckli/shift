@@ -10,16 +10,17 @@ import { PayoutCalculationService } from "../../payout/payout-calculation.servic
 import { VolunteerContractService } from "../../volunteer/volunteer-contract.service";
 import { AuthenticateWithPhoneNumberResult } from "../auth/auth-with-phonenumber.function";
 import { BaseCloudFunction } from "../cloud-function.interface";
+import { VolunteerReceiptService } from "../../volunteer/volunteer-receipt.service";
 
-export interface VolunteerContractResult {
+interface VolunteerContractResult {
     url: string;
     fileName: string;
 }
 
 @Service()
-export class GenerateVolunteerContractFunction extends BaseCloudFunction<VolunteerContractResult> {
+export class GenerateVolunteerReceiptFunction extends BaseCloudFunction<VolunteerContractResult> {
 
-    constructor(private readonly volunteerContractService: VolunteerContractService,
+    constructor(private readonly volunteerReceiptService: VolunteerReceiptService,
         private readonly roleService: RoleService,
         private readonly eventService: EventService) {
         super();
@@ -29,11 +30,12 @@ export class GenerateVolunteerContractFunction extends BaseCloudFunction<Volunte
         if (!(await this.roleService.isVolunteerOrOrganizer(request.user as Parse.User, request.params.userId, request.params.eventId))) {
             throw 'unauthorized';
         }
+        /*
         const event = await this.eventService.getEventById(request.params.eventId);
         if (!EventConfigUtils.getFromEvent(event).volunteerContractEnabled) {
             throw `Das generieren von Verträgen ist für den Event ${event.get('name')} deaktiviert.`;
-        }
-        const outputInfo = await this.volunteerContractService.generateAndSaveContractToPublicFolder(request.params.eventId, request.params.userId);
+        }*/
+        const outputInfo = await this.volunteerReceiptService.generateAndSaveReceiptToPublicFolder(request.params.eventId, request.params.userId);
         return {
             url: outputInfo.url,
             fileName: outputInfo.fileName

@@ -20,9 +20,9 @@
                 <td style="width: 50%;">
                     <div style="font-size: 10px; padding-bottom: 10px;">Rattenfest Oberseestrasse 10 - 8640
                         Rapperswil-Jona</div>
-                    <strong>Name:</strong> [Dein Name]<br>
-                    <strong>Mail:</strong> [Mail]<br>
-                    <strong>Tel:</strong> [Tel]<br>
+                    <strong>Name:</strong> V_FIRSTNAME V_LASTNAME<br>
+                    <strong>Mail:</strong> V_MAIL<br>
+                    <strong>Tel:</strong> V_PHONE<br>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                     <div style="padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid rgb(249 115 22);">
                         <strong>Lohnquittung</strong>
                     </div>
-                    <div>Arbeitsdatum:</div>
+                    <div>Arbeitsdatum: CURRENT_DATE</div>
                 </td>
                 <td></td>
             </tr>
@@ -53,24 +53,24 @@
         <table style="width: 100%;">
             <tr>
                 <td style="width: 80%;">
-                    Arbeit
+                    Lohn Helfereinsatz Rattenfest (SHIFT_CATEGORY_NAMES)
                 </td>
                 <td style="width: 20%; text-align:right;">
-                    10 CHF
+                    PAYOUT_TOTAL
                 </td>
             </tr>
             <tr>
                 <td style="width: 80%; text-align:right; padding-top: 20px;">
-                    <strong>Gesamt CHF: </strong>
+                    <strong>Gesamt: </strong>
                 </td>
                 <td style="width: 20%; text-align:right; padding-top: 20px;">
-                    <strong>10 CHF</strong>
+                    <strong>PAYOUT_TOTAL</strong>
                 </td>
             </tr>
         </table>
 
         <p style="margin-top: 50px;"><strong>Bestätigung:</strong></p>
-        <p>Ich bestätige hiermit den Erhalt von [Betrag] als Entschädigung für meinen Helfereinsatz am Rattenfest.</p>
+        <p>Ich bestätige hiermit den Erhalt von PAYOUT_TOTAL als Entschädigung für meinen Helfereinsatz am Rattenfest.</p>
         <br>
         <p>Unterschrift: __________________________</p>
 

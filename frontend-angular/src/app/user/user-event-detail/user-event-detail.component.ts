@@ -40,6 +40,7 @@ export class UserEventDetailComponent extends BaseComponent<UserEventDetailParam
     window.open(returnVal.url, '_blank');
   }
 
+
   async getUserShiftForEvent(event: Parse.Object<Parse.Attributes>, user: Parse.User<Parse.Attributes>) {
     const query = new Parse.Query(Parse.Object.extend('UserShift'));
     query.equalTo('event', event);
