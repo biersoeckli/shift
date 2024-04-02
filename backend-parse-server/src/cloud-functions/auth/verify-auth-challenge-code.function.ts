@@ -39,7 +39,7 @@ export class VerifyAuthChallengeCodeFunction extends BaseCloudFunction<VerifyAut
             throw 'Ungültiger Authentifizierungscode';
         }
         let user = challenge.get('user');
-        const { generatedUsername, generatedPassword } = this.authService.getRandomUserNameAndPassword(user.get('phone'));
+        const { generatedUsername, generatedPassword } = this.authService.getRandomUserNameAndPassword(user.id);
         user.set('password', generatedPassword);
         user = await user.save(null, { useMasterKey: true });
         await challenge.destroy({ useMasterKey: true });

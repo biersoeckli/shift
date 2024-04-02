@@ -18,12 +18,23 @@ export class AuthComponent extends BaseComponent<AuthParams> {
       Validators.required
     ]),
   });
+
+  emailReactiveForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.email,
+      Validators.required
+    ]),
+  });
+
   validated = false;
   get phone() { return this.phoneReactiveForm.get('phone'); }
+  get email() { return this.emailReactiveForm.get('email'); }
 
   errorString?: string;
   authChallengeVerificationCode?: string;
   authChallengeId?: string;
+
+  loginType?: 'PHONE' | 'EMAIL';
 
   constructor(common: CommonService) {
     super(common);
@@ -32,13 +43,22 @@ export class AuthComponent extends BaseComponent<AuthParams> {
   @fluffyLoading()
   async onCreateAuthChallenge() {
     this.validated = true;
-    if (!this.phoneReactiveForm.valid) {
+
+    if (this.loginType === 'EMAIL' && this.emailReactiveForm.invalid) {
+      return;
+    }
+    if (this.loginType === 'PHONE' && this.phoneReactiveForm.invalid) {
       return;
     }
     try {
       this.errorString = undefined;
-      const { challengeId } = await Parse.Cloud.run('authenticateWithPhoneNumber', { phone: this.phoneReactiveForm.value.phone?.replaceAll(' ', '') });
-      this.authChallengeId = challengeId;
+      if (this.loginType === 'EMAIL') {
+        const { challengeId } = await Parse.Cloud.run('authenticateWithEmail', { email: this.emailReactiveForm.value.email?.replaceAll(' ', '') });
+        this.authChallengeId = challengeId;
+      } else {
+        const { challengeId } = await Parse.Cloud.run('authenticateWithPhoneNumber', { phone: this.phoneReactiveForm.value.phone?.replaceAll(' ', '') });
+        this.authChallengeId = challengeId;
+      }
     } catch (e) {
       const ex = e as Parse.Error;
       this.errorString = ex?.message ? ex.message : 'Es ist ein Fehler aufgetreten.';

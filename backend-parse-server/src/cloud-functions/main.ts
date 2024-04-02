@@ -26,11 +26,18 @@ import { CalculateTotalEventPayoutInfoFunction } from "./payout/event-payout-cal
 import { GetMailForAllVolunteersFunction } from "./volunteer/get-mail-for-volunteers.function";
 import { SendVolunteerContractsByMail } from "./volunteer-contract/send-volunteer-contracts-by-mail.function";
 import { SendMessageToVolunteersFunction } from "./volunteer/send-message-to-volunteers.function";
+import { AuthenticateWithMailFunction } from "./auth/auth-with-mail.function";
 
 Parse.Cloud.define("authenticateWithPhoneNumber", async (request) => {
     return await Container.get(AuthenticateWithPhoneNumberFunction).run(request);
 }, {
     fields: ['phone']
+});
+
+Parse.Cloud.define("authenticateWithEmail", async (request) => {
+    return await Container.get(AuthenticateWithMailFunction).run(request);
+}, {
+    fields: ['email']
 });
 
 Parse.Cloud.define("verifyAuthChallengeCode", async (request) => {

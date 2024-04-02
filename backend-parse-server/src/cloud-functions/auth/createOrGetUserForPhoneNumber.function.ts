@@ -25,7 +25,7 @@ export class GetOrCreateUserForPhoneNumberFunction extends BaseCloudFunction<str
         if ([request.params.firstName, request.params.lastName, request.params.email].some(x => !x)) {
             throw 'Folgende Felder sind Plichtfelder: Vorname, Nachname, Email';
         }
-        user = await this.authService.createNewUser(phone);
+        user = await this.authService.createNewUserWithPhone(phone);
         user.set('firstName', request.params.firstName);
         user.set('lastName', request.params.lastName);
         user.set('email', request.params.email);

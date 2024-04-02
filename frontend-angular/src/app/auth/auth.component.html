@@ -2,9 +2,19 @@
     <div class="py-12">
         <shift-header-logo></shift-header-logo>
     </div>
-    <div *ngIf="!authChallengeId; else authChallengeCreated">
+    <div *ngIf="!loginType">
         <div class="shift-card mb-6">
-            Um fortfahren zu können, müssen wir deine Telefonnummer verifizieren. Es werden nur schweizer Telefonnummern in folgendem Format akzeptiert 0791234567.
+            Um fortfahren zu können, müssen wir deine Telefonnummer oder E-Mail verifizieren.
+
+        </div>
+
+        <button class="btn-wide" (click)="loginType = 'EMAIL'">mit E-Mail fortfahren</button>
+        <button class="btn-wide" (click)="loginType = 'PHONE'">mit Tel. Nr. fortfahren</button>
+    </div>
+    <div *ngIf="loginType === 'PHONE' && !authChallengeId">
+        <div class="shift-card mb-6">
+            Um fortfahren zu können, müssen wir deine Telefonnummer verifizieren. Es werden nur schweizer
+            Telefonnummern in folgendem Format akzeptiert 0791234567.
         </div>
         <form [formGroup]="phoneReactiveForm" (ngSubmit)="onCreateAuthChallenge()">
             <label for="input-group-1" class="input-label">Deine Telefonnummer</label>
@@ -26,9 +36,28 @@
             <button class="btn-wide" type="submit" [disabled]="!phoneReactiveForm.value.phone">Weiter</button>
         </form>
     </div>
-    <ng-template #authChallengeCreated>
+
+    <div *ngIf="loginType === 'EMAIL' &&  !authChallengeId">
         <div class="shift-card mb-6">
-            Du hast einen Code auf deine Nummer <span class="font-medium text-orange-500">{{phoneReactiveForm.value.phone}}</span> erhalten. Bitte gib diesen hier ein.
+            Um fortfahren zu können, müssen wir deine E-Mail verifizieren.
+        </div>
+        <form [formGroup]="emailReactiveForm" (ngSubmit)="onCreateAuthChallenge()">
+            <label for="input-group-1" class="input-label">Deine E-Mail</label>
+            <div>
+                <input type="email" placeholder="max@muster.com" formControlName="email">
+                <p *ngIf="validated && email?.invalid" class="pl-2 text-sm text-red-600 dark:text-red-500">Die E-Mail
+                    ist ungültig.</p>
+                <p *ngIf="validated && errorString" class="pl-2 text-sm text-red-600 dark:text-red-500">{{errorString}}
+                </p>
+            </div>
+            <button class="btn-wide" type="submit" [disabled]="!emailReactiveForm.value.email">Weiter</button>
+        </form>
+    </div>
+    <ng-container *ngIf="authChallengeId">
+        <div class="shift-card mb-6">
+            Du hast einen Code auf deine Nummer <span
+                class="font-medium text-orange-500">{{phoneReactiveForm.value.phone}}</span> erhalten. Bitte gib diesen
+            hier ein.
         </div>
         <label for="input-group-1" class="input-label">Verifizierungscode</label>
         <div class="icon-input">
@@ -46,5 +75,5 @@
         <button class="btn-wide" [disabled]="!authChallengeVerificationCode"
             (click)="onValidateAuthChallenge()">Verifizieren</button>
 
-    </ng-template>
+    </ng-container>
 </div>
