@@ -51,11 +51,12 @@
         [label]="'Auszahlungsinformationen für Helfer sichtbar'">
     </shift-toggle-switch>
 
-    <button class="btn-secondary mb-2" *ngIf="item.get('volunteerPayoutEnabled')"
-        (click)="navigation.payoutConfigOverview(item.id)">
-        <span>Payout Config bearbeiten</span>
-    </button>
+    <div class="pb-2" *ngIf="item.get('volunteerPayoutEnabled')">
+        <button class="btn-secondary" (click)="navigation.payoutConfigOverview(item.id)">
+            <span>Payout Config bearbeiten</span>
+        </button>
 
+    </div>
     <shift-toggle-switch [value]="item.get('volunteerContractEnabled')"
         (valueChange)="item.set('volunteerContractEnabled', $event)" [label]="'Modul: Helferverträge'">
     </shift-toggle-switch>
@@ -74,8 +75,7 @@
         [label]="'Modul: Wunschschichten'">
     </shift-toggle-switch>
 
-    <button class="btn-secondary" (click)="navigation.shiftsOverview(item.id)"
-        *ngIf="item.get('wishShiftsEnabled')">
+    <button class="btn-secondary" (click)="navigation.shiftsOverview(item.id)" *ngIf="item.get('wishShiftsEnabled')">
         <span>Wunschschichten bearbeiten</span>
     </button>
 
