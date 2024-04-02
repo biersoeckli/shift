@@ -30,17 +30,6 @@
                 <button mat-menu-item (click)="navigation.eventDetailEdit(eventId)">
                     <span>Eventinfos Bearbeiten</span>
                 </button>
-                <button mat-menu-item (click)="navigation.shiftsOverview(eventId)"
-                    *ngIf="shiftTableService.event?.get('wishShiftsEnabled')">
-                    <span>Schichten</span>
-                </button>
-                <button mat-menu-item (click)="navigation.eventCategoryOverview(eventId)">
-                    <span>Kategorien</span>
-                </button>
-                <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerPayoutEnabled')"
-                    (click)="navigation.payoutConfigOverview(eventId)">
-                    <span>Payout Config</span>
-                </button>
                 <button mat-menu-item *ngIf="shiftTableService.event?.get('volunteerContractEnabled')"
                     (click)="navigation.eventVolunteerContractConfigMenu(eventId)">
                     <span>Helfervertrag</span>
