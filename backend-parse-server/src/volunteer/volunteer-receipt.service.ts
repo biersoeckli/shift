@@ -53,18 +53,24 @@ export class VolunteerReceiptService {
         return htmlContractContent;
     }
 
-    replaceUserInfoPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>, 
+    replaceUserInfoPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>,
         userPayoutInfo: UserPayoutInfo, eventCategories: Parse.Object<Parse.Attributes>[], overridePayoutAmount?: number) {
 
         const shiftNames = userPayoutInfo.shifts?.map(shift => eventCategories.find(category => category.id === shift.shift.get('category')?.id)?.get('name') ?? '')
             .filter(x => !!x)
             .join(', ') ?? 'no_shifts';
 
+        const shiftStartDates = userPayoutInfo.shifts?.map(shift => StringUtils.formatDate(shift.shift.get('start'))) ?? [];
+        const shiftEndDates = userPayoutInfo.shifts?.map(shift => StringUtils.formatDate(shift.shift.get('end'))) ?? [];
+        // join shifts and replace duplicates
+        const shiftDates = Array.from(new Set(shiftStartDates.concat(shiftEndDates))).join(', ');
+       
         htmlInput = htmlInput.replaceAll('V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
         htmlInput = htmlInput.replaceAll('V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
         htmlInput = htmlInput.replaceAll('V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
         htmlInput = htmlInput.replaceAll('V_MAIL', SanitazionUtils.sanitize(user.get('email')));
-        htmlInput = htmlInput.replaceAll('CURRENT_DATE', new Date().toLocaleDateString('de-CH'));
+        htmlInput = htmlInput.replaceAll('CURRENT_DATE', StringUtils.formatDate(new Date()));
+        htmlInput = htmlInput.replaceAll('SHIFT_DATES', shiftDates);
         htmlInput = htmlInput.replaceAll('SHIFT_CATEGORY_NAMES', SanitazionUtils.sanitize(shiftNames));
         htmlInput = htmlInput.replaceAll('PAYOUT_TOTAL', SanitazionUtils.sanitize(`CHF ${overridePayoutAmount ?? Math.floor(userPayoutInfo.payoutTotal)}.00`));
         return htmlInput;
