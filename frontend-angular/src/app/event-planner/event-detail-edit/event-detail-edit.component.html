@@ -51,7 +51,7 @@
         [label]="'Auszahlungsinformationen für Helfer sichtbar'">
     </shift-toggle-switch>
 
-    <button class="btn-secondary mt-2" *ngIf="item.get('volunteerPayoutEnabled')"
+    <button class="btn-secondary mb-2" *ngIf="item.get('volunteerPayoutEnabled')"
         (click)="navigation.payoutConfigOverview(item.id)">
         <span>Payout Config bearbeiten</span>
     </button>
@@ -74,14 +74,14 @@
         [label]="'Modul: Wunschschichten'">
     </shift-toggle-switch>
 
-    <button class="btn-secondary mt-2" (click)="navigation.shiftsOverview(item.id)"
+    <button class="btn-secondary" (click)="navigation.shiftsOverview(item.id)"
         *ngIf="item.get('wishShiftsEnabled')">
         <span>Wunschschichten bearbeiten</span>
     </button>
 
-    <button class="btn-secondary mt-2" (click)="navigation.eventCategoryOverview(item.id)">
+    <button class="btn-secondary" (click)="navigation.eventCategoryOverview(item.id)">
         <span>Kategorien bearbeiten</span>
-    </button>
+    </button><br>
 
     <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
     <button class="btn mt-2" (click)="save()" [disabled]="!item.get('name')">Speichern</button>
