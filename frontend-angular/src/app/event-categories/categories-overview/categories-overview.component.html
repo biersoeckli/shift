@@ -1,6 +1,6 @@
 
 <div class="shift-content" *ngIf="event">
-    <shift-back-arrow (backClick)="navigation.eventDetail(event.id)" [title]="'Event Kategorien'"></shift-back-arrow>
+    <shift-back-arrow (backClick)="navigation.eventDetailEdit(event.id)" [title]="'Event Kategorien'"></shift-back-arrow>
     <div *ngFor="let item of categories ?? []" (click)="navigation.eventCategoryEdit(event.id, item.id)" class="shift-list-item">
         {{item.get('name') }} 
         <span *ngIf="item.get('responsibleUser')"><br>- Verantwortliche/r: {{ item.get('responsibleUser').get('firstName') + '
