@@ -7,11 +7,17 @@ import { IpFilterUtil } from "./common/utils/ip-filter.utils";
 import { EnvUtils } from "./common/utils/env.utils";
 import { StaticPathConstants } from './common/constants/static-paths.constants';
 import { FsUtils } from './common/utils/fs.utils';
+import { RandomUtils } from './common/utils/random.utils';
 
 const ParseServer = require('parse-server').ParseServer;
 
 EnvUtils.appRoot = __dirname.replace('build', '');
-const { appName, databaseUri, appId, masterKey, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
+const { appName, databaseUri, appId, serverUrl, port, dashboardUser, dashboardPass, dashboardHostnames } = EnvUtils.get();
+
+// generate master key on startup
+const masterKey = RandomUtils.getRandomString();
+EnvUtils.get().generatedMasterKey = masterKey;
+
 IpFilterUtil.setupHostnames(dashboardHostnames);
 FsUtils.createDirIfNotExists(StaticPathConstants.getPublicDataFilePath());
 FsUtils.createDirIfNotExists(StaticPathConstants.getVolunteerContractFilePath());
@@ -96,8 +102,16 @@ app.use('/dashboard', async (req, res, next) => {
 
 app.use('/dashboard', parseDashboardApp);
 app.use(StaticPathConstants.publicDataUrlPath, express.static(StaticPathConstants.getPublicDataFilePath()))
-app.get('/', (req, res) => {
-  res.status(403).send({ "error": "unauthorized" });
+
+/**
+ * Static files for frontend
+ */
+app.use('/ui', express.static(StaticPathConstants.getFrontendPath()));
+app.get('/ui*', (req, res) => {
+  res.sendFile(path.join(StaticPathConstants.getFrontendPath(), '/index.html'));
+});
+app.get("/", (req, res) => {
+  res.redirect("/ui");
 });
 
 const httpServer = http.createServer(app);

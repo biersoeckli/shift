@@ -10,6 +10,10 @@ export class StaticPathConstants {
         return path.join(EnvUtils.appRoot, 'templates', 'receipt.html');
     }
 
+    static getFrontendPath() {
+        return path.join(EnvUtils.appRoot, 'frontend');
+    }
+
     static getVolunteerContractFilePath() {
         return path.join(this.getPublicDataFilePath(), 'volunteer-contracts');
     }

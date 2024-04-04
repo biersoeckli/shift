@@ -1,0 +1,40 @@
+version: "3"
+services:
+  shift-container:
+    image: shift:latest
+    environment:
+      - DATABASE_URL=mongodb://mongo:mongo@shift-mongodb-db:27017/shift?authSource=admin
+      - SERVER_URL=http://localhost:1337/parse
+      - DASHBOARD_USER=user
+      - DASHBOARD_PASS=pass
+      - DASHBOARD_HOSTNAMES=localhost
+      - PRODUCTION=false
+      - SMS_SERVICE_TOKEN=
+      - SMS_SERVICE_URL=
+      - S3_BASE_URL=
+      - S3_BUCKET=
+      - S3_ENDPOINT=
+      - S3_ACCESS_KEY=
+      - S3_SECRED_KEY=
+      - MAIL_USER=
+      - MAIL_PASSWORD=
+      - MAIL_HOST=
+      - MAIL_PORT=
+      - MAIL_SECURE=
+    ports:
+      - "1337:1337"
+  shift-mongodb:
+    image: mongo:7
+    restart: always
+    hostname: shift-mongodb-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+      - MONGO_INITDB_DATABASE=shift
+    ports:
+      - "27017:27017"
+    volumes:
+      - shift-mongodb:/data/db
+volumes:
+  shift-mongodb:
+    driver: local

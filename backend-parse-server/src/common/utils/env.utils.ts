@@ -5,7 +5,6 @@ export interface EnvVariables {
     appName: string;
     databaseUri: string;
     appId: string;
-    masterKey: string;
     port: number;
     serverUrl: string;
     dashboardUser: string;
@@ -25,6 +24,7 @@ export interface EnvVariables {
     mailHost: string;
     mailPort: number;
     mailSecure: boolean;
+    generatedMasterKey?: string;
 }
 
 export class EnvUtils {

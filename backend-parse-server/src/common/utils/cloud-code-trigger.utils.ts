@@ -24,7 +24,7 @@ export class CloudCodeTriggerService {
                 method: "POST",
                 headers: {
                     'X-Parse-Application-Id': EnvUtils.get().appId,
-                    'X-Parse-Master-Key': EnvUtils.get().masterKey,
+                    'X-Parse-Master-Key': EnvUtils.get().generatedMasterKey!,
                     'Content-Type': 'application/json'
                 },
                 body: {}

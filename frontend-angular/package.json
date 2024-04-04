@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-prod": "npm run config && ng build --configuration production",
+    "build-prod-docker": "npm run config && ng build --configuration production --base-href /ui/",
     "config": "ts-node set-env.ts"
   },
   "private": true,
