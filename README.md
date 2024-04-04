@@ -11,5 +11,5 @@
 </tr>
 </table>
 
-### Event Planner
+### Event Planner For Admins
 <img src="./assets/event_planner.png">
