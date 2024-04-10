@@ -34,11 +34,13 @@ export class SmsService {
             }
         };
         return new Promise((resolve, reject) => {
+            console.log('SMS Service URL ' + EnvUtils.get().smsServiceUrl)
             needle.post(EnvUtils.get().smsServiceUrl, body, (error, response) => {
                 if (!error) {
                     resolve(response.body);
                     return;
                 }
+                console.error(error);
                 reject(error);
             });
         })
