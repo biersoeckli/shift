@@ -11,8 +11,6 @@ ENV PARSE_SERVER_URL=/parse
 RUN npm install
 RUN npm run build-prod-docker
 
-COPY /app/frontend-angular/dist/shift /app/backend-parse-server/frontend
-
 FROM node:lts-bullseye as final
 
 WORKDIR /app
@@ -21,7 +19,8 @@ WORKDIR /app
 RUN apt install tzdata -y
 ENV TZ="Europe/Zurich"
 
-COPY --from=build /app/backend-parse-server /app
+ADD ./backend-parse-server /app
+COPY --from=build /app/frontend-angular/dist/shift /app/frontend
 
 # needed for puppeteer
 RUN apt-get update && apt-get -y install libxss1 libnss3 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgbm-dev
