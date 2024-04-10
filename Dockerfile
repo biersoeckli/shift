@@ -11,7 +11,7 @@ ENV PARSE_SERVER_URL=/parse
 RUN npm install
 RUN npm run build-prod-docker
 
-COPY /app/frontend-angular/dist/shift /app/frontend
+COPY /app/frontend-angular/dist/shift /app/backend-parse-server/frontend
 
 FROM node:lts-bullseye as final
 
