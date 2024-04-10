@@ -65,16 +65,18 @@ export class VolunteerReceiptService {
         // join shifts and replace duplicates
         const shiftDates = Array.from(new Set(shiftStartDates.concat(shiftEndDates))).join(', ');
        
-        htmlInput = htmlInput.replaceAll('V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
-        htmlInput = htmlInput.replaceAll('V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
-        htmlInput = htmlInput.replaceAll('V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
-        htmlInput = htmlInput.replaceAll('V_MAIL', SanitazionUtils.sanitize(user.get('email')));
-        htmlInput = htmlInput.replaceAll('CURRENT_DATE', StringUtils.formatDate(new Date()));
-        htmlInput = htmlInput.replaceAll('SHIFT_DATES', shiftDates);
-        htmlInput = htmlInput.replaceAll('SHIFT_CATEGORY_NAMES', SanitazionUtils.sanitize(shiftNames));
-        htmlInput = htmlInput.replaceAll('PAYOUT_TOTAL', SanitazionUtils.sanitize(`CHF ${overridePayoutAmount ?? Math.floor(userPayoutInfo.payoutTotal)}.00`));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_MAIL', SanitazionUtils.sanitize(user.get('email')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'CURRENT_DATE', StringUtils.formatDate(new Date()));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'SHIFT_DATES', shiftDates);
+        htmlInput = StringUtils.replaceAll(htmlInput, 'SHIFT_CATEGORY_NAMES', SanitazionUtils.sanitize(shiftNames));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'PAYOUT_TOTAL', SanitazionUtils.sanitize(`CHF ${overridePayoutAmount ?? Math.floor(userPayoutInfo.payoutTotal)}.00`));
         return htmlInput;
     }
+
+   
 
     public async getEventCategories(eventId: string) {
         const query = new Parse.Query(Parse.Object.extend('EventCategory'));

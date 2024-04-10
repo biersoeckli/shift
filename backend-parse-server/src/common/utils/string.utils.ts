@@ -37,4 +37,8 @@ export class StringUtils {
     public static formatDateTime(date: Date, addSeconds = false) {
         return this.formatDate(date) + ' ' + this.formatTime(date, addSeconds);
     }
+
+    public static replaceAll(str: string, find: string, replace: string) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
 }

@@ -8,6 +8,7 @@ import { EnvUtils } from "../common/utils/env.utils";
 import Mail from "nodemailer/lib/mailer";
 import { SanitazionUtils } from "../common/utils/sanitazion.utils";
 import { marked } from 'marked';
+import { StringUtils } from "../common/utils/string.utils";
 
 @Service()
 export class VolunteerContractSenderService {
@@ -68,10 +69,10 @@ export class VolunteerContractSenderService {
 
     getMailContentAndReplacePlaceholders(contractConfig: Parse.Object<Parse.Attributes>, user: Parse.User<Parse.Attributes>) {
         let mailContent = marked.parse(contractConfig.get('mailTemplate'));
-        mailContent = mailContent.replaceAll('V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
-        mailContent = mailContent.replaceAll('V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
-        mailContent = mailContent.replaceAll('V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
-        mailContent = mailContent.replaceAll('V_MAIL', SanitazionUtils.sanitize(user.get('email')));
+        mailContent = StringUtils.replaceAll(mailContent, 'V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
+        mailContent = StringUtils.replaceAll(mailContent, 'V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
+        mailContent = StringUtils.replaceAll(mailContent, 'V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
+        mailContent = StringUtils.replaceAll(mailContent, 'V_MAIL', SanitazionUtils.sanitize(user.get('email')));
         return mailContent;
     }
 }

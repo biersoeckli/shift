@@ -78,15 +78,15 @@ export class VolunteerContractService {
         htmlContractContent = this.replacePayoutInfoPlaceholders(htmlContractContent, userPayoutInfo, eventCategories);
         htmlContractContent = this.replaceSignatureSectionPlaceholders(htmlContractContent, user);
         const userCategories = userPayoutInfo.shifts.map(shift => eventCategories.find(category => category.id === shift.shift.get('category').id)?.get('name') ?? '').join(', ');
-        htmlContractContent = htmlContractContent.replaceAll('V_SHIFT_CATEGORIES', SanitazionUtils.sanitize(userCategories));
+        htmlContractContent = StringUtils.replaceAll(htmlContractContent, 'V_SHIFT_CATEGORIES', SanitazionUtils.sanitize(userCategories));
         return htmlContractContent;
     }
 
     replaceUserInfoPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>) {
-        htmlInput = htmlInput.replaceAll('V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
-        htmlInput = htmlInput.replaceAll('V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
-        htmlInput = htmlInput.replaceAll('V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
-        htmlInput = htmlInput.replaceAll('V_MAIL', SanitazionUtils.sanitize(user.get('email')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_FIRSTNAME', SanitazionUtils.sanitize(user.get('firstName')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_LASTNAME', SanitazionUtils.sanitize(user.get('lastName')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_PHONE', SanitazionUtils.sanitize(user.get('phone')));
+        htmlInput = StringUtils.replaceAll(htmlInput, 'V_MAIL', SanitazionUtils.sanitize(user.get('email')));
         return htmlInput;
     }
 
@@ -104,7 +104,7 @@ export class VolunteerContractService {
             </tr>
         `).join('');
 
-        htmlInput = htmlInput.replaceAll('PAYOUT_TABLE', `
+        htmlInput = StringUtils.replaceAll(htmlInput, 'PAYOUT_TABLE', `
             <table>
                 <thead>
                     <tr>
@@ -121,7 +121,7 @@ export class VolunteerContractService {
     }
 
     replaceSignatureSectionPlaceholders(htmlInput: string, user: Parse.Object<Parse.Attributes>) {
-        htmlInput = htmlInput.replaceAll('SIGNATURE_SECTION', `
+        htmlInput = StringUtils.replaceAll(htmlInput, 'SIGNATURE_SECTION', `
             <br>
             <br>
             <p style="width: 100%; border-top: 1px solid #e5e7eb; padding-top: 0.5rem;">Unterschrift ${SanitazionUtils.sanitize(user.get('firstName'))} ${SanitazionUtils.sanitize(user.get('lastName'))}</p>

@@ -33,6 +33,21 @@ export class SmsService {
                 "recipient": phoneNumber
             }
         };
+
+        await fetch(EnvUtils.get().smsServiceUrl, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
+        }).then(response => {
+            if (response.ok) {
+                console.log('SMS Service Response Status: ', response.statusText);
+                return;
+            }
+            console.error('SMS Service Response Status: ', response.statusText);
+            throw new Error('Error from SMS Service: ' + response.statusText);
+        })
+
+        /*
         return new Promise((resolve, reject) => {
             console.log('SMS Service URL ' + EnvUtils.get().smsServiceUrl);
             console.log('SMS Service Body: ' + JSON.stringify(body));
@@ -46,6 +61,6 @@ export class SmsService {
                 console.error(error);
                 reject(error);
             });
-        })
+        })*/
     }
 }
