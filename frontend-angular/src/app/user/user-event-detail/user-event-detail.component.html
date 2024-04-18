@@ -20,6 +20,7 @@
                 <button class="btn-secondary" (click)="editUserInfo()">Bearbeiten</button>
             </div>
 
+
             <div class="shift-info-card" *ngIf="event?.get('showShiftPlanToVolunteers')">
                 <div class="text-xl font-semibold pb-1">Zugeteilte Schichten</div>
                 <div *ngFor="let shift of userShifts ?? []">- {{shift.get('start') | fromTo: shift.get('end'): true}}
@@ -35,9 +36,18 @@
             <shift-payout-user-container *ngIf="event?.get('volunteerPayoutForVolunteersEnabled')"
                 [eventId]="params.eventId" [userId]="currentUser?.id"></shift-payout-user-container>
 
+            <div class="shift-info-card" *ngIf="event?.get('bankingInformationEnabled') && currentUser">
+                <div class="text-xl font-semibold pb-1">Deine Bankverbindung</div>
+                <div><span class="font-semibold">IBAN:</span> {{currentUser.get('iban')}}</div>
+                <div><span class="font-semibold">Name:</span> {{currentUser.get('ibanName')}}</div>
+                <div><span class="font-semibold">Adresse:</span> {{currentUser.get('address')}}, 
+                    {{currentUser.get('postalCode')}} {{currentUser.get('place')}}</div>
+                <button class="btn-secondary" (click)="navigation.userBankingInformationEdit(currentUser.id, event.id)">Bearbeiten</button>
+            </div>
 
             <button class="btn-secondary" *ngIf="event?.get('volunteerContractForVolunteersEnabled')"
                 (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
+
         </div>
     </ng-container>
 </div>

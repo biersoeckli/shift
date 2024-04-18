@@ -1,0 +1,39 @@
+<div class="shift-content" *ngIf="item">
+    <shift-back-arrow (backClick)="event?.id ? navigation.eventCategoryOverview(event?.id ?? '') : navigation.home()"
+        [title]="'Bankverbindung bearbeiten'"></shift-back-arrow>
+
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            <label for="input-group-1" class="input-label">IBAN</label>
+            <input type="text" placeholder="CH..." [ngModel]="item.get('iban')" (ngModelChange)="item.set('iban', $event)">
+        </div>
+
+        <div>
+            <label for="input-group-1" class="input-label">Kontoinhaber:in (Vor- und Nachname)</label>
+            <input type="text" placeholder="" [ngModel]="item.get('ibanName')"
+                (ngModelChange)="item.set('ibanName', $event)">
+        </div>
+
+        <div>
+            <label for="input-group-1" class="input-label">Adresse + Hausnummer</label>
+            <input type="text" placeholder="" [ngModel]="item.get('address')"
+                (ngModelChange)="item.set('address', $event)">
+        </div>
+
+        <div class="flex gap-4">
+            <div>
+                <label for="input-group-1" class="input-label">PLZ</label>
+                <input type="text" placeholder="" [ngModel]="item.get('postalCode')"
+                    (ngModelChange)="item.set('postalCode', $event)">
+            </div>
+
+            <div class="flex-1">
+                <label for="input-group-1" class="input-label">Ort</label>
+                <input type="text" placeholder="" [ngModel]="item.get('place')"
+                    (ngModelChange)="item.set('place', $event)">
+            </div>
+        </div>
+    </div>
+    <div *ngIf="errorString" class="text-red-600 mb-2">{{errorString}}</div>
+    <button class="btn mt-2" (click)="save()">Speichern</button>
+</div>

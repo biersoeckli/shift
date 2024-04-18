@@ -33,24 +33,34 @@
         <shift-event-document-container *ngIf="event?.get('documentUploadEnabled')" [eventId]="params.eventId"
             [userId]="user.id"></shift-event-document-container>
 
+        <div>
+            <div></div>
+        </div>
+        
         <shift-payout-user-container *ngIf="event?.get('volunteerPayoutEnabled')" [eventId]="params.eventId"
             [userId]="user.id"></shift-payout-user-container>
 
+        <div class="shift-info-card" *ngIf="event?.get('bankingInformationEnabled') && user">
+            <div class="text-xl font-semibold pb-1">Bankverbindung</div>
+            <div><span class="font-semibold">IBAN:</span> {{user.get('iban')}}</div>
+            <div><span class="font-semibold">Name:</span> {{user.get('ibanName')}}</div>
+            <div><span class="font-semibold">Adresse:</span> {{user.get('address')}},
+                {{user.get('postalCode')}} {{user.get('place')}}</div>
+        </div>
         <div>
             <label class="input-label">Bemerkungen (von HelferIn)</label>
             <textarea type="text" [ngModel]="userEvent.get('comment')" rows="6" [disabled]="true"></textarea>
         </div>
         <div>
             <label class="input-label">Bemerkungen Intern (von OrganisatorIn)</label>
-            <textarea type="text" (ngModelChange)="userEvent.set('commentInternal', $event)" [ngModel]="userEvent.get('commentInternal')" rows="6" (blur)="save()"></textarea>
+            <textarea type="text" (ngModelChange)="userEvent.set('commentInternal', $event)"
+                [ngModel]="userEvent.get('commentInternal')" rows="6" (blur)="save()"></textarea>
         </div>
     </div>
     <button class="btn-secondary" *ngIf="event?.get('volunteerContractEnabled')"
         (click)="downloadVolunteerContract()">Vertrag herunterladen</button>
 
-        <button class="btn-secondary"
-        (click)="generateVolunteerReceipt()">Quittung herunterladen</button>
-        
-    <br><button class="btn-secondary"
-    (click)="deleteVolunteer()">Helfer/in entfernen</button>
+    <button class="btn-secondary" (click)="generateVolunteerReceipt()">Quittung herunterladen</button>
+
+    <br><button class="btn-secondary" (click)="deleteVolunteer()">Helfer/in entfernen</button>
 </div>

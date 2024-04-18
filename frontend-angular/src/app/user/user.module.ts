@@ -8,6 +8,7 @@ import { DocumentsModule } from '../documents/documents.module';
 import { UserShiftOverviewComponent } from './user-shift-overview/user-shift-overview.component';
 import { ShiftsModule } from '../shifts/shifts.module';
 import { PayoutModule } from '../payout/payout.module';
+import { UserBankAccountEditComponent } from './user-bank-account-edit/user-bank-account-edit.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'user/profile',
     component: UserProfileComponent,
+  },
+  {
+    path: 'user/bank-account',
+    component: UserBankAccountEditComponent,
   }
 ];
 
@@ -28,7 +33,8 @@ const routes: Routes = [
   declarations: [
     UserProfileComponent,
     UserEventDetailComponent,
-    UserShiftOverviewComponent
+    UserShiftOverviewComponent,
+    UserBankAccountEditComponent
   ],
   imports: [
     CommonModule,

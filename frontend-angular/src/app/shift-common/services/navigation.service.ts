@@ -35,6 +35,17 @@ export class NavigationService {
     });
   }
 
+
+  @fluffyLoading()
+  async userBankingInformationEdit(userId: string, eventId: string) {
+    await this.router.navigate(['user', 'bank-account'], {
+      queryParams: {
+        userId,
+        eventId
+      }
+    });
+  }
+
   @fluffyLoading()
   async documentOverview(eventId: string) {
     await this.router.navigate(['documents', 'overview'], {

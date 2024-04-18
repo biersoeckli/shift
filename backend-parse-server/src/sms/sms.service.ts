@@ -47,20 +47,5 @@ export class SmsService {
             throw new Error('Error from SMS Service: ' + response.statusText);
         })
 
-        /*
-        return new Promise((resolve, reject) => {
-            console.log('SMS Service URL ' + EnvUtils.get().smsServiceUrl);
-            console.log('SMS Service Body: ' + JSON.stringify(body));
-            needle.post(EnvUtils.get().smsServiceUrl, body, (error, response) => {
-                console.log('SMS Service Response Statuscode: ' + response?.statusCode)
-                if (!error) {
-                    console.log('SMS Service Response: ' + response.body)
-                    resolve(response.body);
-                    return;
-                }
-                console.error(error);
-                reject(error);
-            });
-        })*/
     }
 }

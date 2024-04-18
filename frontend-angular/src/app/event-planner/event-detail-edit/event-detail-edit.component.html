@@ -71,6 +71,11 @@
         (valueChange)="item.set('documentUploadEnabled', $event)" [label]="'Modul: Dokumentenupload'">
     </shift-toggle-switch>
 
+
+    <shift-toggle-switch [value]="item.get('bankingInformationEnabled')"
+        (valueChange)="item.set('bankingInformationEnabled', $event)" [label]="'Modul: Bankverbindung'">
+    </shift-toggle-switch>
+
     <shift-toggle-switch [value]="item.get('wishShiftsEnabled')" (valueChange)="item.set('wishShiftsEnabled', $event)"
         [label]="'Modul: Wunschschichten'">
     </shift-toggle-switch>
