@@ -36,7 +36,8 @@ export class SendMessageToVolunteersFunction extends BaseCloudFunction<void> {
             await this.mailService.sendMail(
                 userEvent.get('user').get('email'),
                 `Nachricht für Event "${event.get('name')}"`,
-                message, true,
+                message.replace(/\n/g, '<br>'),
+                true,
                 event.get('name'));
             console.log(`Successfully sent mail to ${userEvent.get('user').get('firstName')} ${userEvent.get('user').get('lastName')} ${userEvent.get('user').get('email')}`);
         }
