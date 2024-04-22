@@ -45,9 +45,10 @@ export class GetUsersForEventFunction extends BaseCloudFunction<UserForEvent[]> 
                 ...userEvent.get('user').attributes,
                 userId: userEvent.get('user').id,
                 createdByOrganizer: userEvent.get('createdByOrganizer') ?? false,
-                comment: StringUtils.replaceAll(userEvent.get('comment'), '\n', ' '),
-                commentInternal: StringUtils.replaceAll(userEvent.get('commentInternal'), '\n', ' ')
+                comment: StringUtils.replaceAll(userEvent.get('comment') ?? '', '\n', ' '),
+                commentInternal: StringUtils.replaceAll(userEvent.get('commentInternal') ?? '', '\n', ' ')
             } as UserForEvent;
+
             returnVal.acl = undefined;
             returnVal.password = undefined;
             returnVal.sessionKey = undefined;
