@@ -8,6 +8,7 @@ import { EventConfigUtils } from "../../event/utils/event-config.utils";
 import { PayoutCalculationService, UserPayoutInfo } from "../../payout/payout-calculation.service";
 import { AuthenticateWithPhoneNumberResult } from "../auth/auth-with-phonenumber.function";
 import { BaseCloudFunction } from "../cloud-function.interface";
+import { StringUtils } from "../../common/utils/string.utils";
 
 export interface UserForEvent {
     eventId: string;
@@ -44,8 +45,8 @@ export class GetUsersForEventFunction extends BaseCloudFunction<UserForEvent[]> 
                 ...userEvent.get('user').attributes,
                 userId: userEvent.get('user').id,
                 createdByOrganizer: userEvent.get('createdByOrganizer') ?? false,
-                comment: userEvent.get('comment'),
-                commentInternal: userEvent.get('commentInternal')
+                comment: StringUtils.replaceAll(userEvent.get('comment'), '\n', ' '),
+                commentInternal: StringUtils.replaceAll(userEvent.get('commentInternal'), '\n', ' ')
             } as UserForEvent;
             returnVal.acl = undefined;
             returnVal.password = undefined;
