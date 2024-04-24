@@ -27,6 +27,11 @@
 
     <shift-toggle-switch label="Ist Auswahlmöglichkeit bei Registrierung" [value]="item.get('availableForRegistration')"
         (valueChange)="item.set('availableForRegistration', $event)"></shift-toggle-switch>
+
+
+    <shift-toggle-switch label="In Schichtplan ausblenden" [value]="item.get('hideInShiftPlan')"
+    (valueChange)="item.set('hideInShiftPlan', $event)"></shift-toggle-switch>
+
     <label for="input-group-1" class="input-label">Verantwortliche/r</label>
     <button class="btn-secondary mb-3" style="margin-top: 0px;"
         (click)="pickResponsibleUser()">{{item.get('responsibleUser') ? item.get('responsibleUser').get('firstName') + '

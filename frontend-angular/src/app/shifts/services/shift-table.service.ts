@@ -105,7 +105,7 @@ export class ShiftTableService {
             return;
         }
         const [categories, userShiftWishForEvent, userEventCategories] = await Promise.all([
-            this.eventService.getEventCategories(this.event.id),
+            this.eventService.getEventCategories(this.event.id, false),
             this.fetchAllUserShiftWishForEvent(),
             this.eventService.fetchAllUserEventCategory(this.event.id)
         ])

@@ -34,9 +34,10 @@ export class EventService {
     return event;
   }
 
-  public async getEventCategories(eventId: string) {
+  public async getEventCategories(eventId: string, showHiddenCategories = true) {
     const query = new Parse.Query(Parse.Object.extend('EventCategory'));
     query.equalTo('event', await this.getEventById(eventId, true));
+    if (!showHiddenCategories) query.notEqualTo('hideInShiftPlan', true);
     query.ascending('name');
     query.include('event');
     query.include('responsibleUser');

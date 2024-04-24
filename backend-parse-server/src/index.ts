@@ -94,8 +94,7 @@ app.use('/parse', parseServerApp);
 app.use('/dashboard', async (req, res, next) => {
   const forwardedForIp = req.headers['x-forwarded-for'] as string;
   if (!await IpFilterUtil.ipIsValid(forwardedForIp || req.ip)) {
-    //res.status(403).send({ "error": "unauthorized" });
-    next();
+    res.status(403).send({ "error": "unauthorized" });
   } else {
     next();
   }

@@ -6,6 +6,7 @@
         <span *ngIf="item.get('responsibleUser')"><br>- Verantwortliche/r: {{ item.get('responsibleUser').get('firstName') + '
             ' + item.get('responsibleUser').get('lastName')}}</span>
             <span *ngIf="item.get('availableForRegistration')"><br>- bei Registrierung sichtbar</span>
+            <span *ngIf="item.get('hideInShiftPlan')"><br>- in Schichtplan ausgeblendet</span>
     </div>
     <button class="btn mt-2" (click)="navigation.eventCategoryEdit(event.id)">Kategorie hinzufügen</button>
 </div>
