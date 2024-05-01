@@ -49,6 +49,11 @@ export class VolunteerExportOverlayComponent {
     if (this.config.addPayoutInformation) {
       await this.addTotalPayoutToUser(exportData);
     }
+    exportData.forEach((exportItem: any) => {
+      if (exportItem.iban) {
+        exportItem.iban = exportItem.iban.replaceAll(' ', '');
+      }
+    });
 
     this.csvExporter.objectsToCsvAndDownload(exportData, 'helferliste.csv');
     this.dialogRef.close();
