@@ -41,7 +41,7 @@ export class SendMessageToVolunteersFunction extends BaseCloudFunction<void> {
                 event.get('name'));
             console.log(`Successfully sent mail to ${userEvent.get('user').get('firstName')} ${userEvent.get('user').get('lastName')} ${userEvent.get('user').get('email')}`);
         }
-        for (let userEvent of selectedUsers) {
+        for (let userEvent of selectedUsers.filter(x => !!x?.get('user')?.get('phone'))) {
             await this.smsService.sendSms(userEvent.get('user').get('phone'), message);
             console.log(`Successfully sent sms to ${userEvent.get('user').get('firstName')} ${userEvent.get('user').get('lastName')} ${userEvent.get('user').get('phone')}`);
         }
