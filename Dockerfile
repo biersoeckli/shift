@@ -1,4 +1,4 @@
-FROM node:lts-bullseye as build
+FROM node:20-bullseye as build
 
 ADD . /app
 
