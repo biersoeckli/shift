@@ -1,4 +1,4 @@
-FROM node:lts-bullseye
+FROM node:20-bullseye
 
 # set timezone
 RUN apt install tzdata -y
