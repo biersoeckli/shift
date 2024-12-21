@@ -11,7 +11,7 @@ ENV PARSE_SERVER_URL=/parse
 RUN npm install
 RUN npm run build-prod-docker
 
-FROM node:lts-bullseye as final
+FROM node:20-bullseye as final
 
 WORKDIR /app
 
