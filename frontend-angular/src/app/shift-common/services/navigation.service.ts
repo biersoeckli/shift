@@ -25,7 +25,7 @@ export class NavigationService {
   }
 
   async registrationUserDetails(eventId: string) {
-    window.open('/user/profile?returnUrl=' + encodeURI('/register/category-chooser?eventId=' + eventId), '_self');
+    window.open('/ui/user/profile?returnUrl=' + encodeURI('/register/category-chooser?eventId=' + eventId), '_self');
   }
 
   @fluffyLoading()
