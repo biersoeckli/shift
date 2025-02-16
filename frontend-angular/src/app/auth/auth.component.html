@@ -9,7 +9,7 @@
         </div>
 
         <button class="btn-wide" (click)="loginType = 'EMAIL'">mit E-Mail fortfahren</button>
-        <button class="btn-wide" (click)="loginType = 'PHONE'">mit Tel. Nr. fortfahren</button>
+        <!--button class="btn-wide" (click)="loginType = 'PHONE'">mit Tel. Nr. fortfahren</button-->
     </div>
     <div *ngIf="loginType === 'PHONE' && !authChallengeId">
         <div class="shift-card mb-6">

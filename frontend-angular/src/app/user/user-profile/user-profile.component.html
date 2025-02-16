@@ -43,6 +43,20 @@
                 die Email Adresse</p>
         </div>
 
+        <label for="input-group-1" class="input-label">Deine Telefonnummer</label>
+        <div class="icon-input">
+            <div>
+                <svg aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                </svg>
+            </div>
+            <input type="tel" placeholder="0791234567" formControlName="phone">
+            <p *ngIf="validated && phone?.invalid" class="pl-2 text-sm text-red-600 dark:text-red-500">Bitte überprüfe
+                die Telefonnummer</p>  
+                  <p *ngIf="phoneError" class="pl-2 text-sm text-red-600 dark:text-red-500">{{phoneError}}</p>
+        </div>
+
         <div style="height: 90px;">
             <div></div>
         </div>
